@@ -4,7 +4,7 @@ import useReactRouter from "use-react-router";
 import LayerBackend from "../Component/Backend/LayerBackend";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       width: 200,
