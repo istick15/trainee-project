@@ -79,7 +79,7 @@ const MapHead = () => {
   const { history } = useReactRouter();
 
   const goBack = () => {
-    history.replace("/");
+    history.replace("/Backend");
   };
   return (
     <div>

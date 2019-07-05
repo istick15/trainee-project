@@ -57,10 +57,14 @@ const SelectLayers = () => {
     setOpen(true);
 
     getMapLayers().then(rs => {
-      if (rs.status === 400) {
+      // if ((rs.status = 401)) {
+      //   setWms([]);
+      // } else {
+      //   setWms(rs);
+      // }
+      if (localStorage.getItem("token") === "undefined") {
         setWms([]);
-      }
-      if ((rs.status = 200)) {
+      } else {
         setWms(rs);
       }
     });
@@ -91,7 +95,7 @@ const SelectLayers = () => {
                 const check = map.getStyle();
                 const filter = check.layers.filter(re => re.id === layerid);
                 const linkcut = layerlink.split("?");
-                const linknew = new URL(layerlink);
+                const linknew = new URL(layerlink, "https://example.com");
 
                 var SERVICE = "SERVICE=WMS";
                 var transparent =
@@ -164,11 +168,15 @@ const SelectLayers = () => {
                   STYLES +
                   "&" +
                   bbox;
-
-                //if (key.layerName === "Bad Request 404") {
-                //alert("Bad Request 404");
-                //filter.length = 1;
-                // }
+                console.log(LinkAdd);
+                if (
+                  LinkAdd ===
+                    "s?SERVICE=WMS&transparent=true&VERSION=null&REQUEST=null&CRS=EPSG:3857&WIDTH=null&HEIGHT=null&FORMAT=null&TILED=null&STYLES&LAYERS=null&bbox={bbox-epsg-3857}" ||
+                  LinkAdd ===
+                    "http://dev.i-bitz.co.th:30001/Kaen/wms?SERVICE=WMS&transparent=true&VERSION=1.1.0&REQUEST=GetMap&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&FORMAT=image/png&TILED=TRUE&STYLES&LAYERS=RailStation&bbox={bbox-epsg-3857}"
+                ) {
+                  alert("Link is incorrect");
+                }
                 if (filter.length === 0) {
                   map.addLayer({
                     id: layerid,
@@ -190,24 +198,37 @@ const SelectLayers = () => {
             />
           </CardActionArea>
           <CardActions>
-            <IconButton
-              onClick={layerid => {
-                layerid.stopPropagation();
-                const remian = layers.wms.filter(
-                  c => c.layerName !== key.layerName
-                );
+            <Tooltip title="Delete layer" placement="right">
+              <IconButton
+                onClick={layerid => {
+                  layerid.stopPropagation();
+                  const remian = layers.wms.filter(
+                    c => c.layerName !== key.layerName
+                  );
 
-                if (
-                  window.confirm("Are you sure you want to delete this Layer?")
-                ) {
-                  setLayers({ wms: remian });
-                  mapContext.map.removeLayer(key.layerName);
-                  //mapContext.map.removeSource(key.layerName);
-                }
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+                  if (
+                    window.confirm(
+                      "Are you sure you want to delete this Layer?"
+                    )
+                  ) {
+                    setLayers({ wms: remian });
+
+                    const map = mapContext.map;
+                    const check = map.getStyle();
+                    const filter = check.layers.filter(
+                      re => re.id === key.layerName
+                    );
+                    console.log(filter.length);
+                    if (filter.length === 1) {
+                      map.removeLayer(key.layerName);
+                      map.removeSource(key.layerName);
+                    }
+                  }
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </CardActions>
         </Card>
       </div>
