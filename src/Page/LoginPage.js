@@ -74,8 +74,6 @@ const userStyles = makeStyles({
     height: "80vh"
   },
   test1: {
-    // position: "flex",
-    // zIndex: 10,
     left: 240,
     top: 110,
     color: " #F2AD2E "
@@ -89,13 +87,13 @@ const userStyles = makeStyles({
   test3: {
     // display: "flex",
     position: "absolute",
-    // zIndex: 10,
+
     left: 725,
     top: 240
   },
   test4: {
     position: "absolute",
-    //  zIndex: 10,
+    //  zIndex: 10
     left: 725,
     top: 500
   },
