@@ -11,7 +11,7 @@ const LoginPage = () => {
     <div>
       <TextField label="username" />
       <TextField label="password" />
-      <Button onClick={goToBackend}>Login</Button>
+      <Button onClick={goToBackend}>Logidffffn</Button>
     </div>
   );
 };
