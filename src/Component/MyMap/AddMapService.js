@@ -37,6 +37,7 @@ const AddMapService = () => {
 
   const [layers, setLayers] = useState({});
   const [link, setLink] = useState({});
+
   const [errorText, setErrorText] = useState("");
   const addChange = () => {
     AddMapLayers(layers, link).then(rs => {
@@ -74,6 +75,7 @@ const AddMapService = () => {
             fullWidth
             onChange={e => {
               setLayers(e.target.value);
+              setErrorText("");
             }}
           />
 
@@ -83,10 +85,10 @@ const AddMapService = () => {
             variant="outlined"
             id="wmslink"
             label="Wms"
-            type="url"
             fullWidth
             onChange={e1 => {
               setLink(e1.target.value);
+              setErrorText("");
             }}
             placeholder="https://example.com"
           />
@@ -95,7 +97,7 @@ const AddMapService = () => {
           <Button color="primary" onClick={handleClse}>
             cancel
           </Button>
-          <Button color="primary" type="submit" onClick={addChange}>
+          <Button color="primary" onClick={addChange}>
             Create
           </Button>
         </DialogActions>
