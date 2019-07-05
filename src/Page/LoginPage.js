@@ -168,6 +168,7 @@ const LoginPage = () => {
     e.preventDefault();
     testLogin(stateForm.email, stateForm.password).then(rs => {
       console.log(rs);
+
       if (rs.Text) {
         setsnkbarText(rs.Text);
         setsnkbar(true);
@@ -176,10 +177,13 @@ const LoginPage = () => {
           setsnkbarText("Please enter your password.");
         }
       }
+      if (rs.token) {
+        history.push("/Backend");
+      }
       localStorage.setItem("token", rs.token);
 
       ///
-      history.push("/Backend");
+      // history.push("/Backend");
     });
   };
 
