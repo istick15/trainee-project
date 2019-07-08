@@ -16,7 +16,7 @@ import IconButton from "@material-ui/core/IconButton";
 // import { NativeRouter, Route, Link } from "react-router-native";
 // import { StyleSheet, Text, View } from "react-native";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       flexGrow: 1
@@ -50,6 +50,7 @@ const TestAppBar = () => {
   // function Child({ match }) {
   //   return <Text>ID: {match.params.id}</Text>;
   // }
+
   return (
     <div>
       <Router>
