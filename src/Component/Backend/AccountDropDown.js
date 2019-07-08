@@ -12,7 +12,7 @@ import { Divider } from "@material-ui/core";
 import SettingIcon from "@material-ui/icons/Settings";
 import LogoutIcon from "@material-ui/icons/Compare";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -35,7 +35,7 @@ const SplitButton = () => {
   const anchorRef = React.useRef(null);
 
   function handleToggle() {
-    setOpen((prevOpen) => !prevOpen);
+    setOpen(prevOpen => !prevOpen);
   }
 
   function handleClose(event) {

@@ -166,20 +166,21 @@ const LoginPage = () => {
     e.preventDefault();
     testLogin(stateForm.email, stateForm.password).then(rs => {
       console.log(rs);
-      console.log(rs.data.user_token);
-      if (rs.Text) {
-        setsnkbarText(rs.Text);
+
+      if (rs.error) {
+        setsnkbarText(rs.error);
         setsnkbar(true);
         if (stateForm.password === "") {
           setsnkbar(true);
           setsnkbarText("Please enter your password.");
         }
       }
-      if (rs.data.user_token) {
+      if (rs.data) {
         history.push("/Backend");
       }
-      localStorage.setItem("token", rs.data.user_token);
-      localStorage.setItem("user_id", rs.data.user_id);
+
+      localStorage.setItem("user_token", rs.data.user_token);
+      console.log(localStorage);
       ///
       // history.push("/Backend");
     });
@@ -250,16 +251,26 @@ const LoginPage = () => {
                 </List>
               </Grid>
               {/*  */}
-              <Grid xs={12} className={classes.test5}>
-                <Typography variant="h6" display="flex" gutterBottom>
-                  Login
-                </Typography>
+              <Grid xs={12} container justify="center" alignItems="center">
+                {/* <Grid xs={12} className={classes.test5}> */}
+                <Grid
+                  xs={10}
+                  container
+                  justify="flex-start"
+                  alignItems="center"
+                >
+                  <Typography variant="h6" display="flex" gutterBottom>
+                    Login
+                  </Typography>
+                </Grid>
+                {/* </Grid> */}
               </Grid>
+
               <Grid item xs={12} className={classes.item}>
                 <TextField
                   type="text"
                   id="email"
-                  label="Username"
+                  label="E-mail"
                   name="email"
                   className={classes.input}
                   variant="outlined"
