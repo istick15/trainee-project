@@ -1,9 +1,12 @@
 export const testLogin = (id, pw) => {
-  const requestURL = "https://trainee-api.appspot.com/login";
+  const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
+  const requestURL = "https://api.vallaris.space/v2/auth/signin";
   const requestHeader = {
+    "Auth-key": API_Key,
+    "Client-Service": "frontend-client",
     "Content-Type": "application/json"
   };
-  const param = { username: id, password: pw };
+  const param = { email: id, password: pw };
   return fetch(requestURL, {
     method: "POST",
     headers: requestHeader,
