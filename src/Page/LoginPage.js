@@ -250,11 +250,21 @@ const LoginPage = () => {
                 </List>
               </Grid>
               {/*  */}
-              <Grid xs={12} className={classes.test5}>
-                <Typography variant="h6" display="flex" gutterBottom>
-                  Login
-                </Typography>
+              <Grid xs={12} container justify="center" alignItems="center">
+                {/* <Grid xs={12} className={classes.test5}> */}
+                <Grid
+                  xs={10}
+                  container
+                  justify="flex-start"
+                  alignItems="center"
+                >
+                  <Typography variant="h6" display="flex" gutterBottom>
+                    Login
+                  </Typography>
+                </Grid>
+                {/* </Grid> */}
               </Grid>
+
               <Grid item xs={12} className={classes.item}>
                 <TextField
                   type="text"
