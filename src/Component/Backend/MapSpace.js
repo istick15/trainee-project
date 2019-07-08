@@ -14,8 +14,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { getMapServices } from "../../Api/GetMap";
+import LayerList from "./LayerList";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -57,7 +58,7 @@ const MapWork = () => {
   const [desC, setDesC] = useState({});
   const [URL, setURL] = useState({});
   const addLayerMap = () => {
-    getMapServices(layerName, desC, URL).then((rs) => {
+    getMapServices(layerName, desC, URL).then(rs => {
       // console.log(rs);
     });
   };
@@ -85,11 +86,14 @@ const MapWork = () => {
           </Grid>
           <br />
           <Divider />
+
           <div className={classes.margin}>
             <Grid container spacing={1} alignItems="flex-end">
               <SearchIcon />
               <TextField id="Search" label="Search" />
             </Grid>
+            <Divider />
+            <LayerList />
           </div>
         </Paper>
       </Grid>
@@ -110,7 +114,7 @@ const MapWork = () => {
               id="Name"
               label="Name"
               color="primary"
-              onChange={(l) => {
+              onChange={l => {
                 setLayerName(l.target.value);
               }}
             />
@@ -121,7 +125,7 @@ const MapWork = () => {
               label="Description"
               fullWidth
               color="primary"
-              onChange={(d) => {
+              onChange={d => {
                 setDesC(d.target.value);
               }}
             />
@@ -131,7 +135,7 @@ const MapWork = () => {
               id="standard-full-width"
               label="URL"
               fullWidth
-              onChange={(u) => {
+              onChange={u => {
                 setURL(u.target.value);
               }}
             />

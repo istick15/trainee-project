@@ -180,6 +180,7 @@ const LoginPage = () => {
       }
 
       localStorage.setItem("user_token", rs.data.user_token);
+      localStorage.setItem("user_id", rs.data.user_id);
       console.log(localStorage);
       ///
       // history.push("/Backend");

@@ -55,7 +55,7 @@ const MapHead = () => {
   const [location, setLocation] = useState(false);
 
   const handleOpen = () => {
-    setOpenLayer(true);
+    setOpenLayer(!openlayer);
     setBaseOpen(false);
     setLocation(false);
   };
@@ -64,7 +64,7 @@ const MapHead = () => {
   };
 
   const BaseMapOpen = () => {
-    setBaseOpen(true);
+    setBaseOpen(!baseOpen);
     setOpenLayer(false);
     setLocation(false);
   };
@@ -73,7 +73,7 @@ const MapHead = () => {
   };
 
   const LocationOpen = () => {
-    setLocation(true);
+    setLocation(!location);
     setOpenLayer(false);
     setBaseOpen(false);
   };
@@ -138,7 +138,7 @@ const MapHead = () => {
         <div>
           <IconButton onClick={handleClose}>
             <ArrowBackiosIcon />
-            <Typography variant="h6">Select your layers</Typography>
+            <Typography variant="overline">Select your layers</Typography>
           </IconButton>
           <Divider />
           <SelectLayers />
@@ -153,7 +153,7 @@ const MapHead = () => {
         <div>
           <IconButton onClick={BaseMapClose}>
             <ArrowBackiosIcon />
-            <Typography variant="h6">Select Basemap</Typography>
+            <Typography variant="overline">Select Basemap</Typography>
           </IconButton>
           <Divider />
           <MapStyleChange />
@@ -168,7 +168,7 @@ const MapHead = () => {
         <div>
           <IconButton onClick={LocationClose}>
             <ArrowBackiosIcon />
-            <Typography variant="h6">Edit Map</Typography>
+            <Typography variant="overline">Edit Map</Typography>
           </IconButton>
           <CreateMarker />
           <Divider />
