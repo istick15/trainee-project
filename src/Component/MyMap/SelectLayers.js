@@ -19,7 +19,9 @@ import {
   IconButton,
   DialogActions,
   FormHelperText,
-  Tooltip
+  Tooltip,
+  CardContent,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
@@ -36,9 +38,12 @@ const useStyles = makeStyles(theme => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
-    top: "93%",
-    right: "55%",
-    margin: "0 auto"
+    bottom: "2%",
+    left: "25%",
+    margin: "0 auto",
+    "&:hover": {
+      backgroundColor: "#F2AD2E"
+    }
   },
   form: {
     display: "flex",
@@ -168,7 +173,6 @@ const SelectLayers = () => {
                   STYLES +
                   "&" +
                   bbox;
-                console.log(LinkAdd);
                 if (
                   LinkAdd ===
                     "s?SERVICE=WMS&transparent=true&VERSION=null&REQUEST=null&CRS=EPSG:3857&WIDTH=null&HEIGHT=null&FORMAT=null&TILED=null&STYLES&LAYERS=null&bbox={bbox-epsg-3857}" ||
@@ -177,6 +181,7 @@ const SelectLayers = () => {
                 ) {
                   alert("Link is incorrect");
                 }
+                console.log(LinkAdd);
                 if (filter.length === 0) {
                   map.addLayer({
                     id: layerid,
@@ -263,7 +268,6 @@ const SelectLayers = () => {
       setWms(remian);
     }
   };
-  console.log(change);
 
   return (
     <div>
@@ -271,9 +275,22 @@ const SelectLayers = () => {
 
       <Divider />
       <Tooltip title="Add Layers" placement="left">
-        <Fab color="primary" aria-label="Add" className={classes.fabButton}>
+        <Card className={classes.fabButton}>
+          <CardActionArea onClick={addMapservice}>
+            <div align="center">
+              <AddIcon className={classes.icon} fontSize="large" />
+            </div>
+            <Divider variant="inset" />
+            <CardContent>
+              <Typography align="center" variant="caption">
+                Add
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+        {/* <Fab color="primary" aria-label="Add" className={classes.fabButton}>
           <AddIcon onClick={addMapservice} />
-        </Fab>
+        </Fab> */}
       </Tooltip>
       <AddMapService />
       <Dialog open={open} onClose={handleClose}>
