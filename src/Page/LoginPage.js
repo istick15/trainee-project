@@ -175,9 +175,9 @@ const LoginPage = () => {
           setsnkbarText("Please enter your password.");
         }
       }
-      // if (rs.data) {
-      //   history.push("/Backend");
-      // }
+      if (rs.data) {
+        history.push("/Backend");
+      }
 
       localStorage.setItem("user_token", rs.data.user_token);
       console.log(localStorage);
