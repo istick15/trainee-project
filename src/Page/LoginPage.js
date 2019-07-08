@@ -167,19 +167,20 @@ const LoginPage = () => {
     testLogin(stateForm.email, stateForm.password).then(rs => {
       console.log(rs);
 
-      if (rs.Text) {
-        setsnkbarText(rs.Text);
+      if (rs.error) {
+        setsnkbarText(rs.error);
         setsnkbar(true);
         if (stateForm.password === "") {
           setsnkbar(true);
           setsnkbarText("Please enter your password.");
         }
       }
-      if (rs.token) {
-        history.push("/Backend");
-      }
-      localStorage.setItem("token", rs.token);
+      // if (rs.data) {
+      //   history.push("/Backend");
+      // }
 
+      localStorage.setItem("user_token", rs.data.user_token);
+      console.log(localStorage);
       ///
       // history.push("/Backend");
     });
@@ -269,7 +270,7 @@ const LoginPage = () => {
                 <TextField
                   type="text"
                   id="email"
-                  label="Username"
+                  label="E-mail"
                   name="email"
                   className={classes.input}
                   variant="outlined"
