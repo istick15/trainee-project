@@ -25,7 +25,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import { getMapLayers } from "./Request";
+import { getMapLayers, GetDisplay } from "./Request";
 import { MapContext } from "./MapContext";
 import DeleteIcon from "@material-ui/icons/DeleteSweep";
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -61,24 +61,20 @@ const SelectLayers = () => {
   const addMapservice = () => {
     setOpen(true);
 
-    getMapLayers().then(rs => {
-      // if ((rs.status = 401)) {
-      //   setWms([]);
-      // } else {
-      //   setWms(rs);
-      // }
-      if (localStorage.getItem("token") === "undefined") {
-        setWms([]);
+    GetDisplay().then(dp => {
+      console.log(dp.data);
+      if (dp.data.length === undefined) {
+        setWms([dp.data]);
       } else {
-        setWms(rs);
+        setWms(dp.data);
       }
     });
   };
 
   const WmsList = wms.map(key => {
     return (
-      <MenuItem key={key.layerName} value={key.layerName}>
-        {key.label}
+      <MenuItem key={key.layer_id} value={key.layer_name}>
+        {key.layer_label}
       </MenuItem>
     );
   });
@@ -87,15 +83,16 @@ const SelectLayers = () => {
 
   const wmsLayers = layers.wms.map(key => {
     return (
-      <div key={key.layerName}>
+      <div key={key.layer_id}>
         <Card>
           <CardActionArea>
             <FormControlLabel
-              control={<Switch value={key.layerName} />}
-              label={key.label}
+              control={<Switch value={key.layer_name} />}
+              label={key.layer_label}
               onChange={() => {
-                const layerid = key.layerName;
-                const layerlink = key.request;
+                const layerid = key.layer_name;
+                const layerlink = key.service[0].request_url;
+                console.log(layerlink);
                 const map = mapContext.map;
                 const check = map.getStyle();
                 const filter = check.layers.filter(re => re.id === layerid);
@@ -208,7 +205,7 @@ const SelectLayers = () => {
                 onClick={layerid => {
                   layerid.stopPropagation();
                   const remian = layers.wms.filter(
-                    c => c.layerName !== key.layerName
+                    c => c.layer_name !== key.layer_name
                   );
 
                   if (
@@ -221,12 +218,12 @@ const SelectLayers = () => {
                     const map = mapContext.map;
                     const check = map.getStyle();
                     const filter = check.layers.filter(
-                      re => re.id === key.layerName
+                      re => re.id === key.layer_name
                     );
                     console.log(filter.length);
                     if (filter.length === 1) {
-                      map.removeLayer(key.layerName);
-                      map.removeSource(key.layerName);
+                      map.removeLayer(key.layer_name);
+                      map.removeSource(key.layer_name);
                     }
                   }
                 }}
@@ -260,11 +257,11 @@ const SelectLayers = () => {
       setError(true);
       setTextError("please select your layer");
     } else {
-      const input = wms.filter(re => re.layerName === change)[0];
+      const input = wms.filter(re => re.layer_name === change)[0];
       console.log(input);
       setChange("");
       setLayers({ ...layers, wms: [...layers.wms, input] });
-      const remian = wms.filter(c => c.layerName !== change);
+      const remian = wms.filter(c => c.layer_name !== change);
       setWms(remian);
     }
   };
@@ -288,9 +285,6 @@ const SelectLayers = () => {
             </CardContent>
           </CardActionArea>
         </Card>
-        {/* <Fab color="primary" aria-label="Add" className={classes.fabButton}>
-          <AddIcon onClick={addMapservice} />
-        </Fab> */}
       </Tooltip>
       <AddMapService />
       <Dialog open={open} onClose={handleClose}>

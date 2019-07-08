@@ -19,7 +19,7 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
-import { AddMapLayers } from "./Request";
+import { AddMapLayers, AddRequest } from "./Request";
 
 const useStyles = makeStyles(theme => ({
   fabButton: {
@@ -46,21 +46,43 @@ const AddMapService = () => {
   };
 
   const [layers, setLayers] = useState({});
+  const [label, setLabel] = useState({});
   const [link, setLink] = useState({});
+  const [description, setDescription] = useState({});
   console.log(layers);
   console.log(link);
   const [errorText, setErrorText] = useState("");
   const addChange = () => {
-    if (link === "" || layers === "") {
+    // if (link === "" || layers === "") {
+    //   setErrorText("please input value");
+    // } else {
+    //   AddMapLayers(layers, description).then(rs => {
+    //     if (rs.Text === "Bad Request") {
+    //       setErrorText("Something wrong pls check");
+    //       setOpen(true);
+    //     } else {
+    //       setOpen(false);
+    //       setErrorText("");
+    //     }
+    //   });
+    // }
+    if (layers === "" || label === "" || link === "" || description === "") {
       setErrorText("please input value");
     } else {
-      AddMapLayers(layers, link).then(rs => {
-        if (rs.Text === "Bad Request") {
+      AddMapLayers(layers, label, description).then(rs => {
+        if (rs.data.status === 0) {
           setErrorText("Something wrong pls check");
-          setOpen(true);
         } else {
-          setOpen(false);
-          setErrorText("");
+          console.log(rs);
+          console.log(rs.data.layer_id);
+          AddRequest(link, rs.data.layer_id).then(rq => {
+            if (rq.data.status === 0) {
+              setErrorText("pls check URL");
+            } else {
+              console.log(rq);
+              setOpen(false);
+            }
+          });
         }
       });
     }
@@ -79,9 +101,6 @@ const AddMapService = () => {
             </CardContent>
           </CardActionArea>
         </Card>
-        {/* <Fab color="primary" aria-label="Add" className={classes.fabButton}>
-          <CreateIcon onClick={handleOpen} />
-        </Fab> */}
       </Tooltip>
       <Dialog open={open} onClose={handleClse}>
         <DialogTitle>Create Mapservice</DialogTitle>
@@ -103,6 +122,30 @@ const AddMapService = () => {
               setErrorText("");
             }}
           />
+          <TextField
+            autoFocus
+            margin="dense"
+            variant="outlined"
+            id="label"
+            label="Label"
+            fullWidth
+            onChange={l => {
+              setLabel(l.target.value);
+              setErrorText("");
+            }}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            variant="outlined"
+            id="description"
+            label="Description"
+            fullWidth
+            onChange={d => {
+              setDescription(d.target.value);
+              setErrorText("");
+            }}
+          />
 
           <TextField
             autoFocus
@@ -112,13 +155,8 @@ const AddMapService = () => {
             label="Wms"
             fullWidth
             onChange={e1 => {
-              if (e1.target.value[1] === "'" && e1.target.value[-1] === "'") {
-                console.log(e1.target.value(1));
-                e1.target.value.slice(0, -1);
-              } else {
-                setLink(e1.target.value);
-                setErrorText("");
-              }
+              setLink(e1.target.value);
+              setErrorText("");
             }}
             placeholder="https://example.com"
           />
