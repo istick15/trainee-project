@@ -11,6 +11,8 @@ import UserIcon from "@material-ui/icons/AccountCircle";
 import { Divider } from "@material-ui/core";
 import SettingIcon from "@material-ui/icons/Settings";
 import LogoutIcon from "@material-ui/icons/Compare";
+import useReactRouter from "use-react-router";
+import { SignOut } from "../MyMap/Request";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -33,11 +35,15 @@ const SplitButton = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+<<<<<<< HEAD
 
   const logout = () => {
     localStorage.removeItem("token");
   };
 
+=======
+  const { history } = useReactRouter();
+>>>>>>> f9e7920ef0cb86332b5406aff03c5e8893e8c0ae
   function handleToggle() {
     setOpen(prevOpen => !prevOpen);
   }
@@ -50,6 +56,15 @@ const SplitButton = () => {
     setOpen(false);
   }
 
+  const LogOut = () => {
+    SignOut().then(lg => {
+      console.log(lg);
+      localStorage.removeItem("user_token");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("token");
+      history.replace("/");
+    });
+  };
   return (
     <div>
       <Grid item xs={12} align="center">
@@ -96,7 +111,7 @@ const SplitButton = () => {
                           Log out
                         </Grid>
                         <Grid container justify="flex-end">
-                          <LogoutIcon />
+                          <LogoutIcon onClick={LogOut} />
                         </Grid>
                       </MenuItem>
                     </Grid>

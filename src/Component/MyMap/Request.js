@@ -1,6 +1,6 @@
 const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
 export const getMapLayers = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
   const requestURL =
     "https://api.vallaris.space/v2/mapservice/layers?user_id=" + USER_ID;
@@ -29,7 +29,7 @@ export const getMapLayers = () => {
 };
 
 export const AddMapLayers = (layername, label, description) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
   const requestURL = "https://api.vallaris.space/v2/mapservice/layers";
@@ -61,7 +61,7 @@ export const AddMapLayers = (layername, label, description) => {
 };
 
 export const AddRequest = (request, layerid) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
   const requestURL = "https://api.vallaris.space/v2/mapservice/requests";
@@ -96,11 +96,37 @@ export const AddRequest = (request, layerid) => {
 };
 
 export const GetDisplay = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
   const requestURL =
     "https://api.vallaris.space/v2/mapservice/display?user_id=" + USER_ID;
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+
+  return fetch(requestURL, {
+    method: "GET",
+    headers: requestHeader
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const SignOut = () => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/auth/signout";
   const requestHeader = {
     "User-ID": USER_ID,
     "Content-Type": "application/json",

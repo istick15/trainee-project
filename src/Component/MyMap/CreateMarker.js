@@ -66,6 +66,7 @@ const CreateMarker = () => {
 
   const offpoint = () => {
     if (window.confirm("Are you sure you want to save?")) {
+      document.body.style.cursor = "default";
       mapContext.map.off("click", addPoint);
     }
     setOff(<LocationOffIcon fontSize="large" />);
