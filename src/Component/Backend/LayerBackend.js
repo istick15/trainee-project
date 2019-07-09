@@ -42,6 +42,13 @@ const useStyles = makeStyles((theme) =>
     },
     button: {
       margin: theme.spacing(1)
+    },
+    bg: {
+      position: "absolute",
+      zIndex: -1,
+      width: "100vw",
+      height: "100vh",
+      background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
     }
   })
 );
@@ -112,6 +119,7 @@ const TestAppBar = () => {
               </Grid>
             </Toolbar>
           </AppBar>
+          <div className={classes.bg} />
         </div>
 
         {/* <div>
