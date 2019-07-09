@@ -35,15 +35,7 @@ const SplitButton = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-<<<<<<< HEAD
-
-  const logout = () => {
-    localStorage.removeItem("token");
-  };
-
-=======
   const { history } = useReactRouter();
->>>>>>> f9e7920ef0cb86332b5406aff03c5e8893e8c0ae
   function handleToggle() {
     setOpen(prevOpen => !prevOpen);
   }
