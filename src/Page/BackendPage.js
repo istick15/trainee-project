@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import useReactRouter from "use-react-router";
 import LayerBackend from "../Component/Backend/LayerBackend";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme =>
       width: "100vw",
       height: "100vh",
       background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
+    },
+    but: {
+      zIndex: 10
     }
   })
 );
@@ -29,8 +32,10 @@ const BackendPage = () => {
     history.replace("/MapPage");
   };
   return (
-    <div className={classes.rot}>
-      <LayerBackend />
+    <div>
+      <Grid>
+        <LayerBackend />
+      </Grid>
       <Button color="primary" onClick={goToMap} className={classes.root}>
         GO TO MAP PAGE
       </Button>
