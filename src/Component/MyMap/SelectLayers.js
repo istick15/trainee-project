@@ -19,11 +19,13 @@ import {
   IconButton,
   DialogActions,
   FormHelperText,
-  Tooltip
+  Tooltip,
+  CardContent,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import { getMapLayers } from "./Request";
+import { getMapLayers, GetDisplay } from "./Request";
 import { MapContext } from "./MapContext";
 import DeleteIcon from "@material-ui/icons/DeleteSweep";
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -36,9 +38,12 @@ const useStyles = makeStyles(theme => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
-    top: "93%",
-    right: "55%",
-    margin: "0 auto"
+    bottom: "2%",
+    left: "25%",
+    margin: "0 auto",
+    "&:hover": {
+      backgroundColor: "#F2AD2E"
+    }
   },
   form: {
     display: "flex",
@@ -56,24 +61,20 @@ const SelectLayers = () => {
   const addMapservice = () => {
     setOpen(true);
 
-    getMapLayers().then(rs => {
-      // if ((rs.status = 401)) {
-      //   setWms([]);
-      // } else {
-      //   setWms(rs);
-      // }
-      if (localStorage.getItem("token") === "undefined") {
-        setWms([]);
+    GetDisplay().then(dp => {
+      console.log(dp.data);
+      if (dp.data.length === undefined) {
+        setWms([dp.data]);
       } else {
-        setWms(rs);
+        setWms(dp.data);
       }
     });
   };
 
   const WmsList = wms.map(key => {
     return (
-      <MenuItem key={key.layerName} value={key.layerName}>
-        {key.label}
+      <MenuItem key={key.layer_id} value={key.layer_name}>
+        {key.layer_label}
       </MenuItem>
     );
   });
@@ -82,15 +83,16 @@ const SelectLayers = () => {
 
   const wmsLayers = layers.wms.map(key => {
     return (
-      <div key={key.layerName}>
+      <div key={key.layer_id}>
         <Card>
           <CardActionArea>
             <FormControlLabel
-              control={<Switch value={key.layerName} />}
-              label={key.label}
+              control={<Switch value={key.layer_name} />}
+              label={key.layer_label}
               onChange={() => {
-                const layerid = key.layerName;
-                const layerlink = key.request;
+                const layerid = key.layer_name;
+                const layerlink = key.service[0].request_url;
+                console.log(layerlink);
                 const map = mapContext.map;
                 const check = map.getStyle();
                 const filter = check.layers.filter(re => re.id === layerid);
@@ -168,7 +170,6 @@ const SelectLayers = () => {
                   STYLES +
                   "&" +
                   bbox;
-                console.log(LinkAdd);
                 if (
                   LinkAdd ===
                     "s?SERVICE=WMS&transparent=true&VERSION=null&REQUEST=null&CRS=EPSG:3857&WIDTH=null&HEIGHT=null&FORMAT=null&TILED=null&STYLES&LAYERS=null&bbox={bbox-epsg-3857}" ||
@@ -177,6 +178,7 @@ const SelectLayers = () => {
                 ) {
                   alert("Link is incorrect");
                 }
+                console.log(LinkAdd);
                 if (filter.length === 0) {
                   map.addLayer({
                     id: layerid,
@@ -203,7 +205,7 @@ const SelectLayers = () => {
                 onClick={layerid => {
                   layerid.stopPropagation();
                   const remian = layers.wms.filter(
-                    c => c.layerName !== key.layerName
+                    c => c.layer_name !== key.layer_name
                   );
 
                   if (
@@ -216,12 +218,12 @@ const SelectLayers = () => {
                     const map = mapContext.map;
                     const check = map.getStyle();
                     const filter = check.layers.filter(
-                      re => re.id === key.layerName
+                      re => re.id === key.layer_name
                     );
                     console.log(filter.length);
                     if (filter.length === 1) {
-                      map.removeLayer(key.layerName);
-                      map.removeSource(key.layerName);
+                      map.removeLayer(key.layer_name);
+                      map.removeSource(key.layer_name);
                     }
                   }
                 }}
@@ -255,15 +257,14 @@ const SelectLayers = () => {
       setError(true);
       setTextError("please select your layer");
     } else {
-      const input = wms.filter(re => re.layerName === change)[0];
+      const input = wms.filter(re => re.layer_name === change)[0];
       console.log(input);
       setChange("");
       setLayers({ ...layers, wms: [...layers.wms, input] });
-      const remian = wms.filter(c => c.layerName !== change);
+      const remian = wms.filter(c => c.layer_name !== change);
       setWms(remian);
     }
   };
-  console.log(change);
 
   return (
     <div>
@@ -271,9 +272,19 @@ const SelectLayers = () => {
 
       <Divider />
       <Tooltip title="Add Layers" placement="left">
-        <Fab color="primary" aria-label="Add" className={classes.fabButton}>
-          <AddIcon onClick={addMapservice} />
-        </Fab>
+        <Card className={classes.fabButton}>
+          <CardActionArea onClick={addMapservice}>
+            <div align="center">
+              <AddIcon className={classes.icon} fontSize="large" />
+            </div>
+            <Divider variant="inset" />
+            <CardContent>
+              <Typography align="center" variant="caption">
+                Add
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       </Tooltip>
       <AddMapService />
       <Dialog open={open} onClose={handleClose}>

@@ -15,12 +15,15 @@ import ArrowBackiosIcon from "@material-ui/icons/ArrowBackIos";
 import PublicIcon from "@material-ui/icons/Public";
 import AccountIcon from "@material-ui/icons/AccountCircle";
 import MapStyleChange from "./MapStyleChange";
-import PlaceIcon from "@material-ui/icons/Place";
 import CreateMarker from "./CreateMarker";
 import useReactRouter from "use-react-router";
+import EditIcon from "@material-ui/icons/Edit";
 
 const DrawerWidth = 60;
 const useStyles = makeStyles(theme => ({
+  backG: {
+    backgroundColor: "#4a4a4a"
+  },
   list: {
     width: 60,
     overflowX: "hidden"
@@ -39,6 +42,9 @@ const useStyles = makeStyles(theme => ({
   },
   btn: {
     marginBottom: 10
+  },
+  line: {
+    border: "2px solid grey"
   }
 }));
 const MapHead = () => {
@@ -49,7 +55,7 @@ const MapHead = () => {
   const [location, setLocation] = useState(false);
 
   const handleOpen = () => {
-    setOpenLayer(true);
+    setOpenLayer(!openlayer);
     setBaseOpen(false);
     setLocation(false);
   };
@@ -58,7 +64,7 @@ const MapHead = () => {
   };
 
   const BaseMapOpen = () => {
-    setBaseOpen(true);
+    setBaseOpen(!baseOpen);
     setOpenLayer(false);
     setLocation(false);
   };
@@ -67,7 +73,7 @@ const MapHead = () => {
   };
 
   const LocationOpen = () => {
-    setLocation(true);
+    setLocation(!location);
     setOpenLayer(false);
     setBaseOpen(false);
   };
@@ -83,18 +89,23 @@ const MapHead = () => {
   };
   return (
     <div>
-      <Drawer className={classes.list} variant="permanent" anchor="left">
+      <Drawer
+        classes={{ paperAnchorLeft: classes.backG }}
+        className={classes.list}
+        variant="permanent"
+        anchor="left"
+      >
         <Tooltip title="Back" placement="right">
           <IconButton onClick={goBack}>
-            <AccountIcon />
+            <AccountIcon color="primary" />
           </IconButton>
         </Tooltip>
         <div className={classes.list} role="presentation">
-          <Divider />
+          <Divider className={classes.line} />
           <List>
             <Tooltip title="Layers" placement="right">
               <Button className={classes.btn} size="small" onClick={handleOpen}>
-                <LayersIcon />
+                <LayersIcon color="primary" />
               </Button>
             </Tooltip>
             <Tooltip title="Basemap" placement="right">
@@ -103,16 +114,16 @@ const MapHead = () => {
                 size="small"
                 onClick={BaseMapOpen}
               >
-                <PublicIcon />
+                <PublicIcon color="primary" />
               </Button>
             </Tooltip>
-            <Tooltip title="Marker" placement="right">
+            <Tooltip title="Edit Map" placement="right">
               <Button
                 className={classes.btn}
                 size="small"
                 onClick={LocationOpen}
               >
-                <PlaceIcon />
+                <EditIcon color="primary" />
               </Button>
             </Tooltip>
           </List>
@@ -127,7 +138,7 @@ const MapHead = () => {
         <div>
           <IconButton onClick={handleClose}>
             <ArrowBackiosIcon />
-            <Typography variant="h6">Select your layers</Typography>
+            <Typography variant="overline">Select your layers</Typography>
           </IconButton>
           <Divider />
           <SelectLayers />
@@ -142,7 +153,7 @@ const MapHead = () => {
         <div>
           <IconButton onClick={BaseMapClose}>
             <ArrowBackiosIcon />
-            <Typography variant="h6">Select Basemap</Typography>
+            <Typography variant="overline">Select Basemap</Typography>
           </IconButton>
           <Divider />
           <MapStyleChange />
@@ -157,7 +168,7 @@ const MapHead = () => {
         <div>
           <IconButton onClick={LocationClose}>
             <ArrowBackiosIcon />
-            <Typography variant="h6">Create Marker</Typography>
+            <Typography variant="overline">Edit Map</Typography>
           </IconButton>
           <CreateMarker />
           <Divider />

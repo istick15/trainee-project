@@ -15,6 +15,7 @@ import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 // import { NativeRouter, Route, Link } from "react-router-native";
 // import { StyleSheet, Text, View } from "react-native";
+import useReactRouter from "use-react-router";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -46,10 +47,17 @@ const useStyles = makeStyles((theme) =>
 );
 
 const TestAppBar = () => {
+  const { history } = useReactRouter();
   const classes = useStyles();
   // function Child({ match }) {
   //   return <Text>ID: {match.params.id}</Text>;
   // }
+  const gotoStore = () => {
+    history.replace("/Backend/store");
+  };
+  const gotoMapservices = () => {
+    history.replace("/Backend/mapservices");
+  };
   return (
     <div>
       <Router>
@@ -58,40 +66,38 @@ const TestAppBar = () => {
             <Toolbar>
               <Grid container justify="center" spacing={5}>
                 <Grid item xs={6} sm={3} justify="flex-start">
-                  <div>
-                    <Link to="/store">
-                      <Fab
-                        variant="outlined"
-                        size="medium"
-                        color="primary"
-                        aria-label="Add"
-                        className={classes.margin}
-                      >
-                        {/* <StoreIcon />  */}
-                        Store
-                      </Fab>
-                    </Link>
-                    <Link to="/mapservices">
-                      <Fab
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                        aria-label="Add"
-                        className={classes.margin}
-                      >
-                        Map Services
-                      </Fab>
-                    </Link>
-                    <Fab
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      aria-label="Add"
-                      className={classes.margin}
-                    >
-                      Manage
-                    </Fab>
-                  </div>
+                  <Fab
+                    variant="outlined"
+                    size="medium"
+                    color="primary"
+                    aria-label="Add"
+                    className={classes.margin}
+                    onClick={gotoStore}
+                  >
+                    {/* <StoreIcon />  */}
+                    Store
+                  </Fab>
+
+                  <Fab
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    aria-label="Add"
+                    className={classes.margin}
+                    onClick={gotoMapservices}
+                  >
+                    Map Services
+                  </Fab>
+
+                  <Fab
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    aria-label="Add"
+                    className={classes.margin}
+                  >
+                    Manage
+                  </Fab>
                 </Grid>
                 <Grid container justify="center" item xs={6} sm={3}>
                   <img src={Logo} alt="" className={classes.logo} />
@@ -107,10 +113,11 @@ const TestAppBar = () => {
             </Toolbar>
           </AppBar>
         </div>
-        <div>
+
+        {/* <div>
           <Route exact path="/mapservices" component={MapSpace} />
           <Route path="/store" component={StoreSpace} />
-        </div>
+        </div> */}
         {/* <Route path="/:id" component={Child} /> */}
       </Router>
       {/* <MapSpace /> */}
