@@ -37,6 +37,11 @@ const useStyles = makeStyles(theme =>
     dialogForm: {
       flexDirection: "column",
       width: 600
+    },
+    list: {
+      position: "absolute",
+      top: "40%",
+      width: 880
     }
   })
 );
@@ -92,8 +97,10 @@ const MapWork = () => {
               <SearchIcon />
               <TextField id="Search" label="Search" />
             </Grid>
-            <Divider />
-            <LayerList />
+
+            <div className={classes.list}>
+              <LayerList />
+            </div>
           </div>
         </Paper>
       </Grid>

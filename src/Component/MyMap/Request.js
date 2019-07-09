@@ -1,4 +1,5 @@
 const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
+
 export const getMapLayers = () => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
@@ -138,6 +139,67 @@ export const SignOut = () => {
   return fetch(requestURL, {
     method: "GET",
     headers: requestHeader
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const DeleteLayers = layerID => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/mapservice/layers";
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+  const params = {
+    layer_id: layerID,
+    user_id: USER_ID
+  };
+  return fetch(requestURL, {
+    method: "DELETE",
+    headers: requestHeader,
+    body: JSON.stringify(params)
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const DeleteRequest = (layerID, request) => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/mapservice/layers";
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+  const params = {
+    layer_id: layerID,
+    user_id: USER_ID,
+    request_id: request
+  };
+  return fetch(requestURL, {
+    method: "DELETE",
+    headers: requestHeader,
+    body: JSON.stringify(params)
   })
     .then(response => response.json())
     .then(response => {
