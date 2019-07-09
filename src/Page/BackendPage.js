@@ -13,6 +13,8 @@ const useStyles = makeStyles(theme =>
       borderRadius: 10
     },
     rot: {
+      position: "absolute",
+      zIndex: -1,
       width: "100vw",
       height: "100vh",
       background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
