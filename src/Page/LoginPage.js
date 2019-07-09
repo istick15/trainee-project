@@ -170,6 +170,7 @@ const LoginPage = () => {
       if (rs.error) {
         setsnkbarText(rs.error);
         setsnkbar(true);
+
         if (stateForm.password === "") {
           setsnkbar(true);
           setsnkbarText("Please enter your password.");

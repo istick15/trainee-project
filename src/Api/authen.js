@@ -19,7 +19,7 @@
 // };
 
 export const testLogin = (id, pw) => {
-  const API_KEY = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
+  const API_KEY = "k-2e33c66d-4f30-5ed8-ab3d-dee60bfb989a";
   const requestURL = "https://api.vallaris.space/v2/auth/signin";
   const requestHeader = {
     "Content-Type": "application/json",
@@ -41,3 +41,4 @@ export const testLogin = (id, pw) => {
       return error;
     });
 };
+
