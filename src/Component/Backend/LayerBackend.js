@@ -115,6 +115,7 @@ const TestAppBar = () => {
               </Grid>
             </Toolbar>
           </AppBar>
+          <div className={classes.bg} />
         </div>
 
         {/* <div>
@@ -123,6 +124,7 @@ const TestAppBar = () => {
         </div> */}
         {/* <Route path="/:id" component={Child} /> */}
       </Router>
+      {/* <MapSpace /> */}
     </div>
   );
 };

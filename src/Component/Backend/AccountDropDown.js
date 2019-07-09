@@ -14,7 +14,7 @@ import LogoutIcon from "@material-ui/icons/Compare";
 import useReactRouter from "use-react-router";
 import { SignOut } from "../MyMap/Request";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       right: "200px"
@@ -37,7 +37,7 @@ const SplitButton = () => {
   const anchorRef = React.useRef(null);
   const { history } = useReactRouter();
   function handleToggle() {
-    setOpen(prevOpen => !prevOpen);
+    setOpen((prevOpen) => !prevOpen);
   }
 
   function handleClose(event) {
@@ -49,7 +49,7 @@ const SplitButton = () => {
   }
 
   const LogOut = () => {
-    SignOut().then(lg => {
+    SignOut().then((lg) => {
       console.log(lg);
       localStorage.removeItem("user_token");
       localStorage.removeItem("user_id");
