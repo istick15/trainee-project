@@ -17,6 +17,7 @@ import Rooftop from "../Img/Rooftop.jpeg";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CloseIcon from "@material-ui/icons/Close";
 import logonewvallaris from "../Img/logonewvallaris.png";
+//import CircularProgress from "@material-ui/core/CircularProgress";
 const userStyles = makeStyles({
   root: {
     height: "100vh",
@@ -103,7 +104,7 @@ const userStyles = makeStyles({
   pointer: { cursor: "pointer" }
 });
 ////
-const useStyles1 = makeStyles((theme) => ({
+const useStyles1 = makeStyles(theme => ({
   error: {
     backgroundColor: theme.palette.error.dark
   },
@@ -150,11 +151,12 @@ function MySnackbarContentWrapper(props) {
 const LoginPage = () => {
   const classes = userStyles();
   const { history } = useReactRouter();
-  /////
+
+  ///
   const [snkbar, setsnkbar] = useState(false);
   const [snkbarText, setsnkbarText] = useState();
   const [stateForm, setstateForm] = useState({ email: "", password: "" });
-  const handlerChange = (event) => {
+  const handlerChange = event => {
     setstateForm({ ...stateForm, [event.target.name]: event.target.value });
   };
 
@@ -162,9 +164,9 @@ const LoginPage = () => {
     setstateForm({ ...stateForm, showPassword: !stateForm.showPassword });
   };
   //////
-  const goToBackend = (e) => {
+  const goToBackend = e => {
     e.preventDefault();
-    testLogin(stateForm.email, stateForm.password).then((rs) => {
+    testLogin(stateForm.email, stateForm.password).then(rs => {
       console.log(rs);
 
       if (rs.error) {
@@ -177,11 +179,12 @@ const LoginPage = () => {
         }
       }
       if (rs.data) {
+        localStorage.setItem("user_token", rs.data.user_token);
+        localStorage.setItem("user_id", rs.data.user_id);
+
         history.push("/Backend");
       }
 
-      localStorage.setItem("user_token", rs.data.user_token);
-      localStorage.setItem("user_id", rs.data.user_id);
       console.log(localStorage);
       ///
       // history.push("/Backend");
@@ -326,14 +329,15 @@ const LoginPage = () => {
                   Login
                 </Button>
               </Grid>
-              <Grid xs={12} container justify="center" alignItems="flex-end">
-                {/* <Typography variant="h7" gutterBottom>
+
+              {/* <Grid xs={12} container justify="center" alignItems="flex-end">
+                <Typography variant="h7" gutterBottom>
                   Don't have an account yet?
                   <Link className={classes.pointer} onclick={register}>
                     Create it here
                   </Link>
-                </Typography> */}
-              </Grid>
+                </Typography>
+              </Grid> */}
               <br />
             </Paper>
 

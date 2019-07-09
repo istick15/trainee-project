@@ -17,7 +17,7 @@ import IconButton from "@material-ui/core/IconButton";
 // import { StyleSheet, Text, View } from "react-native";
 import useReactRouter from "use-react-router";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       flexGrow: 1
@@ -43,12 +43,8 @@ const useStyles = makeStyles((theme) =>
     button: {
       margin: theme.spacing(1)
     },
-    bg: {
-      position: "absolute",
-      zIndex: -1,
-      width: "100vw",
-      height: "100vh",
-      background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
+    test: {
+      zIndex: 10
     }
   })
 );
@@ -66,7 +62,7 @@ const TestAppBar = () => {
     history.replace("/Backend/mapservices");
   };
   return (
-    <div>
+    <div className={classes.test}>
       <Router>
         <div className={classes.root}>
           <AppBar position="fixed" color="default">
