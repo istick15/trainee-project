@@ -119,7 +119,7 @@ const TestAppBar = () => {
               </Grid>
             </Toolbar>
           </AppBar>
-          <div className={classes.bg} />
+          {/* <div className={classes.bg} /> */}
         </div>
 
         {/* <div>

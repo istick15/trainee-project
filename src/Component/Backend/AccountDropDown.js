@@ -98,7 +98,7 @@ const SplitButton = () => {
                     </Grid>
                     <Divider />
                     <Grid>
-                      <MenuItem>
+                      <MenuItem onClick={LogOut}>
                         <Grid container justify="flex-start">
                           Log out
                         </Grid>
