@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme =>
     },
     button: {
       margin: theme.spacing(1)
+    },
+    test: {
+      zIndex: 10
     }
   })
 );
@@ -59,7 +62,7 @@ const TestAppBar = () => {
     history.replace("/Backend/mapservices");
   };
   return (
-    <div>
+    <div className={classes.test}>
       <Router>
         <div className={classes.root}>
           <AppBar position="fixed" color="default">
