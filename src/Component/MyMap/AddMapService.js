@@ -21,7 +21,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
 import { AddMapLayers, AddRequest } from "./Request";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
@@ -69,13 +69,13 @@ const AddMapService = () => {
     if (layers === "" || label === "" || link === "" || description === "") {
       setErrorText("please input value");
     } else {
-      AddMapLayers(layers, label, description).then(rs => {
+      AddMapLayers(layers, label, description).then((rs) => {
         if (rs.data.status === 0) {
           setErrorText("Something wrong pls check");
         } else {
           console.log(rs);
           console.log(rs.data.layer_id);
-          AddRequest(link, rs.data.layer_id).then(rq => {
+          AddRequest(link, rs.data.layer_id).then((rq) => {
             if (rq.data.status === 0) {
               setErrorText("pls check URL");
             } else {
@@ -117,7 +117,7 @@ const AddMapService = () => {
             id="layername"
             label="Layer"
             fullWidth
-            onChange={e => {
+            onChange={(e) => {
               setLayers(e.target.value);
               setErrorText("");
             }}
@@ -129,7 +129,7 @@ const AddMapService = () => {
             id="label"
             label="Label"
             fullWidth
-            onChange={l => {
+            onChange={(l) => {
               setLabel(l.target.value);
               setErrorText("");
             }}
@@ -141,7 +141,7 @@ const AddMapService = () => {
             id="description"
             label="Description"
             fullWidth
-            onChange={d => {
+            onChange={(d) => {
               setDescription(d.target.value);
               setErrorText("");
             }}
@@ -154,7 +154,7 @@ const AddMapService = () => {
             id="wmslink"
             label="Wms"
             fullWidth
-            onChange={e1 => {
+            onChange={(e1) => {
               setLink(e1.target.value);
               setErrorText("");
             }}
