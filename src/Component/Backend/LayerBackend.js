@@ -107,13 +107,13 @@ const TestAppBar = () => {
             </Toolbar>
           </AppBar>
         </div>
-
         <div>
           <Route exact path="/mapservices" component={MapSpace} />
           <Route path="/store" component={StoreSpace} />
         </div>
         {/* <Route path="/:id" component={Child} /> */}
       </Router>
+      {/* <MapSpace /> */}
     </div>
   );
 };

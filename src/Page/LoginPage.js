@@ -105,7 +105,7 @@ const userStyles = makeStyles({
   pointer: { cursor: "pointer" }
 });
 ////
-const useStyles1 = makeStyles(theme => ({
+const useStyles1 = makeStyles((theme) => ({
   error: {
     backgroundColor: theme.palette.error.dark
   },
@@ -156,7 +156,7 @@ const LoginPage = () => {
   const [snkbar, setsnkbar] = useState(false);
   const [snkbarText, setsnkbarText] = useState();
   const [stateForm, setstateForm] = useState({ email: "", password: "" });
-  const handlerChange = event => {
+  const handlerChange = (event) => {
     setstateForm({ ...stateForm, [event.target.name]: event.target.value });
   };
 
@@ -164,9 +164,9 @@ const LoginPage = () => {
     setstateForm({ ...stateForm, showPassword: !stateForm.showPassword });
   };
   //////
-  const goToBackend = e => {
+  const goToBackend = (e) => {
     e.preventDefault();
-    testLogin(stateForm.email, stateForm.password).then(rs => {
+    testLogin(stateForm.email, stateForm.password).then((rs) => {
       console.log(rs);
 
       if (rs.Text) {
