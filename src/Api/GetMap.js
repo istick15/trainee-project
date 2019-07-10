@@ -20,4 +20,3 @@ export const getMapServices = (layerName, label, request) => {
       return error;
     });
 };
-
