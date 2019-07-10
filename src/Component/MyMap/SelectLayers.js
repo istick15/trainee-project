@@ -39,17 +39,19 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     zIndex: 1,
     bottom: "2%",
-    left: "25%",
-    margin: "0 auto",
-    "&:hover": {
-      backgroundColor: "#F2AD2E"
-    }
+    left: "6%",
+    margin: "0 auto"
   },
   form: {
     display: "flex",
     flexDirection: "column",
     margin: "auto",
     width: 300
+  },
+  icon: {
+    "&:hover": {
+      color: "#F2AD2E"
+    }
   }
 }));
 
@@ -59,8 +61,6 @@ const SelectLayers = () => {
   const [wms, setWms] = useState([]);
 
   const addMapservice = () => {
-    setOpen(true);
-
     GetDisplay().then(dp => {
       console.log(dp.data);
       if (dp.data.length === undefined) {
@@ -245,13 +245,19 @@ const SelectLayers = () => {
 
   const handleChange = e => {
     setChange(e.target.value);
-    console.log(change);
+
     setError(false);
     setTextError("");
+    const input = wms.filter(re => re.layer_name === e.target.value)[0];
+    console.log(input);
+    setLayers({ ...layers, wms: [...layers.wms, input] });
+    const remian = wms.filter(c => c.layer_name !== e.target.value);
+    setWms(remian);
   };
 
   const [error, setError] = useState(false);
   const [textError, setTextError] = useState("");
+
   const LayerSelected = () => {
     if (change === "") {
       setError(true);
@@ -268,26 +274,31 @@ const SelectLayers = () => {
 
   return (
     <div>
-      {wmsLayers}
-
+      <form className={classes.form}>
+        <FormControl error={error}>
+          <InputLabel>Layers</InputLabel>
+          <Select
+            value={change}
+            onChange={handleChange}
+            onClick={addMapservice}
+          >
+            <MenuItem value="" />
+            {WmsList}
+          </Select>
+          <FormHelperText>{textError}</FormHelperText>
+        </FormControl>
+      </form>
       <Divider />
-      <Tooltip title="Add Layers" placement="left">
+      {wmsLayers}
+      {/* <Tooltip title="Add Layers" placement="left">
         <Card className={classes.fabButton}>
-          <CardActionArea onClick={addMapservice}>
-            <div align="center">
-              <AddIcon className={classes.icon} fontSize="large" />
-            </div>
-            <Divider variant="inset" />
-            <CardContent>
-              <Typography align="center" variant="caption">
-                Add
-              </Typography>
-            </CardContent>
-          </CardActionArea>
+          <IconButton onClick={LayerSelected} size="small">
+            <AddIcon className={classes.icon} fontSize="large" />
+          </IconButton>
         </Card>
-      </Tooltip>
+      </Tooltip> */}
       <AddMapService />
-      <Dialog open={open} onClose={handleClose}>
+      {/* <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select Layers</DialogTitle>
         <DialogContent>
           <DialogContentText>Choose your layers</DialogContentText>
@@ -310,7 +321,7 @@ const SelectLayers = () => {
             Select
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

@@ -11,10 +11,7 @@ import {
   Tooltip,
   FormHelperText,
   Card,
-  CardActionArea,
-  Divider,
-  CardContent,
-  Typography
+  IconButton
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,10 +23,12 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     zIndex: 1,
     bottom: "2%",
-    right: "25%",
-    margin: "0 auto",
+    right: "5%",
+    margin: "0 auto"
+  },
+  icon: {
     "&:hover": {
-      backgroundColor: "#F2AD2E"
+      color: "#F2AD2E"
     }
   }
 }));
@@ -53,28 +52,14 @@ const AddMapService = () => {
   console.log(link);
   const [errorText, setErrorText] = useState("");
   const addChange = () => {
-    // if (link === "" || layers === "") {
-    //   setErrorText("please input value");
-    // } else {
-    //   AddMapLayers(layers, description).then(rs => {
-    //     if (rs.Text === "Bad Request") {
-    //       setErrorText("Something wrong pls check");
-    //       setOpen(true);
-    //     } else {
-    //       setOpen(false);
-    //       setErrorText("");
-    //     }
-    //   });
-    // }
     if (layers === "" || label === "" || link === "" || description === "") {
       setErrorText("please input value");
     } else {
       AddMapLayers(layers, label, description).then(rs => {
+        console.log(rs.data.status);
         if (rs.data.status === 0) {
           setErrorText("Something wrong pls check");
         } else {
-          console.log(rs);
-          console.log(rs.data.layer_id);
           AddRequest(link, rs.data.layer_id).then(rq => {
             if (rq.data.status === 0) {
               setErrorText("pls check URL");
@@ -91,15 +76,9 @@ const AddMapService = () => {
     <div>
       <Tooltip title="Create Layers" placement="right">
         <Card className={classes.fabButton}>
-          <CardActionArea onClick={handleOpen}>
-            <div align="center">
-              <CreateIcon className={classes.icon} fontSize="large" />
-            </div>
-            <Divider variant="inset" />
-            <CardContent>
-              <Typography variant="caption">Create</Typography>
-            </CardContent>
-          </CardActionArea>
+          <IconButton size="small" onClick={handleOpen}>
+            <CreateIcon className={classes.icon} fontSize="large" />
+          </IconButton>
         </Card>
       </Tooltip>
       <Dialog open={open} onClose={handleClse}>
@@ -122,6 +101,7 @@ const AddMapService = () => {
               setErrorText("");
             }}
           />
+
           <TextField
             autoFocus
             margin="dense"
