@@ -35,16 +35,17 @@ const useStyles = makeStyles(theme => ({
   },
   layerlist: {
     left: DrawerWidth,
-    width: 300,
+    width: 320,
     border: "1px solid ",
     borderColor: "#E0E0E0",
     backgroundColor: "rgba(255, 255, 255, 0.8)"
   },
   btn: {
-    marginBottom: 10
+    left: 5,
+    marginBottom: 5
   },
   line: {
-    border: "2px solid grey"
+    border: "1px solid grey"
   }
 }));
 const MapHead = () => {
@@ -53,33 +54,78 @@ const MapHead = () => {
   const [openlayer, setOpenLayer] = useState(false);
   const [baseOpen, setBaseOpen] = useState(false);
   const [location, setLocation] = useState(false);
+  const [btncolor, setBtnColor] = useState("#4a4a4a");
+  const [BMcolor, setBMcolor] = useState("#4a4a4a");
+  const [locationColor, setLocationColor] = useState("#4a4a4a");
 
   const handleOpen = () => {
     setOpenLayer(!openlayer);
     setBaseOpen(false);
     setLocation(false);
+    if (!openlayer) {
+      setBtnColor("white");
+      setBMcolor("#4a4a4a");
+      setLocationColor("#4a4a4a");
+    } else {
+      setBtnColor("#4a4a4a");
+    }
   };
   const handleClose = () => {
     setOpenLayer(false);
+    if (!openlayer) {
+      setBtnColor("white");
+      setBMcolor("#4a4a4a");
+      setLocationColor("#4a4a4a");
+    } else {
+      setBtnColor("#4a4a4a");
+    }
   };
 
   const BaseMapOpen = () => {
     setBaseOpen(!baseOpen);
     setOpenLayer(false);
     setLocation(false);
+    if (!baseOpen) {
+      setBMcolor("white");
+      setBtnColor("#4a4a4a");
+      setLocationColor("#4a4a4a");
+    } else {
+      setBMcolor("#4a4a4a");
+    }
   };
   const BaseMapClose = () => {
     setBaseOpen(false);
+    if (!baseOpen) {
+      setBMcolor("white");
+      setBtnColor("#4a4a4a");
+      setLocationColor("#4a4a4a");
+    } else {
+      setBMcolor("#4a4a4a");
+    }
   };
 
   const LocationOpen = () => {
     setLocation(!location);
     setOpenLayer(false);
     setBaseOpen(false);
+    if (!location) {
+      setLocationColor("white");
+      setBMcolor("#4a4a4a");
+      setBtnColor("#4a4a4a");
+    } else {
+      setLocationColor("#4a4a4a");
+    }
   };
 
   const LocationClose = () => {
     setLocation(false);
+    if (!location) {
+      setLocationColor("white");
+      setBMcolor("#4a4a4a");
+      setBtnColor("#4a4a4a");
+    } else {
+      setLocationColor("#4a4a4a");
+    }
   };
 
   const { history } = useReactRouter();
@@ -87,6 +133,7 @@ const MapHead = () => {
   const goBack = () => {
     history.replace("/Backend");
   };
+
   return (
     <div>
       <Drawer
@@ -104,27 +151,31 @@ const MapHead = () => {
           <Divider className={classes.line} />
           <List>
             <Tooltip title="Layers" placement="right">
-              <Button className={classes.btn} size="small" onClick={handleOpen}>
+              <IconButton
+                className={classes.btn}
+                onClick={handleOpen}
+                style={{ backgroundColor: btncolor }}
+              >
                 <LayersIcon color="primary" />
-              </Button>
+              </IconButton>
             </Tooltip>
             <Tooltip title="Basemap" placement="right">
-              <Button
+              <IconButton
                 className={classes.btn}
-                size="small"
                 onClick={BaseMapOpen}
+                style={{ backgroundColor: BMcolor }}
               >
                 <PublicIcon color="primary" />
-              </Button>
+              </IconButton>
             </Tooltip>
             <Tooltip title="Edit Map" placement="right">
-              <Button
+              <IconButton
                 className={classes.btn}
-                size="small"
                 onClick={LocationOpen}
+                style={{ backgroundColor: locationColor }}
               >
                 <EditIcon color="primary" />
-              </Button>
+              </IconButton>
             </Tooltip>
           </List>
         </div>
@@ -138,10 +189,11 @@ const MapHead = () => {
         <div>
           <IconButton onClick={handleClose}>
             <ArrowBackiosIcon />
-            <Typography variant="overline">Select your layers</Typography>
           </IconButton>
+          <Typography variant="overline">Select your layers</Typography>
           <Divider />
           <SelectLayers />
+          <Divider />
         </div>
       </Drawer>
       <Drawer
@@ -153,8 +205,8 @@ const MapHead = () => {
         <div>
           <IconButton onClick={BaseMapClose}>
             <ArrowBackiosIcon />
-            <Typography variant="overline">Select Basemap</Typography>
           </IconButton>
+          <Typography variant="overline">Select Basemap</Typography>
           <Divider />
           <MapStyleChange />
         </div>
@@ -168,8 +220,8 @@ const MapHead = () => {
         <div>
           <IconButton onClick={LocationClose}>
             <ArrowBackiosIcon />
-            <Typography variant="overline">Edit Map</Typography>
           </IconButton>
+          <Typography variant="overline">Edit Map</Typography>
           <CreateMarker />
           <Divider />
         </div>

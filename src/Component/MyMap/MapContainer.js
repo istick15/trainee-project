@@ -4,6 +4,7 @@ import Basemap from "./Mapstyle";
 import { makeStyles } from "@material-ui/core/styles";
 import { Map } from "mapbox-gl";
 import mapboxgl from "mapbox-gl";
+import { GetSite, GetDataset, getFeature } from "./Request";
 
 const useStyles = makeStyles(() => ({
   map: { height: `100vh`, width: "100vw" }
@@ -45,12 +46,22 @@ const MapContainer = () => {
           type: "circle",
           source: "geojson",
           paint: {
-            "circle-radius": 5,
+            "circle-radius": 10,
             "circle-color": "#F2AD2E"
           },
           filter: ["in", "$type", "Point"]
         });
       });
+
+      // GetSite().then(s => {
+      //   console.log(s.data.site_id);
+      //   GetDataset(s.data.site_id).then(ds => {
+      //     console.log(ds.data.dataset_id);
+      //     getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+      //       console.log(gf);
+      //     });
+      //   });
+      // });
     } else {
       setMount(true);
     }

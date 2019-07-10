@@ -209,3 +209,158 @@ export const DeleteRequest = (layerID, request) => {
       return error;
     });
 };
+
+export const GetSite = () => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL =
+    "https://api.vallaris.space/v2/sites?creator_user_id=" + USER_ID;
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+
+  return fetch(requestURL, {
+    method: "GET",
+    headers: requestHeader
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const GetDataset = site => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL =
+    "https://api.vallaris.space/v2/datasets?site_id=" +
+    site +
+    "&user_id=" +
+    USER_ID;
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+
+  return fetch(requestURL, {
+    method: "GET",
+    headers: requestHeader
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const CreateFeature = (geojson, site, dataset) => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/features";
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "vallaris-backend"
+  };
+
+  const params = {
+    dataset_id: dataset,
+    user_id: USER_ID,
+    site_id: site,
+    features: geojson
+  };
+  return fetch(requestURL, {
+    method: "POST",
+    headers: requestHeader,
+    body: JSON.stringify(params),
+    json: true
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const CreateTile = (site, dataset) => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/gp/tile/create";
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "vallaris-backend"
+  };
+
+  const params = {
+    dataset_id: dataset,
+    user_id: USER_ID,
+    site_id: site
+  };
+  return fetch(requestURL, {
+    method: "POST",
+    headers: requestHeader,
+    body: JSON.stringify(params),
+    json: true
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const getFeature = (site, dataset) => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/features";
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+
+  return fetch(requestURL, {
+    method: "GET",
+    headers: requestHeader,
+    qs: {
+      dataset_id: dataset,
+      user_id: USER_ID,
+      site_id: site
+    }
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
