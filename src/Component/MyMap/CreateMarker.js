@@ -14,7 +14,13 @@ import AddLocation from "@material-ui/icons/AddLocation";
 import { MapContext } from "./MapContext";
 import LocationOffIcon from "@material-ui/icons/LocationOff";
 import SaveIcon from "@material-ui/icons/Save";
-import { GetSite, GetDataset, CreateFeature, CreateTile } from "./Request";
+import {
+  GetSite,
+  GetDataset,
+  CreateFeature,
+  CreateTile,
+  getFeature
+} from "./Request";
 
 const useStyles = makeStyles(theme => ({
   fabButton: {
@@ -99,6 +105,38 @@ const CreateMarker = () => {
       });
     });
   };
+  const insertFeatures = () => {
+    GetSite().then(s => {
+      console.log(s.data.site_id);
+      GetDataset(s.data.site_id).then(ds => {
+        console.log(ds.data.dataset_id);
+        getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+          console.log(gf.data);
+
+          const addmappoint = gf.data.map(key => {
+            console.log(key);
+            return mapContext.map.addLayer({
+              id: "geojson-points",
+              type: "circle",
+              source: {
+                type: "geojson",
+                data: {
+                  type: "FeatureCollection",
+                  features: key
+                }
+              },
+              paint: {
+                "circle-radius": 10,
+                "circle-color": "#F2AD2E"
+              },
+              filter: ["in", "$type", "Point"]
+            });
+          });
+          console.log(addmappoint);
+        });
+      });
+    });
+  };
   const CreatePoint = () => {
     const map = mapContext.map;
     document.body.style.cursor = "crosshair";
@@ -129,6 +167,9 @@ const CreateMarker = () => {
       >
         <SaveIcon />
         <Typography variant="caption">Save</Typography>
+      </Button>
+      <Button color="secondary" onClick={insertFeatures} variant="outlined">
+        <Typography variant="caption">insert</Typography>
       </Button>
     </div>
   );
