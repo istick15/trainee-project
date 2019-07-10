@@ -16,7 +16,7 @@ import Button from "@material-ui/core/Button";
 import { getMapServices } from "../../Api/GetMap";
 import LayerList from "./LayerList";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       right: "200px"
@@ -26,9 +26,9 @@ const useStyles = makeStyles(theme =>
     },
     root: {
       width: 900,
-      height: 400,
+      height: 300,
       padding: theme.spacing(3, 2),
-      marginTop: 100,
+      marginTop: 20,
       borderRadius: 10
     },
     margin: {
@@ -63,7 +63,7 @@ const MapWork = () => {
   const [desC, setDesC] = useState({});
   const [URL, setURL] = useState({});
   const addLayerMap = () => {
-    getMapServices(layerName, desC, URL).then(rs => {
+    getMapServices(layerName, desC, URL).then((rs) => {
       // console.log(rs);
     });
   };
@@ -121,7 +121,7 @@ const MapWork = () => {
               id="Name"
               label="Name"
               color="primary"
-              onChange={l => {
+              onChange={(l) => {
                 setLayerName(l.target.value);
               }}
             />
@@ -132,7 +132,7 @@ const MapWork = () => {
               label="Description"
               fullWidth
               color="primary"
-              onChange={d => {
+              onChange={(d) => {
                 setDesC(d.target.value);
               }}
             />
@@ -142,7 +142,7 @@ const MapWork = () => {
               id="standard-full-width"
               label="URL"
               fullWidth
-              onChange={u => {
+              onChange={(u) => {
                 setURL(u.target.value);
               }}
             />

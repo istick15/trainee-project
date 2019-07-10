@@ -12,11 +12,12 @@ export const getMapServices = (layerName, label, request) => {
     headers: requestHeader,
     body: JSON.stringify(param)
   })
-    .then((response) => response.json())
-    .then((response) => {
+    .then(response => response.json())
+    .then(response => {
       return response;
     })
-    .catch((error) => {
+    .catch(error => {
       return error;
     });
 };
+

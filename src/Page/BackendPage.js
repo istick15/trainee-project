@@ -11,6 +11,16 @@ const useStyles = makeStyles(theme =>
       height: 40,
       marginTop: 100,
       borderRadius: 10
+    },
+    rot: {
+      position: "absolute",
+      zIndex: -1,
+      width: "100vw",
+      height: "100vh",
+      background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
+    },
+    but: {
+      zIndex: 10
     }
   })
 );
@@ -24,6 +34,7 @@ const BackendPage = () => {
   return (
     <div>
       <LayerBackend />
+
       <Button color="primary" onClick={goToMap} className={classes.root}>
         GO TO MAP PAGE
       </Button>

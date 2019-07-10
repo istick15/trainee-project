@@ -56,10 +56,11 @@ const AddMapService = () => {
       setErrorText("please input value");
     } else {
       AddMapLayers(layers, label, description).then(rs => {
-        console.log(rs.data.status);
         if (rs.data.status === 0) {
           setErrorText("Something wrong pls check");
         } else {
+          console.log(rs);
+          console.log(rs.data.layer_id);
           AddRequest(link, rs.data.layer_id).then(rq => {
             if (rq.data.status === 0) {
               setErrorText("pls check URL");

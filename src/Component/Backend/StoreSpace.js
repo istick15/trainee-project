@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) =>
       width: 900,
       height: 300,
       padding: theme.spacing(3, 2),
-      marginTop: 100,
+      marginTop: 20,
       borderRadius: 10
     },
     margin: {
