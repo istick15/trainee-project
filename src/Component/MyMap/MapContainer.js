@@ -53,11 +53,8 @@ const MapContainer = () => {
         });
 
         GetSite().then(s => {
-          console.log(s.data.site_id);
           GetDataset(s.data.site_id).then(ds => {
-            console.log(ds.data.dataset_id);
             getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-              console.log(gf);
               if (gf.data.length === undefined) {
                 mapContext.map.addSource("geo", {
                   type: "geojson",

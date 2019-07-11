@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -32,7 +32,10 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { GetDataset, GetSite } from "../MyMap/Request";
+import { GetDataset, GetSite, GetDisplay } from "../MyMap/Request";
+import { LayerContext } from "../../Context/LayerContext";
+
+import { DeleteDataset, createdataset } from "../../Api/dataset";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
@@ -68,6 +71,7 @@ const useStyles = makeStyles(theme =>
 const StoreSpace = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const layerContext = useContext(LayerContext);
 
   function handleClickOpen() {
     setOpen(true);
@@ -77,13 +81,40 @@ const StoreSpace = () => {
     setOpen(false);
   }
   /////////////////////
+  const [Name, setName] = useState({});
+  const [Description, setDescription] = useState({});
+  ////
+  const CreateDataset = e => {
+    e.preventDefault();
+    GetSite().then(s => {
+      console.log(s);
+      createdataset(Name, Description, s.data.site_id).then(cd => {
+        console.log(cd);
+      });
+    });
+  };
+  ///////////////////////
+  const DeleteData = () => {
+    GetSite().then(s => {
+      // console.log(s);
+      GetDataset(s.data.site_id).then(ds => {
+        //     console.log(ds);
+        if (window.confirm("Are you sure you want to delete this DataSet?")) {
+          DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
+            //    console.log(dds);
+          });
+        }
+      });
+    });
+  };
+  /////////////////////////
   const [Dataset, setDataset] = useState([]);
 
   const Createdataset = () => {
     GetSite().then(s => {
-      console.log(s.data.site_id);
+      //    console.log(s.data.site_id);
       GetDataset(s.data.site_id).then(ds => {
-        console.log(ds);
+        //     console.log(ds);
         setDataset([ds.data]);
       });
     });
@@ -93,7 +124,6 @@ const StoreSpace = () => {
       <MenuItem key={key.dataset_id} value={key.dataset_name}>
         <CardContent>
           <Typography component="h5" variant="h5">
-            {" "}
             {key.dataset_name}
           </Typography>
 
@@ -104,15 +134,22 @@ const StoreSpace = () => {
             <IconButton
               onClick={e => {
                 history.replace("/MapPage");
+                GetDisplay().then(rs => {
+                  console.log(rs.data);
+                  layerContext.layer = rs.data;
+                  console.log(layerContext.layer);
+                });
               }}
             >
               <EditIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton>
+            {/*  */}
+            <IconButton onClick={DeleteData}>
               <DeleteIcon />
             </IconButton>
+            {/*  */}
           </Tooltip>
         </CardContent>
       </MenuItem>
@@ -179,20 +216,40 @@ const StoreSpace = () => {
         <DialogTitle id="alert-dialog-slide-title">
           {"Create Dataset"}
         </DialogTitle>
+
         <form className={classes.dialogForm}>
+          {/*  */}
           <DialogContent>
-            <TextField id="Name" label="Name" color="primary" fullWidth />
+            <TextField
+              id="Name"
+              label="Name"
+              color="primary"
+              fullWidth
+              onChange={n => {
+                setName(n.target.value);
+              }}
+            />
           </DialogContent>
+          {/*  */}
+          {/*  */}
           <DialogContent>
             <TextField
               id="Description"
               label="Description"
               fullWidth
               color="primary"
+              onChange={d => {
+                setDescription(d.target.value);
+              }}
             />
           </DialogContent>
+          {/*  */}
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button
+              // onClick={handleClose}
+              onClick={CreateDataset}
+              color="primary"
+            >
               OK
             </Button>
           </DialogActions>

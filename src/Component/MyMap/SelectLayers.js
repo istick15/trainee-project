@@ -32,7 +32,7 @@ import DeleteIcon from "@material-ui/icons/DeleteSweep";
 import AddMapService from "./AddMapService";
 import { LayerContext } from "../../Context/LayerContext";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   list: {
     width: 50
   },
@@ -61,31 +61,30 @@ const SelectLayers = () => {
   const mapContext = useContext(MapContext);
 
   const layerContext = useContext(LayerContext);
-  const [wms, setWms] = useState([]);
+  //const [wms, setWms] = useState([]);
 
-  // useEffect(() => {
-  //   if ((layerContext.layer = [])) {
-  //     GetDisplay().then(dp => {
-  //       layerContext.layer = dp.data;
-  //       console.log(layerContext.layer);
-  //       setWms(layerContext.layer);
-  //     });
-  //   } else {
-  //   }
-  // });
+  useEffect(() => {
+    if ((layerContext.layer = [])) {
+      GetDisplay().then(dp => {
+        layerContext.layer = dp.data;
+        console.log(layerContext.layer);
+      });
+    } else {
+    }
+  }, []);
 
-  const addMapservice = () => {
-    GetDisplay().then((dp) => {
-      console.log(dp.data);
-      if (dp.data.length === undefined) {
-        setWms([dp.data]);
-      } else {
-        setWms(dp.data);
-      }
-    });
-  };
+  // const addMapservice = () => {
+  //   GetDisplay().then(dp => {
+  //     console.log(dp.data);
+  //     if (dp.data.length === undefined) {
+  //       setWms([dp.data]);
+  //     } else {
+  //       setWms(dp.data);
+  //     }
+  //   });
+  // };
 
-  const WmsList = layerContext.layer.map((key) => {
+  const WmsList = layerContext.layer.map(key => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}
@@ -95,7 +94,7 @@ const SelectLayers = () => {
 
   const [layers, setLayers] = useState({ wms: [] });
 
-  const wmsLayers = layers.wms.map((key) => {
+  const wmsLayers = layers.wms.map(key => {
     return (
       <div key={key.layer_id}>
         <Card>
@@ -109,7 +108,7 @@ const SelectLayers = () => {
                 console.log(layerlink);
                 const map = mapContext.map;
                 const check = map.getStyle();
-                const filter = check.layers.filter((re) => re.id === layerid);
+                const filter = check.layers.filter(re => re.id === layerid);
                 const linkcut = layerlink.split("?");
                 const linknew = new URL(layerlink, "https://example.com");
 
@@ -216,26 +215,27 @@ const SelectLayers = () => {
           <CardActions>
             <Tooltip title="Delete layer" placement="right">
               <IconButton
-                onClick={(layerid) => {
+                onClick={layerid => {
                   layerid.stopPropagation();
                   const remian = layers.wms.filter(
-                    (c) => c.layer_name !== key.layer_name
+                    c => c.layer_name !== key.layer_name
                   );
                   const get = layerContext.layer.filter(
-                    (c) => c.id === key.layer_name
+                    c => c.id === key.layer_name
                   );
-                  console.log(get);
+                  console.log(get[0]);
                   if (
                     window.confirm(
                       "Are you sure you want to delete this Layer?"
                     )
                   ) {
                     setLayers({ wms: remian });
-                    //layerContext.layer = layers;
+                    layerContext.layer.push(get[0]);
+                    console.log(layerContext.layer);
                     const map = mapContext.map;
                     const check = map.getStyle();
                     const filter = check.layers.filter(
-                      (re) => re.id === key.layer_name
+                      re => re.id === key.layer_name
                     );
                     console.log(filter.length);
                     if (filter.length === 1) {
@@ -260,7 +260,7 @@ const SelectLayers = () => {
     setOpen(false);
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setChange(e.target.value);
     setError(false);
     setTextError("");
@@ -270,12 +270,12 @@ const SelectLayers = () => {
       setTextError("please select your layer");
     } else {
       const input = layerContext.layer.filter(
-        (re) => re.layer_name === e.target.value
+        re => re.layer_name === e.target.value
       )[0];
       console.log(input);
       setLayers({ ...layers, wms: [...layers.wms, input] });
       const remian = layerContext.layer.filter(
-        (c) => c.layer_name !== e.target.value
+        c => c.layer_name !== e.target.value
       );
       layerContext.layer = remian;
       //setWms(remian);
@@ -304,11 +304,7 @@ const SelectLayers = () => {
       <form className={classes.form}>
         <FormControl error={error}>
           <InputLabel>Select your layers</InputLabel>
-          <Select
-            value={change}
-            onChange={handleChange}
-            //onClick={addMapservice}
-          >
+          <Select value={change} onChange={handleChange}>
             <MenuItem value="" />
             {WmsList}
           </Select>
