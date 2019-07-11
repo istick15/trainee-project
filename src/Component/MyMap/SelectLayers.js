@@ -220,8 +220,8 @@ const SelectLayers = () => {
                   const remian = layers.wms.filter(
                     c => c.layer_name !== key.layer_name
                   );
-                  const get = layerContext.layer.filter(
-                    c => c.id === key.layer_name
+                  const get = layers.wms.filter(
+                    c => c.layer_name === key.layer_name
                   );
                   console.log(get[0]);
                   if (

@@ -32,10 +32,12 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { GetDataset, GetSite, GetDisplay } from "../MyMap/Request";
+import { GetDataset, GetSite, GetDisplay, getFeature } from "../MyMap/Request";
 import { LayerContext } from "../../Context/LayerContext";
 
 import { DeleteDataset, createdataset } from "../../Api/dataset";
+import { Feature } from "react-mapbox-gl";
+import { FeatureContext } from "../MyMap/FeatureContext";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
@@ -72,7 +74,7 @@ const StoreSpace = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const layerContext = useContext(LayerContext);
-
+  const featureContext = useContext(FeatureContext);
   function handleClickOpen() {
     setOpen(true);
   }
@@ -138,6 +140,15 @@ const StoreSpace = () => {
                   console.log(rs.data);
                   layerContext.layer = rs.data;
                   console.log(layerContext.layer);
+                });
+                GetSite().then(s => {
+                  GetDataset(s.data.site_id).then(ds => {
+                    getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+                      console.log(gf.data);
+                      featureContext.feature = gf.data;
+                      console.log(featureContext.feature);
+                    });
+                  });
                 });
               }}
             >
