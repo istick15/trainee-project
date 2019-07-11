@@ -218,7 +218,7 @@ const CreateMarker = () => {
           data={featuresshow}
           editable={{
             onRowUpdate: (newData, oldData) =>
-              new Promise(resolve => {
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
                   const data = featuresshow;
@@ -226,8 +226,8 @@ const CreateMarker = () => {
                   setAttribute({ ...attribute, data });
                 }, 600);
               }),
-            onRowDelete: oldData =>
-              new Promise(resolve => {
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
                   const data = featuresshow;
