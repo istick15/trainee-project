@@ -141,7 +141,7 @@ const CreateMarker = () => {
   const offpoint = () => {
     if (window.confirm("Are you sure you want to save?")) {
       document.body.style.cursor = "default";
-      //setBtnShow(true);
+
       mapContext.map.off("click", addPoint);
     }
     GetSite().then((s) => {
