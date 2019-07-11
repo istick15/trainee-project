@@ -60,7 +60,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
@@ -94,9 +94,9 @@ const CreateMarker = () => {
 
   useEffect(() => {
     if ((featureContext.feature = [])) {
-      GetSite().then(s => {
-        GetDataset(s.data.site_id).then(ds => {
-          getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+      GetSite().then((s) => {
+        GetDataset(s.data.site_id).then((ds) => {
+          getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
             featureContext.feature = gf.data;
           });
         });
@@ -105,7 +105,7 @@ const CreateMarker = () => {
     }
   }, []);
 
-  const addPoint = e => {
+  const addPoint = (e) => {
     const map = mapContext.map;
 
     var features = map.queryRenderedFeatures(e.point, {
@@ -144,17 +144,17 @@ const CreateMarker = () => {
       //setBtnShow(true);
       mapContext.map.off("click", addPoint);
     }
-    GetSite().then(s => {
+    GetSite().then((s) => {
       console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then(ds => {
+      GetDataset(s.data.site_id).then((ds) => {
         console.log(ds.data.dataset_id);
         CreateFeature(
           geojson.features,
           s.data.site_id,
           ds.data.dataset_id
-        ).then(f => {
+        ).then((f) => {
           console.log(f);
-          CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
+          CreateTile(s.data.site_id, ds.data.dataset_id).then((ct) => {
             console.log(ct);
           });
         });
@@ -175,15 +175,15 @@ const CreateMarker = () => {
     document.body.style.cursor = "crosshair";
     map.on("click", addPoint);
 
-    GetSite().then(s => {
-      GetDataset(s.data.site_id).then(ds => {
-        getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+    GetSite().then((s) => {
+      GetDataset(s.data.site_id).then((ds) => {
+        getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
           console.log(gf.data);
         });
       });
     });
   };
-  const featuresshow = featureContext.feature.map(key => {
+  const featuresshow = featureContext.feature.map((key) => {
     const { id, name, description } = key;
     return {
       id: key.properties.id,
@@ -214,8 +214,8 @@ const CreateMarker = () => {
           columns={attribute.columns}
           data={featuresshow}
           editable={{
-            onRowAdd: newData =>
-              new Promise(resolve => {
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
                   const data = [featuresshow];
@@ -224,7 +224,7 @@ const CreateMarker = () => {
                 }, 600);
               }),
             onRowUpdate: (newData, oldData) =>
-              new Promise(resolve => {
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
                   const data = [featuresshow];
@@ -232,8 +232,8 @@ const CreateMarker = () => {
                   setAttribute({ ...attribute, data });
                 }, 600);
               }),
-            onRowDelete: oldData =>
-              new Promise(resolve => {
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
                   const data = [featuresshow];

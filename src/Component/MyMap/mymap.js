@@ -4,7 +4,7 @@ import MapContainer from "./MapContainer";
 import MapHead from "./MapHead";
 import MapTools from "./MapTools";
 
-const Mymap = props => {
+const Mymap = (props) => {
   return (
     <MapContextProvider>
       <MapHead />
