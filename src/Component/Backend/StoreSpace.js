@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -62,6 +62,9 @@ const useStyles = makeStyles(theme =>
     card: {
       maxWidth: "100vw",
       marginTop: 20
+    },
+    grow: {
+      flexGrow: 1
     }
   })
 );
@@ -106,12 +109,12 @@ const StoreSpace = () => {
   };
   /////////////////////////
   const [Dataset, setDataset] = useState([]);
-
-  const Createdataset = () => {
+  //const Datasets = useContext()
+  const Data = () => {
     GetSite().then(s => {
-      //    console.log(s.data.site_id);
+      console.log(s.data.site_id);
       GetDataset(s.data.site_id).then(ds => {
-        //     console.log(ds);
+        console.log(ds);
         setDataset([ds.data]);
       });
     });
@@ -128,29 +131,35 @@ const StoreSpace = () => {
           <Typography variant="subtitle1" color="textSecondary">
             {key.dataset_description}
           </Typography>
-          <Tooltip title="Edit">
-            <IconButton
-              onClick={e => {
-                history.replace("/MapPage");
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            {/*  */}
-            <IconButton onClick={DeleteData}>
-              <DeleteIcon />
-            </IconButton>
-            {/*  */}
-          </Tooltip>
         </CardContent>
+        {/*  */}
+        <div className={classes.grow} />
+        <Tooltip title="Edit">
+          <IconButton
+            onClick={e => {
+              history.replace("/MapPage");
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          {/*  */}
+          <IconButton onClick={DeleteData}>
+            <DeleteIcon />
+          </IconButton>
+          {/*  */}
+        </Tooltip>
+        {/*  */}
       </MenuItem>
     );
   });
 
   const { history } = useReactRouter();
 
+  useEffect(() => {
+    console.log(<CardActionArea>{datalist}</CardActionArea>);
+  });
   ///////////////////
   return (
     <div>
@@ -186,7 +195,7 @@ const StoreSpace = () => {
           {/*  */}
           <Card className={classes.card}>
             <CardContent>
-              <Button onClick={Createdataset}>
+              <Button onClick={Data}>
                 Dataset
                 {/* <ListItemIcon> */}
                 <TouchAppIcon />
