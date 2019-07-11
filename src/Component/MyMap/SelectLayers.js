@@ -31,7 +31,7 @@ import DeleteIcon from "@material-ui/icons/DeleteSweep";
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AddMapService from "./AddMapService";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     width: 50
   },
@@ -61,7 +61,7 @@ const SelectLayers = () => {
   const [wms, setWms] = useState([]);
 
   const addMapservice = () => {
-    GetDisplay().then(dp => {
+    GetDisplay().then((dp) => {
       console.log(dp.data);
       if (dp.data.length === undefined) {
         setWms([dp.data]);
@@ -71,7 +71,7 @@ const SelectLayers = () => {
     });
   };
 
-  const WmsList = wms.map(key => {
+  const WmsList = wms.map((key) => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}
@@ -81,7 +81,7 @@ const SelectLayers = () => {
 
   const [layers, setLayers] = useState({ wms: [] });
 
-  const wmsLayers = layers.wms.map(key => {
+  const wmsLayers = layers.wms.map((key) => {
     return (
       <div key={key.layer_id}>
         <Card>
@@ -95,7 +95,7 @@ const SelectLayers = () => {
                 console.log(layerlink);
                 const map = mapContext.map;
                 const check = map.getStyle();
-                const filter = check.layers.filter(re => re.id === layerid);
+                const filter = check.layers.filter((re) => re.id === layerid);
                 const linkcut = layerlink.split("?");
                 const linknew = new URL(layerlink, "https://example.com");
 
@@ -202,10 +202,10 @@ const SelectLayers = () => {
           <CardActions>
             <Tooltip title="Delete layer" placement="right">
               <IconButton
-                onClick={layerid => {
+                onClick={(layerid) => {
                   layerid.stopPropagation();
                   const remian = layers.wms.filter(
-                    c => c.layer_name !== key.layer_name
+                    (c) => c.layer_name !== key.layer_name
                   );
 
                   if (
@@ -218,7 +218,7 @@ const SelectLayers = () => {
                     const map = mapContext.map;
                     const check = map.getStyle();
                     const filter = check.layers.filter(
-                      re => re.id === key.layer_name
+                      (re) => re.id === key.layer_name
                     );
                     console.log(filter.length);
                     if (filter.length === 1) {
@@ -243,7 +243,7 @@ const SelectLayers = () => {
     setOpen(false);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setChange(e.target.value);
     setError(false);
     setTextError("");
@@ -252,10 +252,10 @@ const SelectLayers = () => {
       setError(true);
       setTextError("please select your layer");
     } else {
-      const input = wms.filter(re => re.layer_name === e.target.value)[0];
+      const input = wms.filter((re) => re.layer_name === e.target.value)[0];
       console.log(input);
       setLayers({ ...layers, wms: [...layers.wms, input] });
-      const remian = wms.filter(c => c.layer_name !== e.target.value);
+      const remian = wms.filter((c) => c.layer_name !== e.target.value);
       setWms(remian);
     }
   };
