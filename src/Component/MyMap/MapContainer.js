@@ -92,6 +92,21 @@ const MapContainer = () => {
             });
           });
         });
+        const flyto = e => {
+          mapContext.map.flyTo({
+            center: e.features[0].geometry.coordinates,
+            zoom: 13
+          });
+        };
+        mapContext.map.on("click", "ids", flyto);
+        mapContext.map.on("mouseenter", "ids", function() {
+          mapContext.map.getCanvas().style.cursor = "pointer";
+        });
+
+        // Change it back to a pointer when it leaves.
+        mapContext.map.on("mouseleave", "ids", function() {
+          mapContext.map.getCanvas().style.cursor = "";
+        });
       });
 
       // GetSite().then(s => {

@@ -34,7 +34,6 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import { FeatureContext } from "./FeatureContext";
-import { async } from "q";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -154,9 +153,14 @@ const CreateMarker = () => {
           ds.data.dataset_id
         ).then(f => {
           console.log(f);
-          CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
-            console.log(ct);
-          });
+          if (f.data.status === 1) {
+            getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+              featureContext.feature = gf.data;
+            });
+            CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
+              console.log(ct);
+            });
+          }
         });
       });
     });
@@ -184,7 +188,6 @@ const CreateMarker = () => {
     });
   };
   const featuresshow = featureContext.feature.map(key => {
-    const { id, name, description } = key;
     return {
       id: key.properties.id,
       name: key.properties.name,
@@ -197,7 +200,7 @@ const CreateMarker = () => {
         "]"
     };
   });
-  console.log(featuresshow);
+
   return (
     <div>
       <Tooltip title="Marker" placement="right">
@@ -207,27 +210,18 @@ const CreateMarker = () => {
           </IconButton>
         </Card>
       </Tooltip>
-      <div className={classes.position}>
+      {/* <div className={classes.position}>
         <MaterialTable
           title="Edit"
           icons={tableIcons}
           columns={attribute.columns}
           data={featuresshow}
           editable={{
-            onRowAdd: newData =>
-              new Promise(resolve => {
-                setTimeout(() => {
-                  resolve();
-                  const data = [featuresshow];
-                  data.push(newData);
-                  setAttribute({ ...attribute, data });
-                }, 600);
-              }),
             onRowUpdate: (newData, oldData) =>
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  const data = [featuresshow];
+                  const data = featuresshow;
                   data[data.indexOf(oldData)] = newData;
                   setAttribute({ ...attribute, data });
                 }, 600);
@@ -236,20 +230,19 @@ const CreateMarker = () => {
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  const data = [featuresshow];
+                  const data = featuresshow;
                   data.splice(data.indexOf(oldData), 1);
                   setAttribute({ ...attribute, data });
                 }, 600);
               })
           }}
         />
-      </div>
+      </div> */}
       <Button
         color="secondary"
         onClick={offpoint}
         className={classes.btn}
         variant="outlined"
-        // disabled={btnshow}
       >
         <SaveIcon />
         <Typography variant="caption">Save</Typography>
