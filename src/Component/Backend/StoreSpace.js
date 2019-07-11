@@ -36,12 +36,12 @@ import { GetDataset, GetSite, GetDisplay, getFeature } from "../MyMap/Request";
 import { LayerContext } from "../../Context/LayerContext";
 
 import { DeleteDataset, createdataset } from "../../Api/dataset";
-import { Feature } from "react-mapbox-gl";
+
 import { FeatureContext } from "../MyMap/FeatureContext";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       right: "200px"
@@ -86,23 +86,23 @@ const StoreSpace = () => {
   const [Name, setName] = useState({});
   const [Description, setDescription] = useState({});
   ////
-  const CreateDataset = e => {
+  const CreateDataset = (e) => {
     e.preventDefault();
-    GetSite().then(s => {
+    GetSite().then((s) => {
       console.log(s);
-      createdataset(Name, Description, s.data.site_id).then(cd => {
+      createdataset(Name, Description, s.data.site_id).then((cd) => {
         console.log(cd);
       });
     });
   };
   ///////////////////////
   const DeleteData = () => {
-    GetSite().then(s => {
+    GetSite().then((s) => {
       // console.log(s);
-      GetDataset(s.data.site_id).then(ds => {
+      GetDataset(s.data.site_id).then((ds) => {
         //     console.log(ds);
         if (window.confirm("Are you sure you want to delete this DataSet?")) {
-          DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
+          DeleteDataset(s.data.site_id, ds.data.dataset_id).then((dds) => {
             //    console.log(dds);
           });
         }
@@ -113,15 +113,15 @@ const StoreSpace = () => {
   const [Dataset, setDataset] = useState([]);
 
   const Createdataset = () => {
-    GetSite().then(s => {
+    GetSite().then((s) => {
       //    console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then(ds => {
+      GetDataset(s.data.site_id).then((ds) => {
         //     console.log(ds);
         setDataset([ds.data]);
       });
     });
   };
-  const datalist = Dataset.map(key => {
+  const datalist = Dataset.map((key) => {
     return (
       <MenuItem key={key.dataset_id} value={key.dataset_name}>
         <CardContent>
@@ -134,20 +134,22 @@ const StoreSpace = () => {
           </Typography>
           <Tooltip title="Edit">
             <IconButton
-              onClick={e => {
+              onClick={(e) => {
                 history.replace("/MapPage");
-                GetDisplay().then(rs => {
+                GetDisplay().then((rs) => {
                   console.log(rs.data);
                   layerContext.layer = rs.data;
                   console.log(layerContext.layer);
                 });
-                GetSite().then(s => {
-                  GetDataset(s.data.site_id).then(ds => {
-                    getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-                      console.log(gf.data);
-                      featureContext.feature = gf.data;
-                      console.log(featureContext.feature);
-                    });
+                GetSite().then((s) => {
+                  GetDataset(s.data.site_id).then((ds) => {
+                    getFeature(s.data.site_id, ds.data.dataset_id).then(
+                      (gf) => {
+                        console.log(gf.data);
+                        featureContext.feature = gf.data;
+                        console.log(featureContext.feature);
+                      }
+                    );
                   });
                 });
               }}
@@ -236,7 +238,7 @@ const StoreSpace = () => {
               label="Name"
               color="primary"
               fullWidth
-              onChange={n => {
+              onChange={(n) => {
                 setName(n.target.value);
               }}
             />
@@ -249,7 +251,7 @@ const StoreSpace = () => {
               label="Description"
               fullWidth
               color="primary"
-              onChange={d => {
+              onChange={(d) => {
                 setDescription(d.target.value);
               }}
             />
