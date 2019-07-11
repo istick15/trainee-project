@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -32,7 +32,8 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { GetDataset, GetSite } from "../MyMap/Request";
+import { GetDataset, GetSite, GetDisplay } from "../MyMap/Request";
+import { LayerContext } from "../../Context/LayerContext";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
@@ -68,6 +69,7 @@ const useStyles = makeStyles(theme =>
 const StoreSpace = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const layerContext = useContext(LayerContext);
 
   function handleClickOpen() {
     setOpen(true);
@@ -93,7 +95,6 @@ const StoreSpace = () => {
       <MenuItem key={key.dataset_id} value={key.dataset_name}>
         <CardContent>
           <Typography component="h5" variant="h5">
-            {" "}
             {key.dataset_name}
           </Typography>
 
@@ -104,6 +105,11 @@ const StoreSpace = () => {
             <IconButton
               onClick={e => {
                 history.replace("/MapPage");
+                GetDisplay().then(rs => {
+                  console.log(rs.data);
+                  layerContext.layer = rs.data;
+                  console.log(layerContext.layer);
+                });
               }}
             >
               <EditIcon />

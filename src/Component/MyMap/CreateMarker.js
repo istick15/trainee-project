@@ -1,4 +1,4 @@
-import React, { useContext, useState, forwardRef } from "react";
+import React, { useContext, useState, forwardRef, useEffect } from "react";
 import {
   Button,
   Card,
@@ -91,7 +91,19 @@ const CreateMarker = () => {
   const classes = useStyles();
   const mapContext = useContext(MapContext);
   const featureContext = useContext(FeatureContext);
-  //const [btnshow, setBtnShow] = useState(true);
+
+  useEffect(() => {
+    if ((featureContext.feature = [])) {
+      GetSite().then(s => {
+        GetDataset(s.data.site_id).then(ds => {
+          getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+            featureContext.feature = gf.data;
+          });
+        });
+      });
+    } else {
+    }
+  }, []);
 
   const addPoint = e => {
     const map = mapContext.map;
@@ -149,81 +161,43 @@ const CreateMarker = () => {
       });
     });
   };
-  // const insertFeatures = () => {
-  //   GetSite().then(s => {
-  //     console.log(s.data.site_id);
-  //     GetDataset(s.data.site_id).then(ds => {
-  //       console.log(ds.data.dataset_id);
-  //       getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-  //         console.log(gf);
-  //         if (gf.data.length === undefined) {
-  //           mapContext.map.addSource("geo", {
-  //             type: "geojson",
-  //             data: {
-  //               type: "FeatureCollection",
-  //               features: [gf.data]
-  //             }
-  //           });
-  //           mapContext.map.addLayer({
-  //             id: "id",
-  //             type: "circle",
-  //             source: "geo",
-  //             paint: {
-  //               "circle-radius": 10,
-  //               "circle-color": "#F2AD2E"
-  //             }
-  //           });
-  //         } else {
-  //           mapContext.map.addLayer({
-  //             id: "ids",
-  //             type: "circle",
-  //             source: {
-  //               type: "geojson",
-  //               data: {
-  //                 type: "FeatureCollection",
-  //                 features: gf.data
-  //               }
-  //             },
-  //             paint: {
-  //               "circle-radius": 10,
-  //               "circle-color": "#F2AD2E"
-  //             }
-  //           });
-  //         }
-  //       });
-  //     });
-  //   });
-  // };
 
   const [attribute, setAttribute] = useState({
     columns: [
       { title: "ID", field: "id" },
       { title: "Name", field: "name" },
-      { title: "Coordinate", field: "coordinate" },
-      { title: "Description", field: "description" }
-    ],
-    data: []
+      { title: "Coordinate", field: "coordinates" }
+    ]
   });
 
   const CreatePoint = () => {
     const map = mapContext.map;
     document.body.style.cursor = "crosshair";
     map.on("click", addPoint);
+
     GetSite().then(s => {
-      console.log(s.data.site_id);
       GetDataset(s.data.site_id).then(ds => {
-        console.log(ds.data.dataset_id);
         getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
           console.log(gf.data);
         });
       });
     });
   };
-  // const featuresshow = featureContext.feature.map(key => {
-  //   console.log(key);
-  //   return <li>{key}</li>;
-  // });
-
+  const featuresshow = featureContext.feature.map(key => {
+    const { id, name, description } = key;
+    return {
+      id: key.properties.id,
+      name: key.properties.name,
+      description: key.properties.description,
+      coordinates:
+        "[" +
+        key.geometry.coordinates[0] +
+        "," +
+        key.geometry.coordinates[1] +
+        "]"
+    };
+  });
+  console.log(featuresshow);
   return (
     <div>
       <Tooltip title="Marker" placement="right">
@@ -238,19 +212,13 @@ const CreateMarker = () => {
           title="Edit"
           icons={tableIcons}
           columns={attribute.columns}
-          data={attribute.data}
-          // data={async function data() {
-          //   const siteid = await GetSite();
-          //   const datasetid = await GetDataset();
-          //   const feature = await getFeature(siteid, datasetid);
-          //   console.log(feature);
-          // }}
+          data={featuresshow}
           editable={{
             onRowAdd: newData =>
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  const data = [...attribute.data];
+                  const data = [featuresshow];
                   data.push(newData);
                   setAttribute({ ...attribute, data });
                 }, 600);
@@ -259,7 +227,7 @@ const CreateMarker = () => {
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  const data = [...attribute.data];
+                  const data = [featuresshow];
                   data[data.indexOf(oldData)] = newData;
                   setAttribute({ ...attribute, data });
                 }, 600);
@@ -268,7 +236,7 @@ const CreateMarker = () => {
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  const data = [...attribute.data];
+                  const data = [featuresshow];
                   data.splice(data.indexOf(oldData), 1);
                   setAttribute({ ...attribute, data });
                 }, 600);

@@ -61,29 +61,28 @@ const SelectLayers = () => {
   const mapContext = useContext(MapContext);
 
   const layerContext = useContext(LayerContext);
-  const [wms, setWms] = useState([]);
+  //const [wms, setWms] = useState([]);
 
-  // useEffect(() => {
-  //   if ((layerContext.layer = [])) {
-  //     GetDisplay().then(dp => {
-  //       layerContext.layer = dp.data;
-  //       console.log(layerContext.layer);
-  //       setWms(layerContext.layer);
-  //     });
-  //   } else {
-  //   }
-  // });
+  useEffect(() => {
+    if ((layerContext.layer = [])) {
+      GetDisplay().then(dp => {
+        layerContext.layer = dp.data;
+        console.log(layerContext.layer);
+      });
+    } else {
+    }
+  }, []);
 
-  const addMapservice = () => {
-    GetDisplay().then(dp => {
-      console.log(dp.data);
-      if (dp.data.length === undefined) {
-        setWms([dp.data]);
-      } else {
-        setWms(dp.data);
-      }
-    });
-  };
+  // const addMapservice = () => {
+  //   GetDisplay().then(dp => {
+  //     console.log(dp.data);
+  //     if (dp.data.length === undefined) {
+  //       setWms([dp.data]);
+  //     } else {
+  //       setWms(dp.data);
+  //     }
+  //   });
+  // };
 
   const WmsList = layerContext.layer.map(key => {
     return (
@@ -221,17 +220,18 @@ const SelectLayers = () => {
                   const remian = layers.wms.filter(
                     c => c.layer_name !== key.layer_name
                   );
-                  const get = layerContext.layer.filter(
-                    c => c.id === key.layer_name
+                  const get = layers.wms.filter(
+                    c => c.layer_name === key.layer_name
                   );
-                  console.log(get);
+                  console.log(get[0]);
                   if (
                     window.confirm(
                       "Are you sure you want to delete this Layer?"
                     )
                   ) {
                     setLayers({ wms: remian });
-                    //layerContext.layer = layers;
+                    layerContext.layer.push(get[0]);
+                    console.log(layerContext.layer);
                     const map = mapContext.map;
                     const check = map.getStyle();
                     const filter = check.layers.filter(
@@ -304,11 +304,7 @@ const SelectLayers = () => {
       <form className={classes.form}>
         <FormControl error={error}>
           <InputLabel>Select your layers</InputLabel>
-          <Select
-            value={change}
-            onChange={handleChange}
-            //onClick={addMapservice}
-          >
+          <Select value={change} onChange={handleChange}>
             <MenuItem value="" />
             {WmsList}
           </Select>
