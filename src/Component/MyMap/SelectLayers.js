@@ -245,32 +245,37 @@ const SelectLayers = () => {
 
   const handleChange = e => {
     setChange(e.target.value);
-
     setError(false);
     setTextError("");
-    const input = wms.filter(re => re.layer_name === e.target.value)[0];
-    console.log(input);
-    setLayers({ ...layers, wms: [...layers.wms, input] });
-    const remian = wms.filter(c => c.layer_name !== e.target.value);
-    setWms(remian);
+
+    if (e.target.value === "") {
+      setError(true);
+      setTextError("please select your layer");
+    } else {
+      const input = wms.filter(re => re.layer_name === e.target.value)[0];
+      console.log(input);
+      setLayers({ ...layers, wms: [...layers.wms, input] });
+      const remian = wms.filter(c => c.layer_name !== e.target.value);
+      setWms(remian);
+    }
   };
 
   const [error, setError] = useState(false);
   const [textError, setTextError] = useState("");
 
-  const LayerSelected = () => {
-    if (change === "") {
-      setError(true);
-      setTextError("please select your layer");
-    } else {
-      const input = wms.filter(re => re.layer_name === change)[0];
-      console.log(input);
-      setChange("");
-      setLayers({ ...layers, wms: [...layers.wms, input] });
-      const remian = wms.filter(c => c.layer_name !== change);
-      setWms(remian);
-    }
-  };
+  // const LayerSelected = () => {
+  //   if (change === "") {
+  //     setError(true);
+  //     setTextError("please select your layer");
+  //   } else {
+  //     const input = wms.filter(re => re.layer_name === change)[0];
+  //     console.log(input);
+  //     setChange("");
+  //     setLayers({ ...layers, wms: [...layers.wms, input] });
+  //     const remian = wms.filter(c => c.layer_name !== change);
+  //     setWms(remian);
+  //   }
+  // };
 
   return (
     <div>
