@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "@material-ui/core";
 import useReactRouter from "use-react-router";
 import LayerBackend from "../Component/Backend/LayerBackend";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
+import {
+  GetDisplay,
+  GetSite,
+  GetDataset,
+  getFeature
+} from "../Component/MyMap/Request";
+import { MapContext } from "../Component/MyMap/MapContext";
+import { FeatureContext } from "../Component/MyMap/FeatureContext";
+import { LayerContext } from "../Context/LayerContext";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -28,8 +37,14 @@ const useStyles = makeStyles(theme =>
 const BackendPage = () => {
   const classes = useStyles();
   const { history } = useReactRouter();
+  const layerContext = useContext(LayerContext);
   const goToMap = () => {
     history.replace("/MapPage");
+    GetDisplay().then(rs => {
+      console.log(rs.data);
+      layerContext.layer = rs.data;
+      console.log(layerContext.layer);
+    });
   };
   return (
     <div>

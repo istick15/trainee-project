@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -13,10 +13,30 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+import TouchAppIcon from "@material-ui/icons/TouchApp";
+import useReactRouter from "use-react-router";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Select,
+  MenuItem,
+  MenuList,
+  FormControl,
+  FormControlLabel,
+  Switch,
+  List,
+  ListItemIcon,
+  IconButton,
+  Tooltip
+} from "@material-ui/core";
+import { GetDataset, GetSite } from "../MyMap/Request";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -37,6 +57,10 @@ const useStyles = makeStyles((theme) =>
     dialogForm: {
       flexDirection: "column",
       width: 600
+    },
+    card: {
+      maxWidth: "100vw",
+      marginTop: 20
     }
   })
 );
@@ -52,6 +76,52 @@ const StoreSpace = () => {
   function handleClose() {
     setOpen(false);
   }
+  /////////////////////
+  const [Dataset, setDataset] = useState([]);
+
+  const Createdataset = () => {
+    GetSite().then(s => {
+      console.log(s.data.site_id);
+      GetDataset(s.data.site_id).then(ds => {
+        console.log(ds);
+        setDataset([ds.data]);
+      });
+    });
+  };
+  const datalist = Dataset.map(key => {
+    return (
+      <MenuItem key={key.dataset_id} value={key.dataset_name}>
+        <CardContent>
+          <Typography component="h5" variant="h5">
+            {" "}
+            {key.dataset_name}
+          </Typography>
+
+          <Typography variant="subtitle1" color="textSecondary">
+            {key.dataset_description}
+          </Typography>
+          <Tooltip title="Edit">
+            <IconButton
+              onClick={e => {
+                history.replace("/MapPage");
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </CardContent>
+      </MenuItem>
+    );
+  });
+
+  const { history } = useReactRouter();
+
+  ///////////////////
   return (
     <div>
       <Grid container justify="center">
@@ -81,6 +151,22 @@ const StoreSpace = () => {
               <TextField id="Search" label="Search" />
             </Grid>
           </div>
+          <br />
+          <Divider />
+          {/*  */}
+          <Card className={classes.card}>
+            <CardContent>
+              <Button onClick={Createdataset}>
+                Dataset
+                {/* <ListItemIcon> */}
+                <TouchAppIcon />
+                {/* </ListItemIcon> */}
+              </Button>
+              <CardActionArea>{datalist}</CardActionArea>
+            </CardContent>
+          </Card>
+
+          {/*  */}
         </Paper>
       </Grid>
       <Dialog

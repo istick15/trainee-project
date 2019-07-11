@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.18",
     "@straw-hat/react-fullscreen": "^1.2.1",
     "mapbox-gl": "^1.1.0",
+    "material-table": "^1.40.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-mapbox-gl": "^4.4.0",
