@@ -1,5 +1,5 @@
-const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
-//const API_Key = "k-5f444300-948f-55f1-8581-ae36bc6e20f1";
+// const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
+const API_Key = "k-5f444300-948f-55f1-8581-ae36bc6e20f1";
 export const getMapLayers = () => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
