@@ -51,6 +51,50 @@ const MapContainer = () => {
           },
           filter: ["in", "$type", "Point"]
         });
+
+        GetSite().then(s => {
+          console.log(s.data.site_id);
+          GetDataset(s.data.site_id).then(ds => {
+            console.log(ds.data.dataset_id);
+            getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+              console.log(gf);
+              if (gf.data.length === undefined) {
+                mapContext.map.addSource("geo", {
+                  type: "geojson",
+                  data: {
+                    type: "FeatureCollection",
+                    features: [gf.data]
+                  }
+                });
+                mapContext.map.addLayer({
+                  id: "id",
+                  type: "circle",
+                  source: "geo",
+                  paint: {
+                    "circle-radius": 10,
+                    "circle-color": "#F2AD2E"
+                  }
+                });
+              } else {
+                mapContext.map.addLayer({
+                  id: "ids",
+                  type: "circle",
+                  source: {
+                    type: "geojson",
+                    data: {
+                      type: "FeatureCollection",
+                      features: gf.data
+                    }
+                  },
+                  paint: {
+                    "circle-radius": 10,
+                    "circle-color": "#F2AD2E"
+                  }
+                });
+              }
+            });
+          });
+        });
       });
 
       // GetSite().then(s => {

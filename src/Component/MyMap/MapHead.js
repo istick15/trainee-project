@@ -45,6 +45,13 @@ const useStyles = makeStyles(theme => ({
   },
   line: {
     border: "1px solid grey"
+  },
+  edit: {
+    left: DrawerWidth,
+    width: 800,
+    border: "1px solid ",
+    borderColor: "#E0E0E0",
+    backgroundColor: "rgba(255, 255, 255, 0.8)"
   }
 }));
 const MapHead = () => {
@@ -214,7 +221,7 @@ const MapHead = () => {
         variant="persistent"
         anchor="left"
         open={location}
-        classes={{ paper: classes.layerlist }}
+        classes={{ paper: classes.edit }}
       >
         <div>
           <IconButton onClick={LocationClose}>

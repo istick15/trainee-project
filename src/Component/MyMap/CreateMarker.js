@@ -1,18 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, forwardRef } from "react";
 import {
   Button,
-  Divider,
   Card,
-  CardActionArea,
-  CardContent,
   Typography,
-  CardActions,
-  Tooltip
+  Tooltip,
+  IconButton
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddLocation from "@material-ui/icons/AddLocation";
 import { MapContext } from "./MapContext";
-import LocationOffIcon from "@material-ui/icons/LocationOff";
 import SaveIcon from "@material-ui/icons/Save";
 import {
   GetSite,
@@ -21,19 +17,69 @@ import {
   CreateTile,
   getFeature
 } from "./Request";
+import MaterialTable from "material-table";
+import AddBox from "@material-ui/icons/AddBox";
+import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import Check from "@material-ui/icons/Check";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import Clear from "@material-ui/icons/Clear";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import Edit from "@material-ui/icons/Edit";
+import FilterList from "@material-ui/icons/FilterList";
+import FirstPage from "@material-ui/icons/FirstPage";
+import LastPage from "@material-ui/icons/LastPage";
+import Remove from "@material-ui/icons/Remove";
+import SaveAlt from "@material-ui/icons/SaveAlt";
+import Search from "@material-ui/icons/Search";
+import ViewColumn from "@material-ui/icons/ViewColumn";
+import { FeatureContext } from "./FeatureContext";
+import { async } from "q";
+
+const tableIcons = {
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
 
 const useStyles = makeStyles(theme => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
-    top: "8%",
-    right: "70%",
+    top: "7%",
+    left: "6%",
     margin: "0 auto"
   },
   btn: {
     position: "absolute",
     right: "1%",
     bottom: "1%"
+  },
+  position: {
+    position: "absolute",
+    zIndex: 1,
+    top: "13%",
+    width: 780,
+    margin: "0 auto",
+    left: 10
   }
 }));
 var geojson = {
@@ -44,7 +90,7 @@ var geojson = {
 const CreateMarker = () => {
   const classes = useStyles();
   const mapContext = useContext(MapContext);
-
+  const featureContext = useContext(FeatureContext);
   //const [btnshow, setBtnShow] = useState(true);
 
   const addPoint = e => {
@@ -79,8 +125,6 @@ const CreateMarker = () => {
     }
     map.getSource("geojson").setData(geojson);
     console.log(geojson.features);
-    //setBtnShow(false);
-    //mapContext.map.off("click", addPoint);
   };
   const offpoint = () => {
     if (window.confirm("Are you sure you want to save?")) {
@@ -105,59 +149,133 @@ const CreateMarker = () => {
       });
     });
   };
-  const insertFeatures = () => {
+  // const insertFeatures = () => {
+  //   GetSite().then(s => {
+  //     console.log(s.data.site_id);
+  //     GetDataset(s.data.site_id).then(ds => {
+  //       console.log(ds.data.dataset_id);
+  //       getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+  //         console.log(gf);
+  //         if (gf.data.length === undefined) {
+  //           mapContext.map.addSource("geo", {
+  //             type: "geojson",
+  //             data: {
+  //               type: "FeatureCollection",
+  //               features: [gf.data]
+  //             }
+  //           });
+  //           mapContext.map.addLayer({
+  //             id: "id",
+  //             type: "circle",
+  //             source: "geo",
+  //             paint: {
+  //               "circle-radius": 10,
+  //               "circle-color": "#F2AD2E"
+  //             }
+  //           });
+  //         } else {
+  //           mapContext.map.addLayer({
+  //             id: "ids",
+  //             type: "circle",
+  //             source: {
+  //               type: "geojson",
+  //               data: {
+  //                 type: "FeatureCollection",
+  //                 features: gf.data
+  //               }
+  //             },
+  //             paint: {
+  //               "circle-radius": 10,
+  //               "circle-color": "#F2AD2E"
+  //             }
+  //           });
+  //         }
+  //       });
+  //     });
+  //   });
+  // };
+
+  const [attribute, setAttribute] = useState({
+    columns: [
+      { title: "ID", field: "id" },
+      { title: "Name", field: "name" },
+      { title: "Coordinate", field: "coordinate" },
+      { title: "Description", field: "description" }
+    ],
+    data: []
+  });
+
+  const CreatePoint = () => {
+    const map = mapContext.map;
+    document.body.style.cursor = "crosshair";
+    map.on("click", addPoint);
     GetSite().then(s => {
       console.log(s.data.site_id);
       GetDataset(s.data.site_id).then(ds => {
         console.log(ds.data.dataset_id);
         getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
           console.log(gf.data);
-
-          const addmappoint = gf.data.map(key => {
-            console.log(key);
-            return mapContext.map.addLayer({
-              id: "geojson-points",
-              type: "circle",
-              source: {
-                type: "geojson",
-                data: {
-                  type: "FeatureCollection",
-                  features: key
-                }
-              },
-              paint: {
-                "circle-radius": 10,
-                "circle-color": "#F2AD2E"
-              },
-              filter: ["in", "$type", "Point"]
-            });
-          });
-          console.log(addmappoint);
         });
       });
     });
   };
-  const CreatePoint = () => {
-    const map = mapContext.map;
-    document.body.style.cursor = "crosshair";
-    map.on("click", addPoint);
-  };
+  // const featuresshow = featureContext.feature.map(key => {
+  //   console.log(key);
+  //   return <li>{key}</li>;
+  // });
 
   return (
     <div>
       <Tooltip title="Marker" placement="right">
         <Card className={classes.fabButton}>
-          <CardActionArea onClick={CreatePoint}>
-            <div align="center">
-              <AddLocation fontSize="large" />
-            </div>
-            <Divider variant="inset" />
-            <CardContent>
-              <Typography variant="caption">Marker</Typography>
-            </CardContent>
-          </CardActionArea>
+          <IconButton onClick={CreatePoint} size="small">
+            <AddLocation fontSize="large" />
+          </IconButton>
         </Card>
       </Tooltip>
+      <div className={classes.position}>
+        <MaterialTable
+          title="Edit"
+          icons={tableIcons}
+          columns={attribute.columns}
+          data={attribute.data}
+          // data={async function data() {
+          //   const siteid = await GetSite();
+          //   const datasetid = await GetDataset();
+          //   const feature = await getFeature(siteid, datasetid);
+          //   console.log(feature);
+          // }}
+          editable={{
+            onRowAdd: newData =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  const data = [...attribute.data];
+                  data.push(newData);
+                  setAttribute({ ...attribute, data });
+                }, 600);
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  const data = [...attribute.data];
+                  data[data.indexOf(oldData)] = newData;
+                  setAttribute({ ...attribute, data });
+                }, 600);
+              }),
+            onRowDelete: oldData =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  const data = [...attribute.data];
+                  data.splice(data.indexOf(oldData), 1);
+                  setAttribute({ ...attribute, data });
+                }, 600);
+              })
+          }}
+        />
+      </div>
       <Button
         color="secondary"
         onClick={offpoint}
@@ -167,9 +285,6 @@ const CreateMarker = () => {
       >
         <SaveIcon />
         <Typography variant="caption">Save</Typography>
-      </Button>
-      <Button color="secondary" onClick={insertFeatures} variant="outlined">
-        <Typography variant="caption">insert</Typography>
       </Button>
     </div>
   );
