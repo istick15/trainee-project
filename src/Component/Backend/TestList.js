@@ -6,7 +6,7 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ListLayer from "./LayerList";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -47,7 +47,7 @@ const LayerList = () => {
   const classes = useStyles();
   const [wms, setWms] = useState([]);
   const addMapservice = () => {
-    GetDisplay().then((dp) => {
+    GetDisplay().then(dp => {
       console.log(dp.data);
       if (dp.data.length === undefined) {
         setWms([dp.data]);
@@ -56,7 +56,7 @@ const LayerList = () => {
       }
     });
   };
-  const WmsList = wms.map((key) => {
+  const WmsList = wms.map(key => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}

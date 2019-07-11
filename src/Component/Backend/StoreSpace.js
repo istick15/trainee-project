@@ -34,6 +34,7 @@ import {
 } from "@material-ui/core";
 import { GetDataset, GetSite } from "../MyMap/Request";
 import { DeleteDataset, createdataset } from "../../Api/dataset";
+import Datasetdoss from "./Dataset";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
@@ -81,8 +82,8 @@ const StoreSpace = () => {
     setOpen(false);
   }
   /////////////////////
-  const [Name, setName] = useState({});
-  const [Description, setDescription] = useState({});
+  const [Name, setName] = useState([]);
+  const [Description, setDescription] = useState([]);
   ////
   const CreateDataset = e => {
     e.preventDefault();
@@ -108,58 +109,55 @@ const StoreSpace = () => {
     });
   };
   /////////////////////////
-  const [Dataset, setDataset] = useState([]);
+  //const [Dataset, setDataset] = useState([]);
   //const Datasets = useContext()
-  const Data = () => {
-    GetSite().then(s => {
-      console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then(ds => {
-        console.log(ds);
-        setDataset([ds.data]);
-      });
-    });
-  };
-  const datalist = Dataset.map(key => {
-    return (
-      <MenuItem key={key.dataset_id} value={key.dataset_name}>
-        <CardContent>
-          <Typography component="h5" variant="h5">
-            {" "}
-            {key.dataset_name}
-          </Typography>
+  // const Data = () => {
+  //   GetSite().then(s => {
+  //     console.log(s.data.site_id);
+  //     GetDataset(s.data.site_id).then(ds => {
+  //       console.log(ds);
+  //       setDataset([ds.data]);
+  //     });
+  //   });
+  // };
+  // const datalist = Dataset.map(key => {
+  //   return (
+  //     <MenuItem key={key.dataset_id} value={key.dataset_name}>
+  //       <CardContent>
+  //         <Typography component="h5" variant="h5">
+  //           {" "}
+  //           {key.dataset_name}
+  //         </Typography>
 
-          <Typography variant="subtitle1" color="textSecondary">
-            {key.dataset_description}
-          </Typography>
-        </CardContent>
-        {/*  */}
-        <div className={classes.grow} />
-        <Tooltip title="Edit">
-          <IconButton
-            onClick={e => {
-              history.replace("/MapPage");
-            }}
-          >
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          {/*  */}
-          <IconButton onClick={DeleteData}>
-            <DeleteIcon />
-          </IconButton>
-          {/*  */}
-        </Tooltip>
-        {/*  */}
-      </MenuItem>
-    );
-  });
+  //         <Typography variant="subtitle1" color="textSecondary">
+  //           {key.dataset_description}
+  //         </Typography>
+  //       </CardContent>
+  //       {/*  */}
+  //       <div className={classes.grow} />
+  //       <Tooltip title="Edit">
+  //         <IconButton
+  //           onClick={e => {
+  //             history.replace("/MapPage");
+  //           }}
+  //         >
+  //           <EditIcon />
+  //         </IconButton>
+  //       </Tooltip>
+  //       <Tooltip title="Delete">
+  //         {/*  */}
+  //         <IconButton onClick={DeleteData}>
+  //           <DeleteIcon />
+  //         </IconButton>
+  //         {/*  */}
+  //       </Tooltip>
+  //       {/*  */}
+  //     </MenuItem>
+  //   );
+  // });
 
   const { history } = useReactRouter();
 
-  useEffect(() => {
-    console.log(<CardActionArea>{datalist}</CardActionArea>);
-  });
   ///////////////////
   return (
     <div>
@@ -193,18 +191,19 @@ const StoreSpace = () => {
           <br />
           <Divider />
           {/*  */}
-          <Card className={classes.card}>
-            <CardContent>
-              <Button onClick={Data}>
+          <div>
+            <Card className={classes.card}>
+              <CardContent>
+                <Datasetdoss />
+                {/* <Button onClick={Data}>
                 Dataset
-                {/* <ListItemIcon> */}
+          
                 <TouchAppIcon />
-                {/* </ListItemIcon> */}
               </Button>
-              <CardActionArea>{datalist}</CardActionArea>
-            </CardContent>
-          </Card>
-
+              <CardActionArea>{datalist}</CardActionArea> */}
+              </CardContent>
+            </Card>
+          </div>
           {/*  */}
         </Paper>
       </Grid>
