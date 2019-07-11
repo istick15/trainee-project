@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
-import React, { useState } from "react";
-import { GetSite, GetDataset } from "../MyMap/Request";
+import React, { useState, useContext } from "react";
+import { GetSite, GetDataset, GetDisplay, getFeature } from "../MyMap/Request";
 import {
   MenuItem,
   CardContent,
@@ -12,6 +12,9 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { DeleteDataset } from "../../Api/dataset";
 import useReactRouter from "use-react-router";
+import { Feature } from "react-mapbox-gl";
+import { FeatureContext } from "../MyMap/FeatureContext";
+import { LayerContext } from "../../Context/LayerContext";
 const useStyles = makeStyles({
   grow: {
     flexGrow: 1
@@ -25,6 +28,8 @@ const useStyles = makeStyles({
 const Datasetdoss = () => {
   const classes = useStyles();
   const [Dataset, setDataset] = useState([]);
+  const layerContext = useContext(LayerContext);
+  const featureContext = useContext(FeatureContext);
   const DeleteData = () => {
     GetSite().then(s => {
       GetDataset(s.data.site_id).then(ds => {
@@ -38,9 +43,9 @@ const Datasetdoss = () => {
   };
   const Data = () => {
     GetSite().then(s => {
-      console.log(s.data.site_id);
+      //  console.log(s.data.site_id);
       GetDataset(s.data.site_id).then(ds => {
-        console.log(ds);
+        //  console.log(ds);
         setDataset([ds.data]);
       });
     });
@@ -62,6 +67,20 @@ const Datasetdoss = () => {
             <IconButton
               onClick={e => {
                 history.replace("/MapPage");
+                GetDisplay().then(rs => {
+                  console.log(rs.data);
+                  layerContext.layer = rs.data;
+                  console.log(layerContext.layer);
+                });
+                GetSite().then(s => {
+                  GetDataset(s.data.site_id).then(ds => {
+                    getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+                      console.log(gf.data);
+                      featureContext.feature = gf.data;
+                      console.log(featureContext.feature);
+                    });
+                  });
+                });
               }}
             >
               <EditIcon />
