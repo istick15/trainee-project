@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -32,8 +32,12 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { GetDataset, GetSite } from "../MyMap/Request";
+import { GetDataset, GetSite, GetDisplay, getFeature } from "../MyMap/Request";
+import { LayerContext } from "../../Context/LayerContext";
+
 import { DeleteDataset, createdataset } from "../../Api/dataset";
+import { Feature } from "react-mapbox-gl";
+import { FeatureContext } from "../MyMap/FeatureContext";
 import Datasetdoss from "./Dataset";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
@@ -73,7 +77,8 @@ const useStyles = makeStyles(theme =>
 const StoreSpace = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
+  const layerContext = useContext(LayerContext);
+  const featureContext = useContext(FeatureContext);
   function handleClickOpen() {
     setOpen(true);
   }
@@ -95,68 +100,6 @@ const StoreSpace = () => {
     });
   };
   ///////////////////////
-  const DeleteData = () => {
-    GetSite().then(s => {
-      // console.log(s);
-      GetDataset(s.data.site_id).then(ds => {
-        //     console.log(ds);
-        if (window.confirm("Are you sure you want to delete this DataSet?")) {
-          DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
-            //    console.log(dds);
-          });
-        }
-      });
-    });
-  };
-  /////////////////////////
-  //const [Dataset, setDataset] = useState([]);
-  //const Datasets = useContext()
-  // const Data = () => {
-  //   GetSite().then(s => {
-  //     console.log(s.data.site_id);
-  //     GetDataset(s.data.site_id).then(ds => {
-  //       console.log(ds);
-  //       setDataset([ds.data]);
-  //     });
-  //   });
-  // };
-  // const datalist = Dataset.map(key => {
-  //   return (
-  //     <MenuItem key={key.dataset_id} value={key.dataset_name}>
-  //       <CardContent>
-  //         <Typography component="h5" variant="h5">
-  //           {" "}
-  //           {key.dataset_name}
-  //         </Typography>
-
-  //         <Typography variant="subtitle1" color="textSecondary">
-  //           {key.dataset_description}
-  //         </Typography>
-  //       </CardContent>
-  //       {/*  */}
-  //       <div className={classes.grow} />
-  //       <Tooltip title="Edit">
-  //         <IconButton
-  //           onClick={e => {
-  //             history.replace("/MapPage");
-  //           }}
-  //         >
-  //           <EditIcon />
-  //         </IconButton>
-  //       </Tooltip>
-  //       <Tooltip title="Delete">
-  //         {/*  */}
-  //         <IconButton onClick={DeleteData}>
-  //           <DeleteIcon />
-  //         </IconButton>
-  //         {/*  */}
-  //       </Tooltip>
-  //       {/*  */}
-  //     </MenuItem>
-  //   );
-  // });
-
-  const { history } = useReactRouter();
 
   ///////////////////
   return (

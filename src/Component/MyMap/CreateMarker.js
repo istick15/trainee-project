@@ -1,4 +1,4 @@
-import React, { useContext, useState, forwardRef } from "react";
+import React, { useContext, useState, forwardRef, useEffect } from "react";
 import {
   Button,
   Card,
@@ -34,7 +34,6 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import { FeatureContext } from "./FeatureContext";
-import { async } from "q";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -91,7 +90,19 @@ const CreateMarker = () => {
   const classes = useStyles();
   const mapContext = useContext(MapContext);
   const featureContext = useContext(FeatureContext);
-  //const [btnshow, setBtnShow] = useState(true);
+
+  useEffect(() => {
+    if ((featureContext.feature = [])) {
+      GetSite().then(s => {
+        GetDataset(s.data.site_id).then(ds => {
+          getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+            featureContext.feature = gf.data;
+          });
+        });
+      });
+    } else {
+    }
+  }, []);
 
   const addPoint = e => {
     const map = mapContext.map;
@@ -129,7 +140,7 @@ const CreateMarker = () => {
   const offpoint = () => {
     if (window.confirm("Are you sure you want to save?")) {
       document.body.style.cursor = "default";
-      //setBtnShow(true);
+
       mapContext.map.off("click", addPoint);
     }
     GetSite().then(s => {
@@ -142,87 +153,53 @@ const CreateMarker = () => {
           ds.data.dataset_id
         ).then(f => {
           console.log(f);
-          CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
-            console.log(ct);
-          });
+          if (f.data.status === 1) {
+            getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+              featureContext.feature = gf.data;
+            });
+            CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
+              console.log(ct);
+            });
+          }
         });
       });
     });
   };
-  // const insertFeatures = () => {
-  //   GetSite().then(s => {
-  //     console.log(s.data.site_id);
-  //     GetDataset(s.data.site_id).then(ds => {
-  //       console.log(ds.data.dataset_id);
-  //       getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-  //         console.log(gf);
-  //         if (gf.data.length === undefined) {
-  //           mapContext.map.addSource("geo", {
-  //             type: "geojson",
-  //             data: {
-  //               type: "FeatureCollection",
-  //               features: [gf.data]
-  //             }
-  //           });
-  //           mapContext.map.addLayer({
-  //             id: "id",
-  //             type: "circle",
-  //             source: "geo",
-  //             paint: {
-  //               "circle-radius": 10,
-  //               "circle-color": "#F2AD2E"
-  //             }
-  //           });
-  //         } else {
-  //           mapContext.map.addLayer({
-  //             id: "ids",
-  //             type: "circle",
-  //             source: {
-  //               type: "geojson",
-  //               data: {
-  //                 type: "FeatureCollection",
-  //                 features: gf.data
-  //               }
-  //             },
-  //             paint: {
-  //               "circle-radius": 10,
-  //               "circle-color": "#F2AD2E"
-  //             }
-  //           });
-  //         }
-  //       });
-  //     });
-  //   });
-  // };
 
   const [attribute, setAttribute] = useState({
     columns: [
       { title: "ID", field: "id" },
       { title: "Name", field: "name" },
-      { title: "Coordinate", field: "coordinate" },
-      { title: "Description", field: "description" }
-    ],
-    data: []
+      { title: "Coordinate", field: "coordinates" }
+    ]
   });
 
   const CreatePoint = () => {
     const map = mapContext.map;
     document.body.style.cursor = "crosshair";
     map.on("click", addPoint);
+
     GetSite().then(s => {
-      console.log(s.data.site_id);
       GetDataset(s.data.site_id).then(ds => {
-        console.log(ds.data.dataset_id);
         getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
           console.log(gf.data);
         });
       });
     });
   };
-  // const featuresshow = featureContext.feature.map(key => {
-  //   console.log(key);
-  //   return <li>{key}</li>;
-  // });
+  const featuresshow = featureContext.feature.map(key => {
+    return {
+      id: key.properties.id,
+      name: key.properties.name,
+      description: key.properties.description,
+      coordinates:
+        "[" +
+        key.geometry.coordinates[0] +
+        "," +
+        key.geometry.coordinates[1] +
+        "]"
+    };
+  });
 
   return (
     <div>
@@ -233,55 +210,39 @@ const CreateMarker = () => {
           </IconButton>
         </Card>
       </Tooltip>
-      <div className={classes.position}>
+      {/* <div className={classes.position}>
         <MaterialTable
           title="Edit"
           icons={tableIcons}
           columns={attribute.columns}
-          data={attribute.data}
-          // data={async function data() {
-          //   const siteid = await GetSite();
-          //   const datasetid = await GetDataset();
-          //   const feature = await getFeature(siteid, datasetid);
-          //   console.log(feature);
-          // }}
+          data={featuresshow}
           editable={{
-            onRowAdd: newData =>
-              new Promise(resolve => {
-                setTimeout(() => {
-                  resolve();
-                  const data = [...attribute.data];
-                  data.push(newData);
-                  setAttribute({ ...attribute, data });
-                }, 600);
-              }),
             onRowUpdate: (newData, oldData) =>
-              new Promise(resolve => {
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  const data = [...attribute.data];
+                  const data = featuresshow;
                   data[data.indexOf(oldData)] = newData;
                   setAttribute({ ...attribute, data });
                 }, 600);
               }),
-            onRowDelete: oldData =>
-              new Promise(resolve => {
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  const data = [...attribute.data];
+                  const data = featuresshow;
                   data.splice(data.indexOf(oldData), 1);
                   setAttribute({ ...attribute, data });
                 }, 600);
               })
           }}
         />
-      </div>
+      </div> */}
       <Button
         color="secondary"
         onClick={offpoint}
         className={classes.btn}
         variant="outlined"
-        // disabled={btnshow}
       >
         <SaveIcon />
         <Typography variant="caption">Save</Typography>

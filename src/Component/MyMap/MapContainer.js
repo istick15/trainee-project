@@ -53,11 +53,8 @@ const MapContainer = () => {
         });
 
         GetSite().then(s => {
-          console.log(s.data.site_id);
           GetDataset(s.data.site_id).then(ds => {
-            console.log(ds.data.dataset_id);
             getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-              console.log(gf);
               if (gf.data.length === undefined) {
                 mapContext.map.addSource("geo", {
                   type: "geojson",
@@ -94,6 +91,21 @@ const MapContainer = () => {
               }
             });
           });
+        });
+        const flyto = e => {
+          mapContext.map.flyTo({
+            center: e.features[0].geometry.coordinates,
+            zoom: 13
+          });
+        };
+        mapContext.map.on("click", "ids", flyto);
+        mapContext.map.on("mouseenter", "ids", function() {
+          mapContext.map.getCanvas().style.cursor = "pointer";
+        });
+
+        // Change it back to a pointer when it leaves.
+        mapContext.map.on("mouseleave", "ids", function() {
+          mapContext.map.getCanvas().style.cursor = "";
         });
       });
 

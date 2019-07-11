@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   edit: {
     left: DrawerWidth,
-    width: 800,
+    width: 320,
     border: "1px solid ",
     borderColor: "#E0E0E0",
     backgroundColor: "rgba(255, 255, 255, 0.8)"

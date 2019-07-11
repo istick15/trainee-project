@@ -338,7 +338,13 @@ export const getFeature = (site, dataset) => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
-  const requestURL = "https://api.vallaris.space/v2/features";
+  const requestURL =
+    "https://api.vallaris.space/v2/features?user_id=" +
+    USER_ID +
+    "&site_id=" +
+    site +
+    "&dataset_id=" +
+    dataset;
   const requestHeader = {
     "User-ID": USER_ID,
     "Content-Type": "application/json",
@@ -355,6 +361,40 @@ export const getFeature = (site, dataset) => {
       user_id: USER_ID,
       site_id: site
     }
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const DeleteFeature = (site, dataset, feature) => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL = "https://api.vallaris.space/v2/features";
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+
+  const params = {
+    dataset_id: dataset,
+    user_id: USER_ID,
+    site_id: site,
+    features: [feature]
+  };
+
+  return fetch(requestURL, {
+    method: "DELETE",
+    headers: requestHeader,
+    body: JSON.stringify(params)
   })
     .then(response => response.json())
     .then(response => {

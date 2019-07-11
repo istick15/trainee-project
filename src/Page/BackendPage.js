@@ -38,12 +38,23 @@ const BackendPage = () => {
   const classes = useStyles();
   const { history } = useReactRouter();
   const layerContext = useContext(LayerContext);
+  const featureContext = useContext(FeatureContext);
   const goToMap = () => {
     history.replace("/MapPage");
     GetDisplay().then(rs => {
       console.log(rs.data);
       layerContext.layer = rs.data;
       console.log(layerContext.layer);
+    });
+
+    GetSite().then(s => {
+      GetDataset(s.data.site_id).then(ds => {
+        getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+          console.log(gf.data);
+          featureContext.feature = gf.data;
+          console.log(featureContext.feature);
+        });
+      });
     });
   };
   return (

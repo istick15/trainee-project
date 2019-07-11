@@ -48,8 +48,7 @@ const AddMapService = () => {
   const [label, setLabel] = useState({});
   const [link, setLink] = useState({});
   const [description, setDescription] = useState({});
-  console.log(layers);
-  console.log(link);
+
   const [errorText, setErrorText] = useState("");
   const addChange = () => {
     if (layers === "" || label === "" || link === "" || description === "") {
