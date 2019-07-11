@@ -338,13 +338,7 @@ export const getFeature = (site, dataset) => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
-  const requestURL =
-    "https://api.vallaris.space/v2/features?user_id=" +
-    USER_ID +
-    "&site_id=" +
-    site +
-    "&dataset_id=" +
-    dataset;
+  const requestURL = "https://api.vallaris.space/v2/features";
   const requestHeader = {
     "User-ID": USER_ID,
     "Content-Type": "application/json",
@@ -359,9 +353,7 @@ export const getFeature = (site, dataset) => {
     qs: {
       dataset_id: dataset,
       user_id: USER_ID,
-      site_id: site,
-      row_per_page: "1",
-      page_number: "2"
+      site_id: site
     }
   })
     .then(response => response.json())
