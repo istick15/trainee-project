@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   Fab,
@@ -30,6 +30,7 @@ import { MapContext } from "./MapContext";
 import DeleteIcon from "@material-ui/icons/DeleteSweep";
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AddMapService from "./AddMapService";
+import { LayerContext } from "../../Context/LayerContext";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -58,7 +59,20 @@ const useStyles = makeStyles(theme => ({
 const SelectLayers = () => {
   const classes = useStyles();
   const mapContext = useContext(MapContext);
+
+  const layerContext = useContext(LayerContext);
   const [wms, setWms] = useState([]);
+
+  // useEffect(() => {
+  //   if ((layerContext.layer = [])) {
+  //     GetDisplay().then(dp => {
+  //       layerContext.layer = dp.data;
+  //       console.log(layerContext.layer);
+  //       setWms(layerContext.layer);
+  //     });
+  //   } else {
+  //   }
+  // });
 
   const addMapservice = () => {
     GetDisplay().then(dp => {
@@ -71,7 +85,7 @@ const SelectLayers = () => {
     });
   };
 
-  const WmsList = wms.map(key => {
+  const WmsList = layerContext.layer.map(key => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}
@@ -207,14 +221,17 @@ const SelectLayers = () => {
                   const remian = layers.wms.filter(
                     c => c.layer_name !== key.layer_name
                   );
-
+                  const get = layerContext.layer.filter(
+                    c => c.id === key.layer_name
+                  );
+                  console.log(get);
                   if (
                     window.confirm(
                       "Are you sure you want to delete this Layer?"
                     )
                   ) {
                     setLayers({ wms: remian });
-
+                    //layerContext.layer = layers;
                     const map = mapContext.map;
                     const check = map.getStyle();
                     const filter = check.layers.filter(
@@ -252,11 +269,16 @@ const SelectLayers = () => {
       setError(true);
       setTextError("please select your layer");
     } else {
-      const input = wms.filter(re => re.layer_name === e.target.value)[0];
+      const input = layerContext.layer.filter(
+        re => re.layer_name === e.target.value
+      )[0];
       console.log(input);
       setLayers({ ...layers, wms: [...layers.wms, input] });
-      const remian = wms.filter(c => c.layer_name !== e.target.value);
-      setWms(remian);
+      const remian = layerContext.layer.filter(
+        c => c.layer_name !== e.target.value
+      );
+      layerContext.layer = remian;
+      //setWms(remian);
     }
   };
 
@@ -281,11 +303,11 @@ const SelectLayers = () => {
     <div>
       <form className={classes.form}>
         <FormControl error={error}>
-          <InputLabel>Layers</InputLabel>
+          <InputLabel>Select your layers</InputLabel>
           <Select
             value={change}
             onChange={handleChange}
-            onClick={addMapservice}
+            //onClick={addMapservice}
           >
             <MenuItem value="" />
             {WmsList}
@@ -295,38 +317,8 @@ const SelectLayers = () => {
       </form>
       <Divider />
       {wmsLayers}
-      {/* <Tooltip title="Add Layers" placement="left">
-        <Card className={classes.fabButton}>
-          <IconButton onClick={LayerSelected} size="small">
-            <AddIcon className={classes.icon} fontSize="large" />
-          </IconButton>
-        </Card>
-      </Tooltip> */}
+
       <AddMapService />
-      {/* <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Select Layers</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Choose your layers</DialogContentText>
-          <form className={classes.form}>
-            <FormControl error={error}>
-              <InputLabel>Layers</InputLabel>
-              <Select value={change} onChange={handleChange}>
-                <MenuItem value="" />
-                {WmsList}
-              </Select>
-              <FormHelperText>{textError}</FormHelperText>
-            </FormControl>
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" color="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={LayerSelected}>
-            Select
-          </Button>
-        </DialogActions>
-      </Dialog> */}
     </div>
   );
 };
