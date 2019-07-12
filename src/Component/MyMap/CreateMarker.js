@@ -187,19 +187,19 @@ const CreateMarker = () => {
       });
     });
   };
-  const featuresshow = featureContext.feature.map(key => {
-    return {
-      id: key.properties.id,
-      name: key.properties.name,
-      description: key.properties.description,
-      coordinates:
-        "[" +
-        key.geometry.coordinates[0] +
-        "," +
-        key.geometry.coordinates[1] +
-        "]"
-    };
-  });
+  // const featuresshow = featureContext.feature.map(key => {
+  //   return {
+  //     id: key.properties.id,
+  //     name: key.properties.name,
+  //     description: key.properties.description,
+  //     coordinates:
+  //       "[" +
+  //       key.geometry.coordinates[0] +
+  //       "," +
+  //       key.geometry.coordinates[1] +
+  //       "]"
+  //   };
+  // });
 
   return (
     <div>
