@@ -18,7 +18,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CloseIcon from "@material-ui/icons/Close";
 import logonewvallaris from "../Img/logonewvallaris.png";
 //import CircularProgress from "@material-ui/core/CircularProgress";
-const userStyles = makeStyles({ 
+const userStyles = makeStyles({
   root: {
     height: "100vh",
     width: "100vw",
@@ -83,7 +83,8 @@ const userStyles = makeStyles({
     //position: "absolute",
     zIndex: 10,
     left: 240,
-    top: 220
+    top: 220,
+    color: " #F2AD2E "
   },
   test3: {
     // display: "flex",
@@ -256,8 +257,7 @@ const LoginPage = props => {
                 </List>
               </Grid>
               {/*  */}
-              <Grid xs={12} container justify="center" alignItems="center">
-                {/* <Grid xs={12} className={classes.test5}> */}
+              {/* <Grid xs={12} container justify="center" alignItems="center">
                 <Grid
                   xs={10}
                   container
@@ -268,8 +268,8 @@ const LoginPage = props => {
                     Login
                   </Typography>
                 </Grid>
-                {/* </Grid> */}
-              </Grid>
+              </Grid> */}
+              <br />
 
               <Grid item xs={12} className={classes.item}>
                 <TextField
@@ -313,6 +313,7 @@ const LoginPage = props => {
                   }}
                 />
               </Grid>
+              <br />
               <Grid
                 container
                 item
