@@ -51,11 +51,16 @@ const SplitButton = () => {
   const LogOut = () => {
     SignOut().then(lg => {
       console.log(lg);
-      localStorage.removeItem("user_token");
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("token");
+      if (lg.data.status) {
+        localStorage.removeItem("user_token");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("token");
+        window.location.reload();
+        //alert("log out");s
+      }
 
-      history.replace("/");
+      // window.location.reload();
+      // history.replace("/");
     });
   };
   return (
@@ -104,7 +109,7 @@ const SplitButton = () => {
                           Log out
                         </Grid>
                         <Grid container justify="flex-end">
-                          <LogoutIcon onClick={LogOut} />
+                          <LogoutIcon />
                         </Grid>
                       </MenuItem>
                     </Grid>
