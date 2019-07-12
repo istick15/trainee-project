@@ -38,6 +38,7 @@ import { LayerContext } from "../../Context/LayerContext";
 import { DeleteDataset, createdataset } from "../../Api/dataset";
 
 import { FeatureContext } from "../MyMap/FeatureContext";
+import Datasetdoss from "./Dataset";
 // import { withRouter } from "react-router-dom";
 // import { BrowserRouter as Router } from "react-router-dom";
 
@@ -66,6 +67,9 @@ const useStyles = makeStyles((theme) =>
     card: {
       maxWidth: "100vw",
       marginTop: 20
+    },
+    grow: {
+      flexGrow: 1
     }
   })
 );
@@ -83,8 +87,8 @@ const StoreSpace = () => {
     setOpen(false);
   }
   /////////////////////
-  const [Name, setName] = useState({});
-  const [Description, setDescription] = useState({});
+  const [Name, setName] = useState([]);
+  const [Description, setDescription] = useState([]);
   ////
   const CreateDataset = (e) => {
     e.preventDefault();
@@ -96,80 +100,6 @@ const StoreSpace = () => {
     });
   };
   ///////////////////////
-  const DeleteData = () => {
-    GetSite().then((s) => {
-      // console.log(s);
-      GetDataset(s.data.site_id).then((ds) => {
-        //     console.log(ds);
-        if (window.confirm("Are you sure you want to delete this DataSet?")) {
-          DeleteDataset(s.data.site_id, ds.data.dataset_id).then((dds) => {
-            //    console.log(dds);
-          });
-        }
-      });
-    });
-  };
-  /////////////////////////
-  const [Dataset, setDataset] = useState([]);
-
-  const Createdataset = () => {
-    GetSite().then((s) => {
-      //    console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then((ds) => {
-        //     console.log(ds);
-        setDataset([ds.data]);
-      });
-    });
-  };
-  const datalist = Dataset.map((key) => {
-    return (
-      <MenuItem key={key.dataset_id} value={key.dataset_name}>
-        <CardContent>
-          <Typography component="h5" variant="h5">
-            {key.dataset_name}
-          </Typography>
-
-          <Typography variant="subtitle1" color="textSecondary">
-            {key.dataset_description}
-          </Typography>
-          <Tooltip title="Edit">
-            <IconButton
-              onClick={(e) => {
-                history.replace("/MapPage");
-                GetDisplay().then((rs) => {
-                  console.log(rs.data);
-                  layerContext.layer = rs.data;
-                  console.log(layerContext.layer);
-                });
-                GetSite().then((s) => {
-                  GetDataset(s.data.site_id).then((ds) => {
-                    getFeature(s.data.site_id, ds.data.dataset_id).then(
-                      (gf) => {
-                        console.log(gf.data);
-                        featureContext.feature = gf.data;
-                        console.log(featureContext.feature);
-                      }
-                    );
-                  });
-                });
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            {/*  */}
-            <IconButton onClick={DeleteData}>
-              <DeleteIcon />
-            </IconButton>
-            {/*  */}
-          </Tooltip>
-        </CardContent>
-      </MenuItem>
-    );
-  });
-
-  const { history } = useReactRouter();
 
   ///////////////////
   return (
@@ -204,18 +134,19 @@ const StoreSpace = () => {
           <br />
           <Divider />
           {/*  */}
-          <Card className={classes.card}>
-            <CardContent>
-              <Button onClick={Createdataset}>
+          <div>
+            <Card className={classes.card}>
+              <CardContent>
+                <Datasetdoss />
+                {/* <Button onClick={Data}>
                 Dataset
-                {/* <ListItemIcon> */}
+          
                 <TouchAppIcon />
-                {/* </ListItemIcon> */}
               </Button>
-              <CardActionArea>{datalist}</CardActionArea>
-            </CardContent>
-          </Card>
-
+              <CardActionArea>{datalist}</CardActionArea> */}
+              </CardContent>
+            </Card>
+          </div>
           {/*  */}
         </Paper>
       </Grid>
