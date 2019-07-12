@@ -24,7 +24,6 @@ var geojson = {
 const MapContainer = () => {
   const classes = useStyles();
   const mapContext = useContext(MapContext);
-  const featureContext = useContext(FeatureContext);
   const [mount, setMount] = useState(false);
   const featureDataContext = useContext(FeatureDataContext);
   useEffect(() => {
@@ -98,7 +97,7 @@ const MapContainer = () => {
           });
         });
         const flyto = e => {
-          setShow(show => ({ open: false, hidden: !show.hidden }));
+          setShow(show => ({ open: false, hidden: false }));
           mapContext.map.flyTo({
             center: e.features[0].geometry.coordinates,
             zoom: 13
@@ -135,7 +134,7 @@ const MapContainer = () => {
     } else {
       setMount(true);
     }
-  }, [mount, mapContext]);
+  }, [mount, mapContext, featureDataContext]);
 
   const [show, setShow] = useState({ open: false, hidden: true });
   return (
