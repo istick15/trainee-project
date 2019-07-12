@@ -148,7 +148,7 @@ function MySnackbarContentWrapper(props) {
   );
 }
 ///
-const LoginPage = () => {
+const LoginPage = props => {
   const classes = userStyles();
   const { history } = useReactRouter();
 
@@ -182,7 +182,7 @@ const LoginPage = () => {
         localStorage.setItem("user_token", rs.data.user_token);
         localStorage.setItem("user_id", rs.data.user_id);
 
-        history.push("/Backend");
+        props.history.push("/Backend");
       }
 
       console.log(localStorage);
