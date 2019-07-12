@@ -4,7 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import ListLayer from "./LayerList";
+import { LayerContext } from "../../Context/LayerContext";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme =>
     },
     layerlist: {
       padding: (-3, 1),
-      marginTop: -7
+      marginTop: 13
       // borderRadius: 10
     }
   })
@@ -46,17 +46,20 @@ const useStyles = makeStyles(theme =>
 const LayerList = () => {
   const classes = useStyles();
   const [wms, setWms] = useState([]);
-  const addMapservice = () => {
-    GetDisplay().then(dp => {
-      console.log(dp.data);
-      if (dp.data.length === undefined) {
-        setWms([dp.data]);
-      } else {
-        setWms(dp.data);
-      }
-    });
-  };
-  const WmsList = wms.map(key => {
+
+  const layerContext = useContext(LayerContext);
+
+  useEffect(() => {
+    if ((layerContext.layer = [])) {
+      GetDisplay().then(dp => {
+        layerContext.layer = dp.data;
+        console.log(layerContext.layer);
+      });
+    } else {
+    }
+  }, []);
+
+  const MapServices = layerContext.layer.map(key => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}
@@ -64,9 +67,9 @@ const LayerList = () => {
     );
   });
   return (
-    <div onMouseMove={addMapservice}>
+    <div>
       <form direction="vertical" className={classes.layerlist}>
-        {WmsList}
+        {MapServices}
       </form>
     </div>
   );

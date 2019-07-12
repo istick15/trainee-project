@@ -81,13 +81,6 @@ const CreateMarker = () => {
     }
   }, []);
 
-  const [name, setName] = useState({ name: "" });
-  const [description, setDescription] = useState("");
-
-  const NameChange = e => {
-    setName({ ...name.name, [e.target.name]: e.target.value });
-  };
-  console.log(name);
   const addPoint = e => {
     const map = mapContext.map;
     const style = map.getStyle();
@@ -198,25 +191,7 @@ const CreateMarker = () => {
           </IconButton>
         </Card>
       </Tooltip>
-      <div className={classes.input}>
-        <Card>
-          <CardContent>
-            <TextField
-              className={classes.text}
-              variant="outlined"
-              label="Name"
-              name="name"
-              value={name.name}
-              onChange={NameChange}
-            />
-            <TextField
-              className={classes.text}
-              variant="outlined"
-              label="Description"
-            />
-          </CardContent>
-        </Card>
-      </div>
+
       <Button onClick={offpoint} className={classes.btn} variant="outlined">
         <SaveIcon />
         <Typography variant="caption">Save</Typography>

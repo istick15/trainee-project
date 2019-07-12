@@ -20,7 +20,7 @@ import { createdataset } from "../../Api/dataset";
 
 import Datasetdoss from "./Dataset";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       right: "200px"
@@ -67,11 +67,11 @@ const StoreSpace = () => {
   const [Name, setName] = useState([]);
   const [Description, setDescription] = useState([]);
   ////
-  const CreateDataset = e => {
+  const CreateDataset = (e) => {
     e.preventDefault();
-    GetSite().then(s => {
+    GetSite().then((s) => {
       console.log(s);
-      createdataset(Name, Description, s.data.site_id).then(cd => {
+      createdataset(Name, Description, s.data.site_id).then((cd) => {
         console.log(cd);
       });
     });
@@ -134,7 +134,7 @@ const StoreSpace = () => {
               label="Name"
               color="primary"
               fullWidth
-              onChange={n => {
+              onChange={(n) => {
                 setName(n.target.value);
               }}
             />
@@ -147,7 +147,7 @@ const StoreSpace = () => {
               label="Description"
               fullWidth
               color="primary"
-              onChange={d => {
+              onChange={(d) => {
                 setDescription(d.target.value);
               }}
             />
