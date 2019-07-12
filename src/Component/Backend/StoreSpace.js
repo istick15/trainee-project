@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -13,33 +13,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import TouchAppIcon from "@material-ui/icons/TouchApp";
-import useReactRouter from "use-react-router";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Select,
-  MenuItem,
-  MenuList,
-  FormControl,
-  FormControlLabel,
-  Switch,
-  List,
-  ListItemIcon,
-  IconButton,
-  Tooltip
-} from "@material-ui/core";
-import { GetDataset, GetSite, GetDisplay, getFeature } from "../MyMap/Request";
-import { LayerContext } from "../../Context/LayerContext";
 
-import { DeleteDataset, createdataset } from "../../Api/dataset";
-import { Feature } from "react-mapbox-gl";
-import { FeatureContext } from "../MyMap/FeatureContext";
-// import { withRouter } from "react-router-dom";
-// import { BrowserRouter as Router } from "react-router-dom";
+import { GetSite } from "../MyMap/Request";
+
+import { createdataset } from "../../Api/dataset";
+
+import Datasetdoss from "./Dataset";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -51,7 +30,7 @@ const useStyles = makeStyles(theme =>
     },
     root: {
       width: 900,
-      height: 300,
+      // height: 300,
       padding: theme.spacing(3, 2),
       marginTop: 20,
       borderRadius: 10
@@ -66,6 +45,9 @@ const useStyles = makeStyles(theme =>
     card: {
       maxWidth: "100vw",
       marginTop: 20
+    },
+    grow: {
+      flexGrow: 1
     }
   })
 );
@@ -73,8 +55,7 @@ const useStyles = makeStyles(theme =>
 const StoreSpace = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const layerContext = useContext(LayerContext);
-  const featureContext = useContext(FeatureContext);
+
   function handleClickOpen() {
     setOpen(true);
   }
@@ -83,8 +64,8 @@ const StoreSpace = () => {
     setOpen(false);
   }
   /////////////////////
-  const [Name, setName] = useState({});
-  const [Description, setDescription] = useState({});
+  const [Name, setName] = useState([]);
+  const [Description, setDescription] = useState([]);
   ////
   const CreateDataset = e => {
     e.preventDefault();
@@ -96,78 +77,6 @@ const StoreSpace = () => {
     });
   };
   ///////////////////////
-  const DeleteData = () => {
-    GetSite().then(s => {
-      // console.log(s);
-      GetDataset(s.data.site_id).then(ds => {
-        //     console.log(ds);
-        if (window.confirm("Are you sure you want to delete this DataSet?")) {
-          DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
-            //    console.log(dds);
-          });
-        }
-      });
-    });
-  };
-  /////////////////////////
-  const [Dataset, setDataset] = useState([]);
-
-  const Createdataset = () => {
-    GetSite().then(s => {
-      //    console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then(ds => {
-        //     console.log(ds);
-        setDataset([ds.data]);
-      });
-    });
-  };
-  const datalist = Dataset.map(key => {
-    return (
-      <MenuItem key={key.dataset_id} value={key.dataset_name}>
-        <CardContent>
-          <Typography component="h5" variant="h5">
-            {key.dataset_name}
-          </Typography>
-
-          <Typography variant="subtitle1" color="textSecondary">
-            {key.dataset_description}
-          </Typography>
-          <Tooltip title="Edit">
-            <IconButton
-              onClick={e => {
-                history.replace("/MapPage");
-                GetDisplay().then(rs => {
-                  console.log(rs.data);
-                  layerContext.layer = rs.data;
-                  console.log(layerContext.layer);
-                });
-                GetSite().then(s => {
-                  GetDataset(s.data.site_id).then(ds => {
-                    getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-                      console.log(gf.data);
-                      featureContext.feature = gf.data;
-                      console.log(featureContext.feature);
-                    });
-                  });
-                });
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            {/*  */}
-            <IconButton onClick={DeleteData}>
-              <DeleteIcon />
-            </IconButton>
-            {/*  */}
-          </Tooltip>
-        </CardContent>
-      </MenuItem>
-    );
-  });
-
-  const { history } = useReactRouter();
 
   ///////////////////
   return (
@@ -201,20 +110,9 @@ const StoreSpace = () => {
           </div>
           <br />
           <Divider />
-          {/*  */}
-          <Card className={classes.card}>
-            <CardContent>
-              <Button onClick={Createdataset}>
-                Dataset
-                {/* <ListItemIcon> */}
-                <TouchAppIcon />
-                {/* </ListItemIcon> */}
-              </Button>
-              <CardActionArea>{datalist}</CardActionArea>
-            </CardContent>
-          </Card>
+          <br />
 
-          {/*  */}
+          <Datasetdoss />
         </Paper>
       </Grid>
       <Dialog
@@ -262,6 +160,9 @@ const StoreSpace = () => {
               color="primary"
             >
               OK
+            </Button>
+            <Button onClick={handleClose} color="primary">
+              Close
             </Button>
           </DialogActions>
         </form>

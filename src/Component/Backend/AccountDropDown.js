@@ -54,6 +54,7 @@ const SplitButton = () => {
       localStorage.removeItem("user_token");
       localStorage.removeItem("user_id");
       localStorage.removeItem("token");
+
       history.replace("/");
     });
   };
