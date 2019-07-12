@@ -371,6 +371,40 @@ export const getFeature = (site, dataset) => {
     });
 };
 
+export const getFeatureByID = (site, dataset, feature) => {
+  const token = localStorage.getItem("user_token");
+  const USER_ID = localStorage.getItem("user_id");
+
+  const requestURL =
+    "https://api.vallaris.space/v2/features?user_id=" +
+    USER_ID +
+    "&site_id=" +
+    site +
+    "&dataset_id=" +
+    dataset +
+    "&feature_id=" +
+    feature;
+  const requestHeader = {
+    "User-ID": USER_ID,
+    "Content-Type": "application/json",
+    Authorization: token,
+    "Auth-Key": API_Key,
+    "Client-Service": "frontend-client"
+  };
+
+  return fetch(requestURL, {
+    method: "GET",
+    headers: requestHeader
+  })
+    .then(response => response.json())
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
 export const DeleteFeature = (site, dataset, feature) => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
