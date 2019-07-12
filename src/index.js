@@ -7,6 +7,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { FeatureContextProvider } from "./Component/MyMap/FeatureContext";
 import { LayerContextProvider } from "./Context/LayerContext";
+import { FeatureDataContextProvider } from "./Context/FeatureDataContext";
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -22,7 +23,9 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
     <LayerContextProvider>
       <FeatureContextProvider>
-        <App />
+        <FeatureDataContextProvider>
+          <App />
+        </FeatureDataContextProvider>
       </FeatureContextProvider>
     </LayerContextProvider>
   </ThemeProvider>,

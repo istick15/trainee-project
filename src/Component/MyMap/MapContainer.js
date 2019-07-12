@@ -4,7 +4,10 @@ import Basemap from "./Mapstyle";
 import { makeStyles } from "@material-ui/core/styles";
 import { Map } from "mapbox-gl";
 import mapboxgl from "mapbox-gl";
-import { GetSite, GetDataset, getFeature } from "./Request";
+import { GetSite, GetDataset, getFeature, getFeatureByID } from "./Request";
+import EditFeature from "./EditFeature";
+import { FeatureContext } from "./FeatureContext";
+import { FeatureDataContext } from "../../Context/FeatureDataContext";
 
 const useStyles = makeStyles(() => ({
   map: { height: `100vh`, width: "100vw" }
@@ -21,7 +24,9 @@ var geojson = {
 const MapContainer = () => {
   const classes = useStyles();
   const mapContext = useContext(MapContext);
+  const featureContext = useContext(FeatureContext);
   const [mount, setMount] = useState(false);
+  const featureDataContext = useContext(FeatureDataContext);
   useEffect(() => {
     if (mount) {
       mapContext.map = new Map({
@@ -93,9 +98,28 @@ const MapContainer = () => {
           });
         });
         const flyto = e => {
+          setShow(show => ({ open: false, hidden: !show.hidden }));
           mapContext.map.flyTo({
             center: e.features[0].geometry.coordinates,
             zoom: 13
+          });
+          var fea = mapContext.map.queryRenderedFeatures(e.point);
+          console.log(fea);
+          console.log(fea[0].properties.id);
+
+          GetSite().then(s => {
+            GetDataset(s.data.site_id).then(ds => {
+              getFeature(s.data.site_id, ds.data.dataset_id).then(f => {
+                getFeatureByID(
+                  s.data.site_id,
+                  ds.data.dataset_id,
+                  fea[0].properties.id
+                ).then(gf => {
+                  featureDataContext.data = [gf.data];
+                  console.log(featureDataContext.data);
+                });
+              });
+            });
           });
         };
         mapContext.map.on("click", "ids", flyto);
@@ -108,23 +132,17 @@ const MapContainer = () => {
           mapContext.map.getCanvas().style.cursor = "";
         });
       });
-
-      // GetSite().then(s => {
-      //   console.log(s.data.site_id);
-      //   GetDataset(s.data.site_id).then(ds => {
-      //     console.log(ds.data.dataset_id);
-      //     getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-      //       console.log(gf);
-      //     });
-      //   });
-      // });
     } else {
       setMount(true);
     }
   }, [mount, mapContext]);
 
+  const [show, setShow] = useState({ open: false, hidden: true });
   return (
     <div>
+      <div open={show.open} hidden={show.hidden}>
+        <EditFeature />
+      </div>
       <div id="map" className={classes.map} />
     </div>
   );
