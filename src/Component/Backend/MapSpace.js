@@ -8,7 +8,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Switch } from "@material-ui/core";
-import TestList from "./LayerList2";
+import LayerList2 from "./LayerList2";
 // import Test3 from "./AddLayer";
 
 // import AddMapService from "./AddMapServices";
@@ -50,29 +50,6 @@ const useStyles = makeStyles((theme) =>
 
 const MapWork = () => {
   const classes = useStyles();
-  // const [open, setOpen] = React.useState(false);
-
-  // function handleClickOpen() {
-  //   setOpen(true);
-  // }
-
-  // function handleClose() {
-  //   setOpen(false);
-  // }
-
-  // const [mapServices, setMapServices] = useState([]);
-  // const [layerName, setLayerName] = useState({});
-  // const [desC, setDesC] = useState({});
-  // const [URL, setURL] = useState({});
-
-  // const addLayerMap = (LayerInput, InputURL) => {
-  //   setWMSState({
-  //     ...WMSState,
-  //     list: [...WMSState.list, LayerInput],
-  //     url: [...WMSState.url, InputURL]
-  //   });
-  // };
-
   function handleMapChange(event) {
     setValue(event.target.value);
   }
@@ -128,7 +105,7 @@ const MapWork = () => {
             <Grid container spacing={1} alignItems="center" />
           </div>
           <div direction="vertical" className={classes.layerlist}>
-            <TestList />
+            <LayerList2 />
             {panes}
           </div>
         </Paper>
