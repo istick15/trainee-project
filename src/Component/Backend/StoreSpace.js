@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -13,34 +13,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import TouchAppIcon from "@material-ui/icons/TouchApp";
-import useReactRouter from "use-react-router";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Select,
-  MenuItem,
-  MenuList,
-  FormControl,
-  FormControlLabel,
-  Switch,
-  List,
-  ListItemIcon,
-  IconButton,
-  Tooltip
-} from "@material-ui/core";
-import { GetDataset, GetSite, GetDisplay, getFeature } from "../MyMap/Request";
-import { LayerContext } from "../../Context/LayerContext";
 
-import { DeleteDataset, createdataset } from "../../Api/dataset";
-import { Feature } from "react-mapbox-gl";
-import { FeatureContext } from "../MyMap/FeatureContext";
+import { GetSite } from "../MyMap/Request";
+
+import { createdataset } from "../../Api/dataset";
+
 import Datasetdoss from "./Dataset";
-// import { withRouter } from "react-router-dom";
-// import { BrowserRouter as Router } from "react-router-dom";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -52,7 +30,7 @@ const useStyles = makeStyles(theme =>
     },
     root: {
       width: 900,
-      height: 300,
+      // height: 300,
       padding: theme.spacing(3, 2),
       marginTop: 20,
       borderRadius: 10
@@ -77,8 +55,7 @@ const useStyles = makeStyles(theme =>
 const StoreSpace = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const layerContext = useContext(LayerContext);
-  const featureContext = useContext(FeatureContext);
+
   function handleClickOpen() {
     setOpen(true);
   }
@@ -133,22 +110,9 @@ const StoreSpace = () => {
           </div>
           <br />
           <Divider />
-          {/*  */}
-          <div>
-            <Card className={classes.card}>
-              <CardContent>
-                <Datasetdoss />
+          <br />
 
-                {/* <Button onClick={Data}>
-                Dataset
-          
-                <TouchAppIcon />
-              </Button>
-              <CardActionArea>{datalist}</CardActionArea> */}
-              </CardContent>
-            </Card>
-          </div>
-          {/*  */}
+          <Datasetdoss />
         </Paper>
       </Grid>
       <Dialog
@@ -196,6 +160,9 @@ const StoreSpace = () => {
               color="primary"
             >
               OK
+            </Button>
+            <Button onClick={handleClose} color="primary">
+              Close
             </Button>
           </DialogActions>
         </form>
