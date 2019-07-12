@@ -9,11 +9,7 @@
     "@straw-hat/react-fullscreen": "^1.2.1",
     "mapbox-gl": "^1.1.0",
     "material-table": "^1.40.1",
-<<<<<<< HEAD
     "material-ui": "^0.20.2",
-=======
-    "mui-datatables": "^2.6.2",
->>>>>>> abbb3f5fc9a5319af4b1fb80299e9699d5774923
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-mapbox-gl": "^4.4.0",

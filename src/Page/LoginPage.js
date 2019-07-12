@@ -18,7 +18,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CloseIcon from "@material-ui/icons/Close";
 import logonewvallaris from "../Img/logonewvallaris.png";
 //import CircularProgress from "@material-ui/core/CircularProgress";
-const userStyles = makeStyles({
+const userStyles = makeStyles({ 
   root: {
     height: "100vh",
     width: "100vw",
