@@ -59,7 +59,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
@@ -93,9 +93,9 @@ const CreateMarker = () => {
 
   useEffect(() => {
     if ((featureContext.feature = [])) {
-      GetSite().then(s => {
-        GetDataset(s.data.site_id).then(ds => {
-          getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+      GetSite().then((s) => {
+        GetDataset(s.data.site_id).then((ds) => {
+          getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
             featureContext.feature = gf.data;
           });
         });
@@ -104,7 +104,7 @@ const CreateMarker = () => {
     }
   }, []);
 
-  const addPoint = e => {
+  const addPoint = (e) => {
     const map = mapContext.map;
 
     var features = map.queryRenderedFeatures(e.point, {
@@ -143,21 +143,21 @@ const CreateMarker = () => {
 
       mapContext.map.off("click", addPoint);
     }
-    GetSite().then(s => {
+    GetSite().then((s) => {
       console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then(ds => {
+      GetDataset(s.data.site_id).then((ds) => {
         console.log(ds.data.dataset_id);
         CreateFeature(
           geojson.features,
           s.data.site_id,
           ds.data.dataset_id
-        ).then(f => {
+        ).then((f) => {
           console.log(f);
           if (f.data.status === 1) {
-            getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+            getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
               featureContext.feature = gf.data;
             });
-            CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
+            CreateTile(s.data.site_id, ds.data.dataset_id).then((ct) => {
               console.log(ct);
             });
           }
@@ -179,27 +179,27 @@ const CreateMarker = () => {
     document.body.style.cursor = "crosshair";
     map.on("click", addPoint);
 
-    GetSite().then(s => {
-      GetDataset(s.data.site_id).then(ds => {
-        getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+    GetSite().then((s) => {
+      GetDataset(s.data.site_id).then((ds) => {
+        getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
           console.log(gf.data);
         });
       });
     });
   };
-  const featuresshow = featureContext.feature.map(key => {
-    return {
-      id: key.properties.id,
-      name: key.properties.name,
-      description: key.properties.description,
-      coordinates:
-        "[" +
-        key.geometry.coordinates[0] +
-        "," +
-        key.geometry.coordinates[1] +
-        "]"
-    };
-  });
+  // const featuresshow = featureContext.feature.map(key => {
+  //   return {
+  //     id: key.properties.id,
+  //     name: key.properties.name,
+  //     description: key.properties.description,
+  //     coordinates:
+  //       "[" +
+  //       key.geometry.coordinates[0] +
+  //       "," +
+  //       key.geometry.coordinates[1] +
+  //       "]"
+  //   };
+  // });
 
   return (
     <div>
