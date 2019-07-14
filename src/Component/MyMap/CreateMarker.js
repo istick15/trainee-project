@@ -4,7 +4,9 @@ import {
   Card,
   Typography,
   Tooltip,
-  IconButton
+  IconButton,
+  CardContent,
+  TextField
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddLocation from "@material-ui/icons/AddLocation";
@@ -17,49 +19,11 @@ import {
   CreateTile,
   getFeature
 } from "./Request";
-import MaterialTable from "material-table";
-import AddBox from "@material-ui/icons/AddBox";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import Check from "@material-ui/icons/Check";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Edit from "@material-ui/icons/Edit";
-import FilterList from "@material-ui/icons/FilterList";
-import FirstPage from "@material-ui/icons/FirstPage";
-import LastPage from "@material-ui/icons/LastPage";
-import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
-import Search from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
+
 import { FeatureContext } from "./FeatureContext";
+import CancelIcon from "@material-ui/icons/Cancel";
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
-  )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
-  )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   fabButton: {
     position: "absolute",
     zIndex: 1,
@@ -70,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     position: "absolute",
     right: "1%",
+    bottom: "1%",
+    color: "#32CD32"
+  },
+  btncancel: {
+    position: "absolute",
+    right: "32%",
     bottom: "1%"
   },
   position: {
@@ -79,6 +49,13 @@ const useStyles = makeStyles((theme) => ({
     width: 780,
     margin: "0 auto",
     left: 10
+  },
+  input: {
+    position: "absolute",
+    top: "15%"
+  },
+  text: {
+    marginBottom: 10
   }
 }));
 var geojson = {
@@ -93,9 +70,9 @@ const CreateMarker = () => {
 
   useEffect(() => {
     if ((featureContext.feature = [])) {
-      GetSite().then((s) => {
-        GetDataset(s.data.site_id).then((ds) => {
-          getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
+      GetSite().then(s => {
+        GetDataset(s.data.site_id).then(ds => {
+          getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
             featureContext.feature = gf.data;
           });
         });
@@ -104,8 +81,25 @@ const CreateMarker = () => {
     }
   }, []);
 
-  const addPoint = (e) => {
+  const addPoint = e => {
     const map = mapContext.map;
+    const style = map.getStyle();
+    const filter = style.layers.filter(rs => rs.id === "geojson-points");
+
+    if (filter.length === 1) {
+      console.log(filter);
+    } else {
+      mapContext.map.addLayer({
+        id: "geojson-points",
+        type: "circle",
+        source: "geojson",
+        paint: {
+          "circle-radius": 10,
+          "circle-color": "#F2AD2E"
+        },
+        filter: ["in", "$type", "Point"]
+      });
+    }
 
     var features = map.queryRenderedFeatures(e.point, {
       layers: ["geojson-points"]
@@ -113,6 +107,7 @@ const CreateMarker = () => {
 
     if (features.length) {
       var id = features[0].properties.id;
+
       geojson.features = geojson.features.filter(function(point) {
         return point.properties.id !== id;
       });
@@ -135,29 +130,29 @@ const CreateMarker = () => {
       geojson.features.push(point);
     }
     map.getSource("geojson").setData(geojson);
-    console.log(geojson.features);
   };
+
   const offpoint = () => {
     if (window.confirm("Are you sure you want to save?")) {
       document.body.style.cursor = "default";
 
       mapContext.map.off("click", addPoint);
     }
-    GetSite().then((s) => {
+    GetSite().then(s => {
       console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then((ds) => {
+      GetDataset(s.data.site_id).then(ds => {
         console.log(ds.data.dataset_id);
         CreateFeature(
           geojson.features,
           s.data.site_id,
           ds.data.dataset_id
-        ).then((f) => {
+        ).then(f => {
           console.log(f);
           if (f.data.status === 1) {
-            getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
+            getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
               featureContext.feature = gf.data;
             });
-            CreateTile(s.data.site_id, ds.data.dataset_id).then((ct) => {
+            CreateTile(s.data.site_id, ds.data.dataset_id).then(ct => {
               console.log(ct);
             });
           }
@@ -166,40 +161,26 @@ const CreateMarker = () => {
     });
   };
 
-  const [attribute, setAttribute] = useState({
-    columns: [
-      { title: "ID", field: "id" },
-      { title: "Name", field: "name" },
-      { title: "Coordinate", field: "coordinates" }
-    ]
-  });
+  const CancelPoint = () => {
+    document.body.style.cursor = "default";
+    const map = mapContext.map;
+    map.removeLayer("geojson-points");
 
+    mapContext.map.off("click", addPoint);
+  };
   const CreatePoint = () => {
     const map = mapContext.map;
     document.body.style.cursor = "crosshair";
     map.on("click", addPoint);
 
-    GetSite().then((s) => {
-      GetDataset(s.data.site_id).then((ds) => {
-        getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
+    GetSite().then(s => {
+      GetDataset(s.data.site_id).then(ds => {
+        getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
           console.log(gf.data);
         });
       });
     });
   };
-  // const featuresshow = featureContext.feature.map(key => {
-  //   return {
-  //     id: key.properties.id,
-  //     name: key.properties.name,
-  //     description: key.properties.description,
-  //     coordinates:
-  //       "[" +
-  //       key.geometry.coordinates[0] +
-  //       "," +
-  //       key.geometry.coordinates[1] +
-  //       "]"
-  //   };
-  // });
 
   return (
     <div>
@@ -210,43 +191,20 @@ const CreateMarker = () => {
           </IconButton>
         </Card>
       </Tooltip>
-      {/* <div className={classes.position}>
-        <MaterialTable
-          title="Edit"
-          icons={tableIcons}
-          columns={attribute.columns}
-          data={featuresshow}
-          editable={{
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  const data = featuresshow;
-                  data[data.indexOf(oldData)] = newData;
-                  setAttribute({ ...attribute, data });
-                }, 600);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  const data = featuresshow;
-                  data.splice(data.indexOf(oldData), 1);
-                  setAttribute({ ...attribute, data });
-                }, 600);
-              })
-          }}
-        />
-      </div> */}
-      <Button
-        color="secondary"
-        onClick={offpoint}
-        className={classes.btn}
-        variant="outlined"
-      >
+
+      <Button onClick={offpoint} className={classes.btn} variant="outlined">
         <SaveIcon />
         <Typography variant="caption">Save</Typography>
       </Button>
+      {/* <Button
+        color="secondary"
+        className={classes.btncancel}
+        variant="outlined"
+        onClick={CancelPoint}
+      >
+        <CancelIcon />
+        <Typography variant="caption">Cancel</Typography>
+      </Button> */}
     </div>
   );
 };

@@ -41,6 +41,10 @@ const MapContainer = () => {
       });
 
       mapContext.map.on("load", function() {
+        const map = mapContext.map;
+        const style = map.getStyle();
+        const filter = style.layers.filter(rs => rs.id === "geojson-points");
+
         mapContext.map.addSource("geojson", {
           type: "geojson",
           data: geojson

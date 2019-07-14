@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     top: "1%",
     zIndex: 1,
     width: "auto",
-    height: "auto"
+    height: 150
   }
 }));
 const EditFeature = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Fab,
   Dialog,
@@ -16,7 +16,8 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
-import { AddMapLayers, AddRequest } from "./Request";
+import { AddMapLayers, AddRequest, GetDisplay } from "./Request";
+import { LayerContext } from "../../Context/LayerContext";
 
 const useStyles = makeStyles(theme => ({
   fabButton: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 const AddMapService = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
+  const layerContext = useContext(LayerContext);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -64,6 +65,9 @@ const AddMapService = () => {
             if (rq.data.status === 0) {
               setErrorText("pls check URL");
             } else {
+              GetDisplay().then(dp => {
+                layerContext.layer = dp.data;
+              });
               console.log(rq);
               setOpen(false);
             }
