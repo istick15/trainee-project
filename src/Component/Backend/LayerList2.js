@@ -6,7 +6,7 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { LayerContext } from "../../Context/LayerContext";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       right: "200px"
@@ -45,21 +45,21 @@ const useStyles = makeStyles(theme =>
 
 const LayerList = () => {
   const classes = useStyles();
-  const [wms, setWms] = useState([]);
+  // const [wms, setWms] = useState([]);
 
   const layerContext = useContext(LayerContext);
-
+  console.log(layerContext);
   useEffect(() => {
     if ((layerContext.layer = [])) {
-      GetDisplay().then(dp => {
-        layerContext.layer = dp.data;
+      GetDisplay().then((ml) => {
+        layerContext.layer = ml.data;
         console.log(layerContext.layer);
       });
     } else {
     }
   }, []);
 
-  const MapServices = layerContext.layer.map(key => {
+  const MapServices = layerContext.layer.map((key) => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}

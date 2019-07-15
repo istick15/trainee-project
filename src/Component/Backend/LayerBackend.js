@@ -96,7 +96,7 @@ const TestAppBar = () => {
                     Map Services
                   </Fab>
 
-                  <Fab
+                  {/* <Fab
                     variant="outlined"
                     size="small"
                     color="primary"
@@ -104,7 +104,7 @@ const TestAppBar = () => {
                     className={classes.margin}
                   >
                     Manage
-                  </Fab>
+                  </Fab> */}
                 </Grid>
                 <Grid container justify="center" item xs={6} sm={3}>
                   <img src={Logo} alt="" className={classes.logo} />

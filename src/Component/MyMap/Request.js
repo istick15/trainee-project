@@ -1,5 +1,6 @@
 //const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
-const API_Key = "k-2e33c66d-4f30-5ed8-ab3d-dee60bfb989a";
+// const API_Key = "k-2e33c66d-4f30-5ed8-ab3d-dee60bfb989a";
+const API_Key = "k-5f444300-948f-55f1-8581-ae36bc6e20f1";
 export const getMapLayers = () => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
@@ -20,11 +21,11 @@ export const getMapLayers = () => {
       user_id: USER_ID
     }
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -52,11 +53,11 @@ export const AddMapLayers = (layername, label, description) => {
     headers: requestHeader,
     body: JSON.stringify(params)
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -87,11 +88,11 @@ export const AddRequest = (request, layerid) => {
     body: JSON.stringify(params),
     json: true
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -114,11 +115,11 @@ export const GetDisplay = () => {
     method: "GET",
     headers: requestHeader
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -140,16 +141,16 @@ export const SignOut = () => {
     method: "GET",
     headers: requestHeader
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
 
-export const DeleteLayers = layerID => {
+export const DeleteLayers = (layerID) => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
@@ -170,11 +171,11 @@ export const DeleteLayers = layerID => {
     headers: requestHeader,
     body: JSON.stringify(params)
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -201,11 +202,11 @@ export const DeleteRequest = (layerID, request) => {
     headers: requestHeader,
     body: JSON.stringify(params)
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -228,16 +229,16 @@ export const GetSite = () => {
     method: "GET",
     headers: requestHeader
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
 
-export const GetDataset = site => {
+export const GetDataset = (site) => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
 
@@ -258,11 +259,11 @@ export const GetDataset = site => {
     method: "GET",
     headers: requestHeader
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -292,11 +293,11 @@ export const CreateFeature = (geojson, site, dataset) => {
     body: JSON.stringify(params),
     json: true
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -325,11 +326,11 @@ export const CreateTile = (site, dataset) => {
     body: JSON.stringify(params),
     json: true
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -362,11 +363,11 @@ export const getFeature = (site, dataset) => {
       site_id: site
     }
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -396,11 +397,11 @@ export const getFeatureByID = (site, dataset, feature) => {
     method: "GET",
     headers: requestHeader
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
@@ -430,11 +431,11 @@ export const DeleteFeature = (site, dataset, feature) => {
     headers: requestHeader,
     body: JSON.stringify(params)
   })
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       return error;
     });
 };
