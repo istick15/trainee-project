@@ -16,7 +16,7 @@ import {
 } from "../MyMap/Request";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {},
   iconbtn: {
     color: "red",
@@ -33,7 +33,7 @@ const LayerList = () => {
 
   const Delete = () => {
     //เรียกlayerแล้วค่อยลบ
-    GetDisplay().then(rs => {
+    GetDisplay().then((rs) => {
       console.log(rs.data);
       console.log(rs.data[0].layer_id);
       // DeleteLayers(rs.data[0].layer_id).then(dl => {
@@ -56,7 +56,7 @@ const LayerList = () => {
           <IconButton
             className={classes.iconbtn}
             onClick={() => {
-              GetDisplay().then(rs => {
+              GetDisplay().then((rs) => {
                 console.log(rs.data);
                 console.log(rs.data[index].service[0].request_id);
                 // DeleteLayers(rs.data[index].layer_id).then(dl => {
@@ -76,7 +76,12 @@ const LayerList = () => {
       </Card>
     );
   });
-  return <div>{list}</div>;
+  return (
+    <div>
+      <form direction="vertical" className={classes.layerlist}>
+        {list}
+      </form>
+    </div>
+  );
 };
-
 export default LayerList;
