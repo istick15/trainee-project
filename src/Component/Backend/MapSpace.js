@@ -9,7 +9,8 @@ import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Switch } from "@material-ui/core";
 import LayerList2 from "./LayerList2";
-// import AddLayer from "./AddLayer";
+import AddLayer from "./AddLayer";
+import LayerList from "./LayerList";
 
 // import AddMapService from "./AddMapServices";
 
@@ -87,7 +88,7 @@ const MapWork = () => {
               <Typography variant="h5">Dataset</Typography>
             </Grid>
             <Grid container justify="flex-end" item xs={12} sm={6}>
-              {/* <AddLayer /> */}
+              <AddLayer />
             </Grid>
           </Grid>
           <br />
@@ -105,7 +106,8 @@ const MapWork = () => {
             <Grid container spacing={1} alignItems="center" />
           </div>
           <div direction="vertical" className={classes.layerlist}>
-            <LayerList2 />
+            {/* <LayerList2 /> */}
+            <LayerList />
             {panes}
           </div>
         </Paper>
