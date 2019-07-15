@@ -9,11 +9,11 @@ import {
   GetDataset,
   getFeature
 } from "../Component/MyMap/Request";
-import { MapContext } from "../Component/MyMap/MapContext";
+import { MapContext } from "../../src/Component/MyMap/MapContext";
 import { FeatureContext } from "../Component/MyMap/FeatureContext";
 import { LayerContext } from "../Context/LayerContext";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       width: 200,
@@ -41,15 +41,15 @@ const BackendPage = () => {
   const featureContext = useContext(FeatureContext);
   const goToMap = () => {
     history.replace("/MapPage");
-    GetDisplay().then(rs => {
+    GetDisplay().then((rs) => {
       console.log(rs.data);
       layerContext.layer = rs.data;
       console.log(layerContext.layer);
     });
 
-    GetSite().then(s => {
-      GetDataset(s.data.site_id).then(ds => {
-        getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
+    GetSite().then((s) => {
+      GetDataset(s.data.site_id).then((ds) => {
+        getFeature(s.data.site_id, ds.data.dataset_id).then((gf) => {
           console.log(gf.data);
           featureContext.feature = gf.data;
           console.log(featureContext.feature);

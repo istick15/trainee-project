@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { getMapLayers, GetDisplay } from "../MyMap/Request";
-import { MapContext } from "./Context/Mapcontext";
+import { MapContext } from "../MyMap/MapContext";
 import DeleteIcon from "@material-ui/icons/DeleteSweep";
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Workspace from "./WorkSpace";
