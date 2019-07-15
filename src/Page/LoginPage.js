@@ -183,7 +183,7 @@ const LoginPage = props => {
         localStorage.setItem("user_token", rs.data.user_token);
         localStorage.setItem("user_id", rs.data.user_id);
 
-        props.history.push("/Backend");
+        props.history.push("/Backend/store");
       }
 
       console.log(localStorage);
