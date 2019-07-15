@@ -26,6 +26,10 @@ const useStyles = makeStyles({
     padding: (-3, 1),
     marginTop: -7
     // borderRadius: 10
+  },
+  test: {
+    display: "flex",
+    width: "47vw"
   }
 });
 const Datasetdoss = () => {
@@ -48,18 +52,98 @@ const Datasetdoss = () => {
     });
   };
 
-  // useEffect(() => {
+  useEffect(() => {
+    // GetSite().then(s => {
+    //   console.log(s.data.site_id);
+    //   GetDataset(s.data.site_id).then(ds => {
+    //     console.log(ds);
+    //     // setDataset([ds.data]);
+    //     layerContext.layer = ds.data;
+    //     console.log(layerContext.layer);
+    //   });
+    // });
+    if (Dataset) {
+      GetSite().then(s => {
+        console.log(s.data.site_id);
+        GetDataset(s.data.site_id).then(ds => {
+          console.log(ds);
+          setDataset([ds.data]);
+          //  layerContext.layer = ds.data;
+          //  console.log(layerContext.layer);
+        });
+      });
+    } else {
+    }
+  }, []);
+
+  const datalist = Dataset.map(key => {
+    return (
+      <MenuItem key={key.dataset_id} value={key.dataset_name}>
+        <CardContent>
+          <Grid className={classes.test}>
+            <Grid>
+              <Typography component="h5" variant="h5">
+                {" "}
+                {key.dataset_name}
+              </Typography>
+
+              <Typography variant="subtitle1" color="textSecondary">
+                {key.dataset_description}
+              </Typography>
+              {/* </CardContent> */}
+            </Grid>
+            <Grid container justify="flex-end">
+              <Tooltip title="Edit">
+                <IconButton
+                  onClick={e => {
+                    history.replace("/MapPage");
+                    GetDisplay().then(rs => {
+                      console.log(rs.data);
+                      layerContext.layer = rs.data;
+                      console.log(layerContext.layer);
+                    });
+                    GetSite().then(s => {
+                      GetDataset(s.data.site_id).then(ds => {
+                        getFeature(s.data.site_id, ds.data.dataset_id).then(
+                          gf => {
+                            console.log(gf.data);
+                            featureContext.feature = gf.data;
+                            console.log(featureContext.feature);
+                          }
+                        );
+                      });
+                    });
+                  }}
+                  color="primary"
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton onClick={DeleteData} color="secondary">
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+              {/*  */}
+              {/* </CardContent> */}
+              {/*  */}
+            </Grid>
+          </Grid>
+        </CardContent>
+      </MenuItem>
+    );
+  });
+  // ////////////////////////////////////////
+  // const Data = () => {
   //   GetSite().then(s => {
-  //     //  console.log(s.data.site_id);
+  //     console.log(s.data.site_id);
   //     GetDataset(s.data.site_id).then(ds => {
-  //       //  console.log(ds);
-  //       // setDataset([ds.data]);
-  //       userContext.user = ds.data;
-  //       console.log(userContext.user);
+  //       console.log(ds);
+  //       setDataset([ds.data]);
   //     });
   //   });
-  // });
-  // const datalist = userContext.user.map(key => {
+  // };
+  // const datalist = Dataset.map(key => {
   //   return (
   //     <MenuItem key={key.dataset_id} value={key.dataset_name}>
   //       <CardContent>
@@ -70,113 +154,56 @@ const Datasetdoss = () => {
   //         <Typography variant="subtitle1" color="textSecondary">
   //           {key.dataset_description}
   //         </Typography>
-  //       </CardContent>
-  //       <div className={classes.grow}>
-  //         <Tooltip title="Edit">
-  //           <IconButton
-  //             onClick={e => {
-  //               history.replace("/MapPage");
-  //               GetDisplay().then(rs => {
-  //                 console.log(rs.data);
-  //                 layerContext.layer = rs.data;
-  //                 console.log(layerContext.layer);
-  //               });
-  //               GetSite().then(s => {
-  //                 GetDataset(s.data.site_id).then(ds => {
-  //                   getFeature(s.data.site_id, ds.data.dataset_id).then(gf => {
-  //                     console.log(gf.data);
-  //                     featureContext.feature = gf.data;
-  //                     console.log(featureContext.feature);
+
+  //         <div className={classes.grow}>
+  //           {/* <Grid container justify="flex-end"> */}
+  //           <Tooltip title="Edit">
+  //             <IconButton
+  //               onClick={e => {
+  //                 history.replace("/MapPage");
+  //                 GetDisplay().then(rs => {
+  //                   console.log(rs.data);
+  //                   layerContext.layer = rs.data;
+  //                   console.log(layerContext.layer);
+  //                 });
+  //                 GetSite().then(s => {
+  //                   GetDataset(s.data.site_id).then(ds => {
+  //                     getFeature(s.data.site_id, ds.data.dataset_id).then(
+  //                       gf => {
+  //                         console.log(gf.data);
+  //                         featureContext.feature = gf.data;
+  //                         console.log(featureContext.feature);
+  //                       }
+  //                     );
   //                   });
   //                 });
-  //               });
-  //             }}
-  //             color="primary"
-  //           >
-  //             <EditIcon />
-  //           </IconButton>
-  //         </Tooltip>
-  //         <Tooltip title="Delete">
-  //           <IconButton onClick={DeleteData} color="secondary">
-  //             <DeleteIcon />
-  //           </IconButton>
-  //         </Tooltip>
-  //         {/*  */}
-  //         {/* </CardContent> */}
-  //         {/*  */}
-  //       </div>
+  //               }}
+  //               color="primary"
+  //             >
+  //               <EditIcon />
+  //             </IconButton>
+  //           </Tooltip>
+
+  //           <Tooltip title="Delete">
+  //             <IconButton onClick={DeleteData} color="secondary">
+  //               <DeleteIcon />
+  //             </IconButton>
+  //           </Tooltip>
+  //           {/*  */}
+  //           {/* </CardContent> */}
+  //           {/*  */}
+  //           {/* </Grid> */}
+  //         </div>
+  //       </CardContent>
   //     </MenuItem>
   //   );
   // });
-  // ////////////////////////////////////////
-  const Data = () => {
-    GetSite().then(s => {
-      //  console.log(s.data.site_id);
-      GetDataset(s.data.site_id).then(ds => {
-        //  console.log(ds);
-        setDataset([ds.data]);
-      });
-    });
-  };
-  const datalist = Dataset.map(key => {
-    return (
-      <MenuItem key={key.dataset_id} value={key.dataset_name}>
-        <CardContent>
-          <Typography component="h5" variant="h5">
-            {" "}
-            {key.dataset_name}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {key.dataset_description}
-          </Typography>
-
-          <div className={classes.grow}>
-            {/* <Grid container justify="flex-end"> */}
-            <Tooltip title="Edit">
-              <IconButton
-                onClick={e => {
-                  history.replace("/MapPage");
-                  GetDisplay().then(rs => {
-                    console.log(rs.data);
-                    layerContext.layer = rs.data;
-                    console.log(layerContext.layer);
-                  });
-                  GetSite().then(s => {
-                    GetDataset(s.data.site_id).then(ds => {
-                      getFeature(s.data.site_id, ds.data.dataset_id).then(
-                        gf => {
-                          console.log(gf.data);
-                          featureContext.feature = gf.data;
-                          console.log(featureContext.feature);
-                        }
-                      );
-                    });
-                  });
-                }}
-                color="primary"
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Delete">
-              <IconButton onClick={DeleteData} color="secondary">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-            {/*  */}
-            {/* </CardContent> */}
-            {/*  */}
-            {/* </Grid> */}
-          </div>
-        </CardContent>
-      </MenuItem>
-    );
-  });
   const { history } = useReactRouter();
 
   return (
-    <div onMouseMove={Data}>
+    <div
+    // onMouseMove={Data}
+    >
       <form direction="vertical" className={classes.layerlist}>
         {datalist}
       </form>
