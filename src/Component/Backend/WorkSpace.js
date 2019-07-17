@@ -57,19 +57,6 @@ const AddMapService = () => {
   console.log(link);
   const [errorText, setErrorText] = useState("");
   const addChange = () => {
-    // if (link === "" || layers === "") {
-    //   setErrorText("please input value");
-    // } else {
-    //   AddMapLayers(layers, description).then(rs => {
-    //     if (rs.Text === "Bad Request") {
-    //       setErrorText("Something wrong pls check");
-    //       setOpen(true);
-    //     } else {
-    //       setOpen(false);
-    //       setErrorText("");
-    //     }
-    //   });
-    // }
     if (layers === "" || label === "" || link === "" || description === "") {
       setErrorText("please input value");
     } else {
