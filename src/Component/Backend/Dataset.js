@@ -60,10 +60,10 @@ const Datasetdoss = () => {
   const layerContext = useContext(LayerContext);
   const featureContext = useContext(FeatureContext);
   const DeleteData = () => {
-    GetSite().then(s => {
-      GetDataset(s.data.site_id).then(ds => {
+    GetSite().then((s) => {
+      GetDataset(s.data.site_id).then((ds) => {
         if (window.confirm("Are you sure you want to delete this DataSet?")) {
-          DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
+          DeleteDataset(s.data.site_id, ds.data.dataset_id).then((dds) => {
             console.log(dds);
           });
         }
@@ -82,9 +82,9 @@ const Datasetdoss = () => {
     //   });
     // });
     if (Dataset) {
-      GetSite().then(s => {
+      GetSite().then((s) => {
         console.log(s.data.site_id);
-        GetDataset(s.data.site_id).then(ds => {
+        GetDataset(s.data.site_id).then((ds) => {
           console.log(ds);
           setDataset([ds.data]);
           //  layerContext.layer = ds.data;
@@ -95,7 +95,7 @@ const Datasetdoss = () => {
     }
   }, []);
 
-  const datalist = Dataset.map(key => {
+  const datalist = Dataset.map((key) => {
     return (
       <MenuItem key={key.dataset_id} value={key.dataset_name}>
         <CardContent className={classes.nono}>
@@ -114,17 +114,17 @@ const Datasetdoss = () => {
             <Grid container justify="flex-end" className={classes.num2}>
               <Tooltip title="Edit">
                 <IconButton
-                  onClick={e => {
+                  onClick={(e) => {
                     history.replace("/MapPage");
-                    GetDisplay().then(rs => {
+                    GetDisplay().then((rs) => {
                       console.log(rs.data);
                       layerContext.layer = rs.data;
                       console.log(layerContext.layer);
                     });
-                    GetSite().then(s => {
-                      GetDataset(s.data.site_id).then(ds => {
+                    GetSite().then((s) => {
+                      GetDataset(s.data.site_id).then((ds) => {
                         getFeature(s.data.site_id, ds.data.dataset_id).then(
-                          gf => {
+                          (gf) => {
                             console.log(gf.data);
                             featureContext.feature = gf.data;
                             console.log(featureContext.feature);

@@ -8,6 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { FeatureContextProvider } from "./Component/MyMap/FeatureContext";
 import { LayerContextProvider } from "./Context/LayerContext";
 import { FeatureDataContextProvider } from "./Context/FeatureDataContext";
+
 const theme = createMuiTheme({
   palette: {
     primary: {

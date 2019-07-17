@@ -69,16 +69,6 @@ const MapWork = () => {
     url: []
   });
 
-  const panes = WMSState.list.map((key) => (
-    <MenuItem
-      className={classes.layer}
-      control={<Switch id={key} onChange={handleMapChange} />}
-      label={key}
-      key={key}
-    >
-      {key}
-    </MenuItem>
-  ));
   return (
     <div>
       <Grid container justify="center">
@@ -106,9 +96,8 @@ const MapWork = () => {
             <Grid container spacing={1} alignItems="center" />
           </div>
           <div direction="vertical" className={classes.layerlist}>
-            {/* <LayerList2 /> */}
-            <LayerList />
-            {panes}
+            <LayerList2 />
+            {/* <LayerList /> */}
           </div>
         </Paper>
       </Grid>
