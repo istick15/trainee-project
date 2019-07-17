@@ -48,18 +48,13 @@ const useStyles = makeStyles({
   }
 });
 
+
+
+///
 const Datasetdoss = () => {
   const classes = useStyles();
   /////
-  const [open, setOpen] = useState(false);
-
-  function handleClickOpen() {
-    setOpen(true);
-  }
-
-  function handleClose() {
-    setOpen(false);
-  }
+ 
   //////
   const [Dataset, setDataset] = useState([]);
   const layerContext = useContext(LayerContext);
@@ -147,7 +142,7 @@ const Datasetdoss = () => {
                 <IconButton
                   color="secondary"
                   onClick={DeleteData}
-                  //   onClick={handleClickOpen}
+                  //onClick={handleClickOpen}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -175,6 +170,8 @@ const Datasetdoss = () => {
               </Button>
             </DialogActions>
           </Dialog> */}
+      
+        {/*  */}
       </MenuItem>
     );
   });
