@@ -59,7 +59,8 @@ const LayerList = () => {
       });
     } else {
     }
-  }, []);
+  }, [layerContext]);
+  console.log(layerContext);
   const MapServices = layerContext.layer.map((key) => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
