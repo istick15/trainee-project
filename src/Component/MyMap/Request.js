@@ -1,4 +1,4 @@
-//const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
+// const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
 // const API_Key = "k-2e33c66d-4f30-5ed8-ab3d-dee60bfb989a";
 const API_Key = "k-5f444300-948f-55f1-8581-ae36bc6e20f1";
 export const getMapLayers = () => {

@@ -17,6 +17,11 @@ import { Feature } from "react-mapbox-gl";
 import { FeatureContext } from "../MyMap/FeatureContext";
 import { LayerContext } from "../../Context/LayerContext";
 import { UserContext } from "../../Context/UserContext";
+import { Dialog, Card } from "material-ui";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 const useStyles = makeStyles({
   grow: {
     flexGrow: 1
@@ -28,14 +33,33 @@ const useStyles = makeStyles({
     // borderRadius: 10
   },
   test: {
-    display: "flex",
-    width: "47vw"
+    display: "flex"
+    // width: "100vw"
+  },
+  // num1: {
+  //   width: "20vw"
+  // },
+  // num2: {
+  //   display: "flex",
+  //   width: "25vw"
+  // }
+  nono: {
+    width: "100vh"
   }
 });
+
 const Datasetdoss = () => {
   const classes = useStyles();
   /////
-  const userContext = useContext(UserContext);
+  const [open, setOpen] = useState(false);
+
+  function handleClickOpen() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
   //////
   const [Dataset, setDataset] = useState([]);
   const layerContext = useContext(LayerContext);
@@ -79,9 +103,9 @@ const Datasetdoss = () => {
   const datalist = Dataset.map((key) => {
     return (
       <MenuItem key={key.dataset_id} value={key.dataset_name}>
-        <CardContent>
+        <CardContent className={classes.nono}>
           <Grid className={classes.test}>
-            <Grid>
+            <Grid className={classes.num1}>
               <Typography component="h5" variant="h5">
                 {" "}
                 {key.dataset_name}
@@ -92,7 +116,7 @@ const Datasetdoss = () => {
               </Typography>
               {/* </CardContent> */}
             </Grid>
-            <Grid container justify="flex-end">
+            <Grid container justify="flex-end" className={classes.num2}>
               <Tooltip title="Edit">
                 <IconButton
                   onClick={(e) => {
@@ -120,7 +144,11 @@ const Datasetdoss = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
-                <IconButton onClick={DeleteData} color="secondary">
+                <IconButton
+                  color="secondary"
+                  onClick={DeleteData}
+                  //   onClick={handleClickOpen}
+                >
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
@@ -130,6 +158,23 @@ const Datasetdoss = () => {
             </Grid>
           </Grid>
         </CardContent>
+
+        {/* <Dialog open={open} onClose={handleClose}>
+            <DialogTitle id="alert-dialog-slide-title">
+              {"Confirm delete?"}
+            </DialogTitle>
+            <DialogContent>
+              <DeleteIcon />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Disagree
+              </Button>
+              <Button onClick={handleClose} color="primary">
+                Agree
+              </Button>
+            </DialogActions>
+          </Dialog> */}
       </MenuItem>
     );
   });
