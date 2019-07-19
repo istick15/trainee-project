@@ -6,7 +6,8 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { LayerContext } from "../../Context/LayerContext";
 import { MapContext } from "../../Context/MapContext";
-const useStyles = makeStyles((theme) =>
+import DeleteIcon from "@material-ui/icons/Delete";
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -52,14 +53,14 @@ const LayerList = () => {
   console.log(layerContext);
   useEffect(() => {
     if ((layerContext.layer = [])) {
-      GetDisplay().then((ml) => {
+      GetDisplay().then(ml => {
         layerContext.layer = ml.data;
         console.log(layerContext.layer);
       });
     } else {
     }
   }, []);
-  const MapServices = layerContext.layer.map((key) => {
+  const MapServices = layerContext.layer.map(key => {
     return (
       <MenuItem key={key.layer_id} value={key.layer_name}>
         {key.layer_label}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -13,14 +13,26 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-
+import { GetDataset } from "../MyMap/Request";
 import { GetSite } from "../MyMap/Request";
-
+import { DeleteDataset } from "../../Api/dataset";
 import { createdataset } from "../../Api/dataset";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CheckIcon from "@material-ui/icons/Check";
+import CloseIcon from "@material-ui/icons/Close";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+//import Datasetdoss from "./Dataset";
+//import { UserContextProvider } from "../../Context/UserContext";
+import { MenuItem, CardContent, Tooltip, IconButton } from "@material-ui/core";
+import useReactRouter from "use-react-router";
+import { FeatureContext } from "../MyMap/FeatureContext";
+import { LayerContext } from "../../Context/LayerContext";
+import { GetDisplay, getFeature } from "../MyMap/Request";
 
-import Datasetdoss from "./Dataset";
-import { UserContextProvider } from "../../Context/UserContext";
+///
 
+////
 const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
@@ -49,6 +61,36 @@ const useStyles = makeStyles(theme =>
     },
     grow: {
       flexGrow: 1
+    },
+    layerlist: {
+      padding: (-3, 1),
+      marginTop: -7
+    },
+    test: {
+      display: "flex"
+    },
+
+    nono: {
+      width: "100vh"
+    },
+    yes: {
+      color: "#76ff03"
+    },
+    no: {
+      color: "#d50000"
+    },
+    leftIconyes: {
+      marginRight: theme.spacing(1),
+      color: "#76ff03"
+    },
+    leftIconno: {
+      marginRight: theme.spacing(1),
+      color: "#d50000"
+    },
+    bin: {
+      height: 150,
+      width: 150,
+      color: "#F2AD2E"
     }
   })
 );
@@ -64,6 +106,15 @@ const StoreSpace = () => {
   function handleClose() {
     setOpen(false);
   }
+  ///////////////////
+  const [tsover, settsover] = useState(false);
+  function testopen() {
+    settsover(true);
+  }
+  function testclose() {
+    settsover(false);
+  }
+
   /////////////////////
   const [Name, setName] = useState([]);
   const [Description, setDescription] = useState([]);
@@ -78,10 +129,139 @@ const StoreSpace = () => {
     });
   };
   ///////////////////////
+  const DeleteData = () => {
+    GetSite().then(s => {
+      GetDataset(s.data.site_id).then(ds => {
+        //    if (window.confirm("Are you sure you want to delete this DataSet?")) {
+        DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
+          console.log(dds);
+        });
+        //   }
+      });
+    });
+  };
+  //
 
+  const { history } = useReactRouter();
+  const layerContext = useContext(LayerContext);
+  const featureContext = useContext(FeatureContext);
+  const [Dataset, setDataset] = useState([]);
+  useEffect(() => {
+    if (Dataset) {
+      GetSite().then(s => {
+        console.log(s.data.site_id);
+        GetDataset(s.data.site_id).then(ds => {
+          console.log(ds);
+          setDataset([ds.data]);
+          //  layerContext.layer = ds.data;
+          //  console.log(layerContext.layer);
+        });
+      });
+    } else {
+    }
+  }, []);
+
+  const datalist = Dataset.map(key => {
+    return (
+      <div>
+        <MenuItem key={key.dataset_id} value={key.dataset_name}>
+          <CardContent className={classes.nono}>
+            <Grid className={classes.test}>
+              <Grid className={classes.num1}>
+                <Typography component="h5" variant="h5">
+                  {key.dataset_name}
+                </Typography>
+
+                <Typography variant="subtitle1" color="textSecondary">
+                  {key.dataset_description}
+                </Typography>
+                {/* </CardContent> */}
+              </Grid>
+              <Grid container justify="flex-end" className={classes.num2}>
+                <Tooltip title="Edit">
+                  <IconButton
+                    onClick={e => {
+                      history.replace("/MapPage");
+                      GetDisplay().then(rs => {
+                        console.log(rs.data);
+                        layerContext.layer = rs.data;
+                        console.log(layerContext.layer);
+                      });
+                      GetSite().then(s => {
+                        GetDataset(s.data.site_id).then(ds => {
+                          getFeature(s.data.site_id, ds.data.dataset_id).then(
+                            gf => {
+                              console.log(gf.data);
+                              featureContext.feature = gf.data;
+                              console.log(featureContext.feature);
+                            }
+                          );
+                        });
+                      });
+                    }}
+                    color="primary"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton
+                    color="secondary"
+                    // onClick={DeleteData}
+                    onClick={testopen}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </MenuItem>
+      </div>
+    );
+  });
   ///////////////////
   return (
     <div>
+      {/*  */}
+      <div>
+        <Dialog
+          open={tsover}
+          keepMounted
+          onClose={testclose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title" color="#F2AD2E">
+            <Grid container justify="center">
+              <Typography variant="h4" className={classes.no}>
+                Do you want to delete Dataset?
+              </Typography>
+            </Grid>
+          </DialogTitle>
+          <Grid container justify="center">
+            <DeleteSweepIcon className={classes.bin} />
+          </Grid>
+          <Button
+            variant="outlined"
+            size="medium"
+            className={classes.yes}
+            onClick={DeleteData}
+          >
+            <CheckIcon className={classes.leftIconyes} /> Yes
+          </Button>
+          <br />
+          <Button
+            variant="outlined"
+            size="medium"
+            className={classes.no}
+            onClick={testclose}
+          >
+            <CloseIcon className={classes.leftIconon} /> No
+          </Button>
+        </Dialog>
+      </div>
+      {/*  */}
       <Grid container justify="center">
         <Paper className={classes.root}>
           <Grid container justify="center">
@@ -113,10 +293,18 @@ const StoreSpace = () => {
 
           <Divider />
           <br />
-
-          <UserContextProvider>
+          {/*  */}
+          {/* <UserContextProvider>
             <Datasetdoss />
-          </UserContextProvider>
+          </UserContextProvider> */}
+          {/* test */}
+          <div>
+            <form direction="vertical" className={classes.layerlist}>
+              {datalist}
+            </form>
+          </div>
+          {/*  */}
+          {/*  */}
         </Paper>
       </Grid>
       <Dialog
