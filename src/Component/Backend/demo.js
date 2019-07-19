@@ -1,70 +1,61 @@
 import React, { useState } from "react";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import {
-  Fab,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  TextField,
-  DialogActions,
-  Button,
-  Tooltip,
-  FormHelperText,
-  Grid
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  Fab
 } from "@material-ui/core";
-
-import { makeStyles } from "@material-ui/core/styles";
-import CreateIcon from "@material-ui/icons/Create";
-import { AddMapLayers, AddRequest } from "../MyMap/Request";
-import Paper from "@material-ui/core/Paper";
-import AddIcon from "@material-ui/icons/Add";
-import { Divider } from "material-ui";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Chip from "@material-ui/core/Chip";
+import { TextField, Grid } from "@material-ui/core";
+import { AddMapLayers, AddRequest } from "../MyMap/Request";
 
-const useStyles = makeStyles((theme) => ({
-  fabButton: {
-    position: "absolute",
-    zIndex: 1,
-    bottom: "2%",
-    right: "25%",
-    margin: "0 auto",
-    "&:hover": {
-      backgroundColor: "#F2AD2E"
-    },
+const useStyles = makeStyles((theme) =>
+  createStyles({
     root: {
-      width: 900,
-      height: 400,
-      padding: theme.spacing(3, 2),
-      marginTop: 300,
-      borderRadius: 10
+      width: "100%"
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15)
+    },
+    secondaryHeading: {
+      fontSize: theme.typography.pxToRem(15),
+      color: theme.palette.text.secondary
+    },
+    icon: {
+      verticalAlign: "bottom",
+      height: 20,
+      width: 20
+    },
+    details: {
+      alignItems: "center"
+    },
+    column: {
+      flexBasis: "33.33%"
+    },
+    helper: {
+      borderLeft: `2px solid ${theme.palette.divider}`,
+      padding: theme.spacing(1, 2)
     }
-  }
-}));
+  })
+);
 
-const AddMapService = () => {
+export default function AlertDialog() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClse = () => {
-    setOpen(false);
-  };
-
+  const [open, setOpen] = React.useState(false);
   const [layers, setLayers] = useState({});
-  const [label, setLabel] = useState({});
-  const [link, setLink] = useState({});
-  const [description, setDescription] = useState({});
-  console.log(layers);
-  console.log(link);
   const [errorText, setErrorText] = useState("");
+  const [description, setDescription] = useState({});
+  const [link, setLink] = useState({});
+  const [label, setLabel] = useState({});
   const addChange = () => {
     if (layers === "" || label === "" || link === "" || description === "") {
       setErrorText("please input value");
@@ -87,31 +78,35 @@ const AddMapService = () => {
       });
     }
   };
+  function handleClickOpen() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
   return (
     <div>
-      <div align="center">
-        <Fab
-          variant="outlined"
-          size="small"
-          color="primary"
-          aria-label="Add"
-          onClick={handleOpen}
-          className={classes.icon}
-          fontSize="large"
-        >
-          <AddIcon />
-          Map Services
-        </Fab>
-      </div>
-      <Dialog open={open} onClose={handleClse}>
-        <DialogTitle>Add Mapservice</DialogTitle>
-
+      <Fab
+        variant="outlined"
+        size="small"
+        color="primary"
+        onClick={handleClickOpen}
+      >
+        Open alert dialog
+      </Fab>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-              Please enter wms mapservice here
-            </DialogContentText> */}
-          {/* <FormHelperText error={true}>{errorText}</FormHelperText> */}
-          {/* <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description">
             <div className={classes.root}>
               <ExpansionPanel defaultExpanded>
                 <ExpansionPanelSummary
@@ -222,67 +217,19 @@ const AddMapService = () => {
                   </Grid>
                 </ExpansionPanelDetails>
                 <Divider />
-              </ExpansionPanel> */}
-          {/* </div>
-          </DialogContentText> */}
-          <ExpansionPanel />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="layername"
-            label="Layer Name"
-            fullWidth
-            onChange={(e) => {
-              setLayers(e.target.value);
-              setErrorText("");
-            }}
-          />
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="label"
-            label="Label"
-            fullWidth
-            onChange={(l) => {
-              setLabel(l.target.value);
-              setErrorText("");
-            }}
-          /> */}
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="Description"
-            fullWidth
-            onChange={(d) => {
-              setDescription(d.target.value);
-              setErrorText("");
-            }}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="wmslink"
-            label="Wms URL"
-            fullWidth
-            onChange={(e1) => {
-              setLink(e1.target.value);
-              setErrorText("");
-            }}
-            placeholder="https://wmsserver/server/work/wms?SERVICE=WMS&REQUEST=GetMap&CRS=EPSG:4326&LAYERS=name"
-          />
+              </ExpansionPanel>
+            </div>
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={handleClse}>
+          <Button onClick={handleClose} color="primary">
             cancel
           </Button>
-          <Button color="primary" onClick={addChange}>
+          <Button onClick={handleClose} color="primary" autoFocus>
             ok
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-};
-
-export default AddMapService;
+}

@@ -11,6 +11,7 @@ import { Switch } from "@material-ui/core";
 import LayerList2 from "./LayerList2";
 import AddLayer from "./AddLayer";
 import LayerList from "./LayerList";
+import Demo from "./demo";
 
 // import AddMapService from "./AddMapServices";
 
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) =>
     },
     root: {
       width: 900,
+      // height: 580,
       padding: theme.spacing(3, 2),
       marginTop: 20,
       borderRadius: 10
@@ -75,9 +77,10 @@ const MapWork = () => {
         <Paper className={classes.root}>
           <Grid container justify="center">
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Dataset</Typography>
+              <Typography variant="h5"> Map Services</Typography>
             </Grid>
             <Grid container justify="flex-end" item xs={12} sm={6}>
+              {/* <Demo /> */}
               <AddLayer />
             </Grid>
           </Grid>

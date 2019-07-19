@@ -16,6 +16,7 @@ import IconButton from "@material-ui/core/IconButton";
 // import { NativeRouter, Route, Link } from "react-router-native";
 // import { StyleSheet, Text, View } from "react-native";
 import useReactRouter from "use-react-router";
+import Demo from "./demo";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -48,7 +49,13 @@ const useStyles = makeStyles((theme) =>
       zIndex: -1,
       width: "100vw",
       height: "100vh",
-      background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
+      background: "linear-gradient(#F2B035, #F29D35 30%, #eceff1 90%)"
+      // background: "linear-gradient(#7693A6, #346173 30%, #A65A53 90%)"
+      // background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+      // background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
+    },
+    dialog: {
+      marginTop: 100
     }
   })
 );
@@ -129,6 +136,7 @@ const TestAppBar = () => {
         {/* <Route path="/:id" component={Child} /> */}
       </Router>
       {/* <MapSpace /> */}
+      {/* <Demo className={classes.dialog} /> */}
     </div>
   );
 };
