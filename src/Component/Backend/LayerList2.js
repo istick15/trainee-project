@@ -13,6 +13,7 @@ import { LayerContext } from "../../Context/LayerContext";
 import { MapContext } from "../../Context/MapContext";
 import { Typography, Grid, IconButton, Tooltip } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { delelayer } from "../../Api/DeleteRequest";
 const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
@@ -57,20 +58,18 @@ const LayerList = () => {
 
   const layerContext = useContext(LayerContext);
   console.log(layerContext);
-  const DeleteRequest = () => {
-    getMapLayers().then((s) => {
-      console.log(s);
-      DeleteLayers(s.data.layer_id).then((dl) => {
-        console.log(dl);
-      });
-      // AddRequest(s.data.layer_id).then((ds) => {
-      //   if (window.confirm("Are you sure you want to delete this Layer?")) {
-      //     DeleteRequest(s.data.site_id, ds.data.user_id).then((dds) => {
-      //       console.log(dds);
-      //     });
-      //   }
-      // });
+  const DeleteRequest = (layer) => {
+    console.log(layer);
+    delelayer(layer).then((dl) => {
+      console.log(dl);
     });
+    // AddRequest(s.data.layer_id).then((ds) => {
+    //   if (window.confirm("Are you sure you want to delete this Layer?")) {
+    //     DeleteRequest(s.data.site_id, ds.data.user_id).then((dds) => {
+    //       console.log(dds);
+    //     });
+    //   }
+    // });
   };
   useEffect(() => {
     if ((layerContext.layer = [])) {
@@ -85,23 +84,25 @@ const LayerList = () => {
     return (
       <div>
         <MenuItem key={key.layer_id} value={key.layer_name}>
-          <Grid>
-            <Typography component="h5" variant="h5">
-              {key.layer_label}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {key.layer_description}
-            </Typography>
-          </Grid>
-          <Grid container justify="flex-end">
-            <Tooltip title="Delete">
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography component="h5" variant="h5">
+                {key.layer_label}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                {key.layer_description}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} justify="flex-end">
               <IconButton
                 color="secondary"
-                // onClick={DeleteRequest}
+                onClick={() => {
+                  DeleteRequest(key.layer_id);
+                }}
               >
                 <DeleteIcon />
               </IconButton>
-            </Tooltip>
+            </Grid>
           </Grid>
         </MenuItem>
       </div>

@@ -74,10 +74,16 @@ const useStyles = makeStyles((theme) =>
       width: "100vh"
     },
     yes: {
-      color: "#76ff03"
+      color: "#76ff03",
+      width: 100
     },
-    no: {
+    title: {
       color: "#d50000"
+    },
+
+    no: {
+      color: "#d50000",
+      width: 100
     },
     leftIconyes: {
       marginRight: theme.spacing(1),
@@ -234,7 +240,7 @@ const StoreSpace = () => {
         >
           <DialogTitle id="alert-dialog-slide-title" color="#F2AD2E">
             <Grid container justify="center">
-              <Typography variant="h4" className={classes.no}>
+              <Typography variant="h4" className={classes.title}>
                 Do you want to delete Dataset?
               </Typography>
             </Grid>
@@ -242,23 +248,28 @@ const StoreSpace = () => {
           <Grid container justify="center">
             <DeleteSweepIcon className={classes.bin} />
           </Grid>
-          <Button
-            variant="outlined"
-            size="medium"
-            className={classes.yes}
-            onClick={DeleteData}
-          >
-            <CheckIcon className={classes.leftIconyes} /> Yes
-          </Button>
+          <Grid container justify="center">
+            <Button
+              variant="outlined"
+              size="medium"
+              className={classes.yes}
+              onClick={DeleteData}
+            >
+              <CheckIcon className={classes.leftIconyes} /> Yes
+            </Button>
+          </Grid>
           <br />
-          <Button
-            variant="outlined"
-            size="medium"
-            className={classes.no}
-            onClick={testclose}
-          >
-            <CloseIcon className={classes.leftIconon} /> No
-          </Button>
+          <Grid container justify="center">
+            <Button
+              variant="outlined"
+              size="medium"
+              className={classes.no}
+              onClick={testclose}
+            >
+              <CloseIcon className={classes.leftIconon} /> No
+            </Button>
+          </Grid>
+          <br />
         </Dialog>
       </div>
       {/*  */}
