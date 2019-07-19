@@ -111,7 +111,7 @@ export default function AlertDialog() {
           </DialogContentText>
           <DialogContentText id="alert-dialog-description">
             <div className={classes.root}>
-              <ExpansionPanel defaultExpanded>
+              <ExpansionPanel>
                 <ExpansionPanelSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1c-content"
@@ -166,7 +166,9 @@ export default function AlertDialog() {
                 </ExpansionPanelDetails>
                 <Divider />
               </ExpansionPanel>
-              <ExpansionPanel defaultExpanded>
+              <ExpansionPanel
+              // defaultExpanded
+              >
                 <ExpansionPanelSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1c-content"
