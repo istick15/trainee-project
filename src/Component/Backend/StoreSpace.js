@@ -33,7 +33,7 @@ import { GetDisplay, getFeature } from "../MyMap/Request";
 ///
 
 ////
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -125,21 +125,21 @@ const StoreSpace = () => {
   const [Name, setName] = useState([]);
   const [Description, setDescription] = useState([]);
   ////
-  const CreateDataset = (e) => {
+  const CreateDataset = e => {
     e.preventDefault();
-    GetSite().then((s) => {
+    GetSite().then(s => {
       console.log(s);
-      createdataset(Name, Description, s.data.site_id).then((cd) => {
+      createdataset(Name, Description, s.data.site_id).then(cd => {
         console.log(cd);
       });
     });
   };
   ///////////////////////
   const DeleteData = () => {
-    GetSite().then((s) => {
-      GetDataset(s.data.site_id).then((ds) => {
+    GetSite().then(s => {
+      GetDataset(s.data.site_id).then(ds => {
         //    if (window.confirm("Are you sure you want to delete this DataSet?")) {
-        DeleteDataset(s.data.site_id, ds.data.dataset_id).then((dds) => {
+        DeleteDataset(s.data.site_id, ds.data.dataset_id).then(dds => {
           console.log(dds);
         });
         //   }
@@ -154,9 +154,9 @@ const StoreSpace = () => {
   const [Dataset, setDataset] = useState([]);
   useEffect(() => {
     if (Dataset) {
-      GetSite().then((s) => {
+      GetSite().then(s => {
         console.log(s.data.site_id);
-        GetDataset(s.data.site_id).then((ds) => {
+        GetDataset(s.data.site_id).then(ds => {
           console.log(ds);
           setDataset([ds.data]);
           //  layerContext.layer = ds.data;
@@ -167,13 +167,13 @@ const StoreSpace = () => {
     }
   }, []);
 
-  const datalist = Dataset.map((key) => {
+  const datalist = Dataset.map(key => {
     return (
       <div>
         <MenuItem key={key.dataset_id} value={key.dataset_name}>
           <CardContent className={classes.nono}>
-            <Grid className={classes.test}>
-              <Grid className={classes.num1}>
+            <Grid container>
+              <Grid item xs={6}>
                 <Typography component="h5" variant="h5">
                   {key.dataset_name}
                 </Typography>
@@ -183,20 +183,20 @@ const StoreSpace = () => {
                 </Typography>
                 {/* </CardContent> */}
               </Grid>
-              <Grid container justify="flex-end" className={classes.num2}>
+              <Grid container item xs={6} justify="flex-end">
                 <Tooltip title="Edit">
                   <IconButton
-                    onClick={(e) => {
+                    onClick={e => {
                       history.replace("/MapPage");
-                      GetDisplay().then((rs) => {
+                      GetDisplay().then(rs => {
                         console.log(rs.data);
                         layerContext.layer = rs.data;
                         console.log(layerContext.layer);
                       });
-                      GetSite().then((s) => {
-                        GetDataset(s.data.site_id).then((ds) => {
+                      GetSite().then(s => {
+                        GetDataset(s.data.site_id).then(ds => {
                           getFeature(s.data.site_id, ds.data.dataset_id).then(
-                            (gf) => {
+                            gf => {
                               console.log(gf.data);
                               featureContext.feature = gf.data;
                               console.log(featureContext.feature);
@@ -337,7 +337,7 @@ const StoreSpace = () => {
               label="Name"
               color="primary"
               fullWidth
-              onChange={(n) => {
+              onChange={n => {
                 setName(n.target.value);
               }}
             />
@@ -350,7 +350,7 @@ const StoreSpace = () => {
               label="Description"
               fullWidth
               color="primary"
-              onChange={(d) => {
+              onChange={d => {
                 setDescription(d.target.value);
               }}
             />

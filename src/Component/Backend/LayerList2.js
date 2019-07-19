@@ -14,7 +14,7 @@ import { MapContext } from "../../Context/MapContext";
 import { Typography, Grid, IconButton, Tooltip } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { delelayer } from "../../Api/DeleteRequest";
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -58,9 +58,9 @@ const LayerList = () => {
 
   const layerContext = useContext(LayerContext);
   console.log(layerContext);
-  const DeleteRequest = (layer) => {
+  const DeleteRequest = layer => {
     console.log(layer);
-    delelayer(layer).then((dl) => {
+    delelayer(layer).then(dl => {
       console.log(dl);
     });
     // AddRequest(s.data.layer_id).then((ds) => {
@@ -73,14 +73,14 @@ const LayerList = () => {
   };
   useEffect(() => {
     if ((layerContext.layer = [])) {
-      GetDisplay().then((ml) => {
+      GetDisplay().then(ml => {
         layerContext.layer = ml.data;
         console.log(layerContext.layer);
       });
     } else {
     }
   }, []);
-  const MapServices = layerContext.layer.map((key) => {
+  const MapServices = layerContext.layer.map(key => {
     return (
       <div>
         <MenuItem key={key.layer_id} value={key.layer_name}>
