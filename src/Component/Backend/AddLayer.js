@@ -15,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/DeleteSweep";
 import Workspace from "./WorkSpace";
 import { LayerContext } from "../../Context/LayerContext";
 import { Paper } from "material-ui";
+import Demo from "./demo";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -79,6 +80,7 @@ const AddLayer = () => {
   return (
     <div>
       <Workspace />
+      {/* <Demo /> */}
     </div>
   );
 };

@@ -56,35 +56,7 @@ export const AddMapLayers = (layername, label, description) => {
   })
     .then((response) => response.json())
     .then((response) => {
-      let mapserviceListItem = [];
-      if (response.data) {
-        if (Array.isArray(response.data)) {
-          mapserviceListItem = response.data.map((user) =>
-            pick(user, [
-              "layer_id",
-              "layer_label",
-              "layer_name",
-              "layer_description",
-              "service"
-            ])
-          );
-        } else {
-          if (Object.keys(response.data).length > 0) {
-            mapserviceListItem.push(
-              pick(response.data, [
-                "layer_id",
-                "layer_label",
-                "layer_name",
-                "layer_description",
-                "service"
-              ])
-            );
-          }
-        }
-      }
-
-      return mapserviceListItem;
-      // return response;
+      return response;
     })
     .catch((error) => {
       return error;
@@ -146,34 +118,34 @@ export const GetDisplay = () => {
   })
     .then((response) => response.json())
     .then((response) => {
-      let mapserviceListItem = [];
-      if (response.data) {
-        if (Array.isArray(response.data)) {
-          mapserviceListItem = response.data.map((user) =>
-            pick(user, [
-              "layer_id",
-              "layer_label",
-              "layer_name",
-              "layer_description",
-              "service"
-            ])
-          );
-        } else {
-          if (Object.keys(response.data).length > 0) {
-            mapserviceListItem.push(
-              pick(response.data, [
-                "layer_id",
-                "layer_label",
-                "layer_name",
-                "layer_description",
-                "service"
-              ])
-            );
-          }
-        }
-      }
+      // let mapserviceListItem = [];
+      // if (response.data) {
+      //   if (Array.isArray(response.data)) {
+      //     mapserviceListItem = response.data.map((user) =>
+      //       pick(user, [
+      //         "layer_id",
+      //         "layer_label",
+      //         "layer_name",
+      //         "layer_description",
+      //         "service"
+      //       ])
+      //     );
+      //   } else {
+      //     if (Object.keys(response.data).length > 0) {
+      //       mapserviceListItem.push(
+      //         pick(response.data, [
+      //           "layer_id",
+      //           "layer_label",
+      //           "layer_name",
+      //           "layer_description",
+      //           "service"
+      //         ])
+      //       );
+      //     }
+      //   }
+      // }
 
-      return mapserviceListItem;
+      // return mapserviceListItem;
       return response;
     })
     .catch((error) => {

@@ -12,24 +12,36 @@ import {
 import { MapContext } from "../../src/Component/MyMap/MapContext";
 import { FeatureContext } from "../Component/MyMap/FeatureContext";
 import { LayerContext } from "../Context/LayerContext";
+import Demo from "../Component/Backend/demo";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      width: 200,
-      height: 40,
-      marginTop: 100,
-      borderRadius: 10
+      // width: 200,
+      // height: 40,
+      marginTop: 100
+      // borderRadius: 10
+      // background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+      // backgroundcolor: "#F2AD2E"
     },
     rot: {
-      position: "absolute",
-      zIndex: -1,
-      width: "100vw",
-      height: "100vh",
-      background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
+      // position: "absolute",
+      // zIndex: -1,
+      // width: "100vw",
+      // height: "100vh",
+      background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+      // background: "linear-gradient(45deg, #F2AD2E , #F27304 ,#0C0C0C )"
     },
     but: {
       zIndex: 10
+    },
+    demo: {
+      // width: 200,
+      // height: 40,
+      marginTop: 400
+      // borderRadius: 10
+      // background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+      // backgroundcolor: "#F2AD2E"
     }
   })
 );
@@ -61,9 +73,15 @@ const BackendPage = () => {
     <div>
       <LayerBackend />
 
-      <Button color="primary" onClick={goToMap} className={classes.root}>
+      <Button
+        // variant="outlined"
+        color="defualt"
+        onClick={goToMap}
+        className={classes.root}
+      >
         GO TO MAP PAGE
       </Button>
+      {/* <Demo className={classes.root} /> */}
     </div>
   );
 };
