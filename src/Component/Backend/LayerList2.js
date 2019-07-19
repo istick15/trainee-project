@@ -11,10 +11,8 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { LayerContext } from "../../Context/LayerContext";
 import { MapContext } from "../../Context/MapContext";
-import { Typography, IconButton, Grid } from "@material-ui/core";
+import { Typography, Grid, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import DeleteRequest, { getRequest } from "../../Api/DeleteRequest";
-
 const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
@@ -59,22 +57,11 @@ const LayerList = () => {
 
   const layerContext = useContext(LayerContext);
   console.log(layerContext);
-  useEffect(() => {
-    if ((layerContext.layer = [])) {
-      GetDisplay().then((ml) => {
-        layerContext.layer = ml.data;
-        console.log(layerContext.layer);
-      });
-    } else {
-    }
-  }, [layerContext]);
-  console.log(layerContext);
   const DeleteRequest = () => {
     getMapLayers().then((s) => {
       console.log(s);
       DeleteLayers(s.data.layer_id).then((dl) => {
-      console.log(dl);
-     
+        console.log(dl);
       });
       // AddRequest(s.data.layer_id).then((ds) => {
       //   if (window.confirm("Are you sure you want to delete this Layer?")) {
@@ -85,6 +72,15 @@ const LayerList = () => {
       // });
     });
   };
+  useEffect(() => {
+    if ((layerContext.layer = [])) {
+      GetDisplay().then((ml) => {
+        layerContext.layer = ml.data;
+        console.log(layerContext.layer);
+      });
+    } else {
+    }
+  }, []);
   const MapServices = layerContext.layer.map((key) => {
     return (
       <div>
@@ -93,7 +89,10 @@ const LayerList = () => {
             {key.layer_label}
           </Typography>
           <Grid container justify="flex-end">
-            <IconButton color="secondary" onClick={DeleteRequest}>
+            <IconButton
+              color="secondary"
+              // onClick={DeleteRequest}
+            >
               <DeleteIcon />
             </IconButton>
           </Grid>

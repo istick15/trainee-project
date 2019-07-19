@@ -1,7 +1,7 @@
 import { pick } from "lodash";
 // const API_Key = "k-3166f58c-2752-5df4-a4cd-6cb2616342bc";
-// const API_Key = "k-2e33c66d-4f30-5ed8-ab3d-dee60bfb989a";
-const API_Key = "k-5f444300-948f-55f1-8581-ae36bc6e20f1";
+const API_Key = "k-2e33c66d-4f30-5ed8-ab3d-dee60bfb989a";
+//const API_Key = "k-5f444300-948f-55f1-8581-ae36bc6e20f1";
 export const getMapLayers = () => {
   const token = localStorage.getItem("user_token");
   const USER_ID = localStorage.getItem("user_id");
@@ -118,34 +118,6 @@ export const GetDisplay = () => {
   })
     .then((response) => response.json())
     .then((response) => {
-      // let mapserviceListItem = [];
-      // if (response.data) {
-      //   if (Array.isArray(response.data)) {
-      //     mapserviceListItem = response.data.map((user) =>
-      //       pick(user, [
-      //         "layer_id",
-      //         "layer_label",
-      //         "layer_name",
-      //         "layer_description",
-      //         "service"
-      //       ])
-      //     );
-      //   } else {
-      //     if (Object.keys(response.data).length > 0) {
-      //       mapserviceListItem.push(
-      //         pick(response.data, [
-      //           "layer_id",
-      //           "layer_label",
-      //           "layer_name",
-      //           "layer_description",
-      //           "service"
-      //         ])
-      //       );
-      //     }
-      //   }
-      // }
-
-      // return mapserviceListItem;
       return response;
     })
     .catch((error) => {

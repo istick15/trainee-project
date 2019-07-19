@@ -22,38 +22,30 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+
 const useStyles = makeStyles({
   grow: {
     flexGrow: 1
-    //left: 100
   },
   layerlist: {
     padding: (-3, 1),
     marginTop: -7
-    // borderRadius: 10
   },
   test: {
     display: "flex"
-    // width: "100vw"
   },
-  // num1: {
-  //   width: "20vw"
-  // },
-  // num2: {
-  //   display: "flex",
-  //   width: "25vw"
-  // }
+
   nono: {
     width: "100vh"
   }
 });
 
 ///
+
+///
 const Datasetdoss = () => {
   const classes = useStyles();
-  /////
 
-  //////
   const [Dataset, setDataset] = useState([]);
   const layerContext = useContext(LayerContext);
   const featureContext = useContext(FeatureContext);
@@ -70,15 +62,6 @@ const Datasetdoss = () => {
   };
 
   useEffect(() => {
-    // GetSite().then(s => {
-    //   console.log(s.data.site_id);
-    //   GetDataset(s.data.site_id).then(ds => {
-    //     console.log(ds);
-    //     // setDataset([ds.data]);
-    //     layerContext.layer = ds.data;
-    //     console.log(layerContext.layer);
-    //   });
-    // });
     if (Dataset) {
       GetSite().then((s) => {
         console.log(s.data.site_id);
@@ -95,82 +78,61 @@ const Datasetdoss = () => {
 
   const datalist = Dataset.map((key) => {
     return (
-      <MenuItem key={key.dataset_id} value={key.dataset_name}>
-        <CardContent className={classes.nono}>
-          <Grid className={classes.test}>
-            <Grid className={classes.num1}>
-              <Typography component="h5" variant="h5">
-                {" "}
-                {key.dataset_name}
-              </Typography>
+      <div>
+        <MenuItem key={key.dataset_id} value={key.dataset_name}>
+          <CardContent className={classes.nono}>
+            <Grid className={classes.test}>
+              <Grid className={classes.num1}>
+                <Typography component="h5" variant="h5">
+                  {key.dataset_name}
+                </Typography>
 
-              <Typography variant="subtitle1" color="textSecondary">
-                {key.dataset_description}
-              </Typography>
-              {/* </CardContent> */}
-            </Grid>
-            <Grid container justify="flex-end" className={classes.num2}>
-              <Tooltip title="Edit">
-                <IconButton
-                  onClick={(e) => {
-                    history.replace("/MapPage");
-                    GetDisplay().then((rs) => {
-                      console.log(rs.data);
-                      layerContext.layer = rs.data;
-                      console.log(layerContext.layer);
-                    });
-                    GetSite().then((s) => {
-                      GetDataset(s.data.site_id).then((ds) => {
-                        getFeature(s.data.site_id, ds.data.dataset_id).then(
-                          (gf) => {
-                            console.log(gf.data);
-                            featureContext.feature = gf.data;
-                            console.log(featureContext.feature);
-                          }
-                        );
+                <Typography variant="subtitle1" color="textSecondary">
+                  {key.dataset_description}
+                </Typography>
+                {/* </CardContent> */}
+              </Grid>
+              <Grid container justify="flex-end" className={classes.num2}>
+                <Tooltip title="Edit">
+                  <IconButton
+                    onClick={(e) => {
+                      history.replace("/MapPage");
+                      GetDisplay().then((rs) => {
+                        console.log(rs.data);
+                        layerContext.layer = rs.data;
+                        console.log(layerContext.layer);
                       });
-                    });
-                  }}
-                  color="primary"
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="secondary"
-                  onClick={DeleteData}
-                  //onClick={handleClickOpen}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-              {/*  */}
-              {/* </CardContent> */}
-              {/*  */}
+                      GetSite().then((s) => {
+                        GetDataset(s.data.site_id).then((ds) => {
+                          getFeature(s.data.site_id, ds.data.dataset_id).then(
+                            (gf) => {
+                              console.log(gf.data);
+                              featureContext.feature = gf.data;
+                              console.log(featureContext.feature);
+                            }
+                          );
+                        });
+                      });
+                    }}
+                    color="primary"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton
+                    color="secondary"
+                    onClick={DeleteData}
+                    //onClick={handleClickOpen}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-
-        {/* <Dialog open={open} onClose={handleClose}>
-            <DialogTitle id="alert-dialog-slide-title">
-              {"Confirm delete?"}
-            </DialogTitle>
-            <DialogContent>
-              <DeleteIcon />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Disagree
-              </Button>
-              <Button onClick={handleClose} color="primary">
-                Agree
-              </Button>
-            </DialogActions>
-          </Dialog> */}
-
-        {/*  */}
-      </MenuItem>
+          </CardContent>
+        </MenuItem>
+      </div>
     );
   });
   // ////////////////////////////////////////
