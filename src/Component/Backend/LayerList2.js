@@ -13,7 +13,8 @@ import { LayerContext } from "../../Context/LayerContext";
 import { MapContext } from "../../Context/MapContext";
 import { Typography, Grid, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-const useStyles = makeStyles((theme) =>
+import { delelayer } from "../../Api/DeleteRequest";
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       right: "200px"
@@ -57,44 +58,48 @@ const LayerList = () => {
 
   const layerContext = useContext(LayerContext);
   console.log(layerContext);
-  const DeleteRequest = () => {
-    getMapLayers().then((s) => {
-      console.log(s);
-      DeleteLayers(s.data.layer_id).then((dl) => {
-        console.log(dl);
-      });
-      // AddRequest(s.data.layer_id).then((ds) => {
-      //   if (window.confirm("Are you sure you want to delete this Layer?")) {
-      //     DeleteRequest(s.data.site_id, ds.data.user_id).then((dds) => {
-      //       console.log(dds);
-      //     });
-      //   }
-      // });
+  const DeleteRequest = layer => {
+    console.log(layer);
+    delelayer(layer).then(dl => {
+      console.log(dl);
     });
+    // AddRequest(s.data.layer_id).then((ds) => {
+    //   if (window.confirm("Are you sure you want to delete this Layer?")) {
+    //     DeleteRequest(s.data.site_id, ds.data.user_id).then((dds) => {
+    //       console.log(dds);
+    //     });
+    //   }
+    // });
   };
   useEffect(() => {
     if ((layerContext.layer = [])) {
-      GetDisplay().then((ml) => {
+      GetDisplay().then(ml => {
         layerContext.layer = ml.data;
         console.log(layerContext.layer);
       });
     } else {
     }
   }, []);
-  const MapServices = layerContext.layer.map((key) => {
+  const MapServices = layerContext.layer.map(key => {
     return (
       <div>
         <MenuItem key={key.layer_id} value={key.layer_name}>
-          <Typography component="h5" variant="h5">
-            {key.layer_label}
-          </Typography>
-          <Grid container justify="flex-end">
-            <IconButton
-              color="secondary"
-              // onClick={DeleteRequest}
-            >
-              <DeleteIcon />
-            </IconButton>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography component="h5" variant="h5">
+                {key.layer_label}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} justify="flex-end">
+              <IconButton
+                color="secondary"
+                onClick={() => {
+                  DeleteRequest(key.layer_id);
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
           </Grid>
         </MenuItem>
       </div>
