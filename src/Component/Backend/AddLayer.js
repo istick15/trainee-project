@@ -79,8 +79,8 @@ const AddLayer = () => {
 
   return (
     <div>
-      {/* <Workspace /> */}
-      <Demo />
+      <Workspace />
+      {/* <Demo /> */}
     </div>
   );
 };

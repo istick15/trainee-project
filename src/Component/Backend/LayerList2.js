@@ -85,24 +85,22 @@ const LayerList = () => {
       <div>
         <MenuItem key={key.layer_id} value={key.layer_name}>
           <Grid container>
-            <Grid item xs={6}>
-              <Typography component="h5" variant="h5">
-                {key.layer_label}
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
+            <Typography component="h5" variant="h5">
+              {key.layer_label}
+            </Typography>
+            {/* <Typography variant="subtitle1" color="textSecondary">
                 {key.layer_description}
-              </Typography>
-            </Grid>
-            <Grid item xs={6} justify="flex-end">
-              <IconButton
-                color="secondary"
-                onClick={() => {
-                  DeleteRequest(key.layer_id);
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Grid>
+              </Typography> */}
+          </Grid>
+          <Grid justify="flex-end">
+            <IconButton
+              color="secondary"
+              onClick={() => {
+                DeleteRequest(key.layer_id);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
           </Grid>
         </MenuItem>
       </div>
