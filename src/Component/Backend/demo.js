@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { TextField, Grid } from "@material-ui/core";
 import { AddMapLayers, AddRequest } from "../MyMap/Request";
+import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -94,7 +95,8 @@ export default function AlertDialog() {
         color="primary"
         onClick={handleClickOpen}
       >
-        Open alert dialog
+        <AddIcon />
+        Map Services
       </Fab>
       <Dialog
         open={open}
@@ -102,10 +104,11 @@ export default function AlertDialog() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+        <DialogTitle>Add Mapservice</DialogTitle>
         <DialogContent>
+          <DialogContentText>
+            Please enter wms mapservice here
+          </DialogContentText>
           <DialogContentText id="alert-dialog-description">
             <div className={classes.root}>
               <ExpansionPanel defaultExpanded>
@@ -225,7 +228,7 @@ export default function AlertDialog() {
           <Button onClick={handleClose} color="primary">
             cancel
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={addChange} color="primary" autoFocus>
             ok
           </Button>
         </DialogActions>

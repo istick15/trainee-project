@@ -26,6 +26,7 @@ import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Chip from "@material-ui/core/Chip";
+import Demo from "./demo";
 
 const useStyles = makeStyles((theme) => ({
   fabButton: {
@@ -225,7 +226,7 @@ const AddMapService = () => {
               </ExpansionPanel> */}
           {/* </div>
           </DialogContentText> */}
-          <ExpansionPanel />
+          <Demo />
           <TextField
             autoFocus
             margin="dense"

@@ -11,7 +11,7 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { LayerContext } from "../../Context/LayerContext";
 import { MapContext } from "../../Context/MapContext";
-import { Typography, Grid, IconButton } from "@material-ui/core";
+import { Typography, Grid, IconButton, Tooltip } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -85,16 +85,23 @@ const LayerList = () => {
     return (
       <div>
         <MenuItem key={key.layer_id} value={key.layer_name}>
-          <Typography component="h5" variant="h5">
-            {key.layer_label}
-          </Typography>
+          <Grid>
+            <Typography component="h5" variant="h5">
+              {key.layer_label}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {key.layer_description}
+            </Typography>
+          </Grid>
           <Grid container justify="flex-end">
-            <IconButton
-              color="secondary"
-              // onClick={DeleteRequest}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip title="Delete">
+              <IconButton
+                color="secondary"
+                // onClick={DeleteRequest}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </MenuItem>
       </div>
