@@ -6,7 +6,7 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { LayerContext } from "../../Context/LayerContext";
 import { MapContext } from "../../Context/MapContext";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Typography } from "@material-ui/core";
 const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
