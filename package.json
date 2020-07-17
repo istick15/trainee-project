@@ -8,7 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.18",
     "@react-bootstrap/pagination": "^1.0.0",
     "@straw-hat/react-fullscreen": "^1.2.1",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.19",
     "mapbox-gl": "^1.1.0",
     "material-table": "^1.40.1",
     "material-ui": "^0.20.2",
